@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Authors>Jiri Slachta</Authors>
+		<PackageTags>locale, translations</PackageTags>
+		<PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
+		<Copyright>Copyright © Jiri Slachta</Copyright>
+		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
+		<GitTagRegex Condition="'$(GitTagRegex)' == ''">v*</GitTagRegex>
+		<GenerateNuspecDependsOn>ReadPackageVersionFromOutputAssembly;$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+	<Target Name="ReadPackageVersionFromOutputAssembly" DependsOnTargets="Build">
+		<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+			<Output TaskParameter="Assemblies" ItemName="PackAssembly" />
+		</GetAssemblyIdentity>
+		<PropertyGroup>
+			<PackageVersion>%(PackAssembly.Version)</PackageVersion>
+		</PropertyGroup>
+	</Target>
+
+	<ItemGroup>
+		<PackageReference Include="GitInfo" Version="2.1.2">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
+	<Import Project="Resources.include" />
+</Project>
