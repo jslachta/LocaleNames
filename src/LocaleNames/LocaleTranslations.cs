@@ -80,7 +80,7 @@ namespace LocaleNames
 
             try
             {
-                cultureInfo = new CultureInfo(languageCode);
+                cultureInfo = CultureInfo.GetCultureInfo(languageCode);
             }
             catch (Exception e)
             {
@@ -93,7 +93,6 @@ namespace LocaleNames
                     cultureInfo = fallbackCulture;
                 }
             }
-
 
             return ForCultureInfo(cultureInfo);
         }
