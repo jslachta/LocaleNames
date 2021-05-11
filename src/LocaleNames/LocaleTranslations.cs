@@ -17,37 +17,6 @@ namespace LocaleNames
     /// </summary>
     public class LocaleTranslations
     {
-        #region STATIC PROPERTIES
-
-        /// <summary>
-        /// Gets the default culture information.
-        /// </summary>
-        /// <value>
-        /// The default culture information.
-        /// </value>
-        public static CultureInfo DefaultCultureInfo
-        {
-            get
-            {
-                return defaultCultureInfo;
-            }
-            set
-            {
-                if (value != CultureInfo.InvariantCulture)
-                {
-                    defaultCultureInfo = value;
-                }
-                else
-                {
-                    defaultCultureInfo = new CultureInfo("en-US");
-                }
-            }
-        }
-
-        private static CultureInfo defaultCultureInfo = new CultureInfo("en-US");
-
-        #endregion STATIC PROPERTIES
-
         #region CACHE
 
         private static Dictionary<CultureInfo, LocaleTranslations> CachedLocaleNames { get; set; }
@@ -72,9 +41,8 @@ namespace LocaleNames
         /// Creates instance of <see cref="LocaleTranslations"/> for given language code.
         /// </summary>
         /// <param name="languageCode">The language code.</param>
-        /// <param name="fallbackCulture">The fallback cultureInfo</param>
         /// <returns></returns>
-        public static LocaleTranslations ForLanguageCode(string languageCode, CultureInfo fallbackCulture = null)
+        public static LocaleTranslations ForLanguageCode(string languageCode)
         {
             CultureInfo cultureInfo = null;
 
@@ -84,13 +52,9 @@ namespace LocaleNames
             }
             catch (Exception e)
             {
-                if (fallbackCulture == null && (e is ArgumentNullException || e is CultureNotFoundException))
+                if (e is ArgumentNullException || e is CultureNotFoundException)
                 {
-                    throw;
-                }
-                else
-                {
-                    cultureInfo = fallbackCulture;
+                    cultureInfo = CultureInfo.InvariantCulture;
                 }
             }
 
@@ -115,11 +79,6 @@ namespace LocaleNames
         /// <returns></returns>
         public static LocaleTranslations ForCultureInfo(CultureInfo cultureInfo)
         {
-            if (cultureInfo == CultureInfo.InvariantCulture)
-            {
-                cultureInfo = DefaultCultureInfo;
-            }
-
             lock (CachedLocaleNames)
             {
                 if (CachedLocaleNames.ContainsKey(cultureInfo))
@@ -142,6 +101,16 @@ namespace LocaleNames
         #endregion FACTORY
 
         #region PROPERTIES
+
+        /// <summary>
+        /// Gets a value indicating whether are language translations empty.
+        /// </summary>
+        public bool AreLanguageTranslationsEmpty => !(LanguageNames.Keys.Count > 0);
+
+        /// <summary>
+        /// Gets a value indicating whether are countryname translations empty.
+        /// </summary>
+        public bool AreCountryNameTranslationsEmpty => !(CountryNames.Keys.Count > 0);
 
         /// <summary>
         /// Gets a value indicating whether this instance is from cache.

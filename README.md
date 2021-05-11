@@ -8,8 +8,6 @@ The translation data are generated from [CLDR locale data for internationalizati
 
 # Usage
 
-NOTE: Instantiation LocaleTranslations or finding language name may throw a CultureNotFoundException, if the given culture is not found. 
-
 ### Find language name
 
 ```
