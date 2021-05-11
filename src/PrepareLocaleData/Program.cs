@@ -14,7 +14,7 @@ namespace PrepareLocaleData
 {
     class Program
     {
-        const string DownloadSite = "https://github.com/unicode-cldr/cldr-localenames-full/archive/37.0.0.zip";
+        const string DownloadSite = "https://github.com/unicode-org/cldr-json/releases/download/39.0.0/cldr-39.0.0-json-full.zip";
 
         static string TempDirectory
         {
