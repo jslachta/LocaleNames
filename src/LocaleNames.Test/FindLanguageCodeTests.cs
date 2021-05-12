@@ -13,16 +13,16 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForLanguageCode("en-US");
 
-            Assert.AreEqual(localeNames.FindLanguageCode("German"), "de");
+            Assert.AreEqual("de", localeNames.FindLanguageCode("German"));
 
-            Assert.AreEqual(localeNames.FindLanguageCode("Czech"), "cs");
+            Assert.AreEqual("cs", localeNames.FindLanguageCode("Czech"));
 
-            Assert.AreEqual(localeNames.FindLanguageCode("American English"), "en-US");
+            Assert.AreEqual("en-US", localeNames.FindLanguageCode("American English"));
 
-            Assert.AreEqual(localeNames.FindLanguageCode("Unknown language"), "und");
+            Assert.AreEqual("und", localeNames.FindLanguageCode("Unknown language"));
 
             //TODO: Shouldn't we expect 'und'?
-            Assert.AreEqual(localeNames.FindLanguageCode("Value not in dictionary"), null);
+            Assert.AreEqual(null, localeNames.FindLanguageCode("Value not in dictionary"));
         }
     }
 }

@@ -13,10 +13,10 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForLanguageCode("en-US");
 
-            Assert.AreEqual(localeNames.FindCountryName("DE"), "Germany");
-            Assert.AreEqual(localeNames.FindCountryName("CZ"), "Czechia");
-            Assert.AreEqual(localeNames.FindCountryName("GB"), "United Kingdom");
-            Assert.AreEqual(localeNames.FindCountryName("unknown code"), null);
+            Assert.AreEqual("Germany", localeNames.FindCountryName("DE"));
+            Assert.AreEqual("Czechia", localeNames.FindCountryName("CZ"));
+            Assert.AreEqual("United Kingdom", localeNames.FindCountryName("GB"));
+            Assert.AreEqual(null, localeNames.FindCountryName("unknown code"));
         }
 
         [TestMethod]

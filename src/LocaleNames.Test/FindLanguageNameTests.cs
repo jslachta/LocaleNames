@@ -14,21 +14,21 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForCultureInfo(new CultureInfo("cs-CZ"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("en-US"), "angličtina (USA)");
+            Assert.AreEqual("angličtina (USA)", localeNames.FindLanguageName("en-US"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("wae"), "němčina (walser)");
+            Assert.AreEqual("němčina (walser)", localeNames.FindLanguageName("wae"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("zh-Hant"), "čínština (tradiční)");
+            Assert.AreEqual("čínština (tradiční)", localeNames.FindLanguageName("zh-Hant"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("unknown code"), null);
+            Assert.AreEqual(null, localeNames.FindLanguageName("unknown code"));
 
             localeNames = LocaleTranslations.ForCultureInfo(new CultureInfo("yue"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("de"), "德文");
+            Assert.AreEqual("德文", localeNames.FindLanguageName("de"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("cs"), "捷克文");
+            Assert.AreEqual("捷克文", localeNames.FindLanguageName("cs"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("en-US"), "英文 (美國)");
+            Assert.AreEqual("英文 (美國)", localeNames.FindLanguageName("en-US"));
         }
 
         [TestMethod]
@@ -36,11 +36,11 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForCurrentCulture();
 
-            Assert.AreEqual(localeNames.FindLanguageName("en-US"), "angličtina (USA)");
+            Assert.AreEqual("angličtina (USA)", localeNames.FindLanguageName("en-US"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("wae"), "němčina (walser)");
+            Assert.AreEqual("němčina (walser)", localeNames.FindLanguageName("wae"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("zh-Hant"), "čínština (tradiční)");
+            Assert.AreEqual("čínština (tradiční)", localeNames.FindLanguageName("zh-Hant"));
         }
 
         [TestMethod]
@@ -48,13 +48,21 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForLanguageCode("en-US");
 
-            Assert.AreEqual(localeNames.FindLanguageName("de"), "German");
+            Assert.AreEqual("German", localeNames.FindLanguageName("de"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("cs"), "Czech");
+            Assert.AreEqual("Czech", localeNames.FindLanguageName("cs"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("cs-CZ"), "Czech");
+            Assert.AreEqual("Czech", localeNames.FindLanguageName("cs-CZ"));
 
-            Assert.AreEqual(localeNames.FindLanguageName("en-US"), "American English");
+            Assert.AreEqual("American English", localeNames.FindLanguageName("en-US"));
+        }
+
+        [TestMethod]
+        public void LocaleNames_Find_language_name_for_unknown_language_code()
+        {
+            var localeNames = LocaleTranslations.ForLanguageCode("unknown-CODE");
+
+            Assert.AreEqual(null, localeNames.FindLanguageName("de"));
         }
     }
 }
