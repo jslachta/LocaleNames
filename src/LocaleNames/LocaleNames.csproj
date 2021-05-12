@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;net50</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
@@ -35,10 +35,33 @@
 		</PropertyGroup>
 	</Target>
 
+	<Target Name="ReadPackageVersionFromOutputAssemblySingleTfm" Returns="@(PackAssembly)" Condition="'$(IsCrossTargetingBuild)' != 'true'">
+		<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+			<Output TaskParameter="Assemblies" ItemName="PackAssembly" />
+		</GetAssemblyIdentity>
+		<PropertyGroup>
+			<PackageVersion>%(PackAssembly.Version)</PackageVersion>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="ReadPackageVersionFromOutputAssemblyMultipleTfms" Condition="'$(IsCrossTargetingBuild)' == 'true'">
+		<PropertyGroup>
+			<FirstTargetFramework>$([System.String]::Copy($(TargetFrameworks)).Split(';').GetValue(0))</FirstTargetFramework>
+		</PropertyGroup>
+		<MSBuild Projects="$(MSBuildProjectFullPath)" Targets="ReadPackageVersionFromOutputAssemblySingleTfm" Properties="TargetFramework=$(FirstTargetFramework)">
+			<Output TaskParameter="TargetOutputs" ItemName="PackAssembly" />
+		</MSBuild>
+		<PropertyGroup>
+			<PackageVersion>%(PackAssembly.Version)</PackageVersion>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="ReadPackageVersionFromOutputAssembly" DependsOnTargets="Build;ReadPackageVersionFromOutputAssemblySingleTfm;ReadPackageVersionFromOutputAssemblyMultipleTfms" />
+
 	<ItemGroup>
 		<PackageReference Include="GitInfo" Version="2.1.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
