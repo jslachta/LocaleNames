@@ -55,6 +55,8 @@ namespace LocaleNames.Test
             Assert.AreEqual("Czech", localeNames.FindLanguageName("cs-CZ"));
 
             Assert.AreEqual("American English", localeNames.FindLanguageName("en-US"));
+
+            Assert.AreEqual("Chinese, Cantonese", localeNames.FindLanguageName("yue", Enumerations.AltVariant.Menu));
         }
 
         [TestMethod]

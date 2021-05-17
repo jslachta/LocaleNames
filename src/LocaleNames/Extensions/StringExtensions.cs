@@ -19,7 +19,7 @@ namespace LocaleNames.Extensions
         {
             foreach (AltVariant suit in (AltVariant[])Enum.GetValues(typeof(AltVariant)))
             {
-                if (!string.IsNullOrWhiteSpace(suit.GetLocalePostfix()))
+                if (!string.IsNullOrWhiteSpace(suit.GetLocalePostfix()) && inputText.Contains(suit.GetLocalePostfix()))
                 {
                     inputText = inputText.Replace(suit.GetLocalePostfix(), "");
                 }
