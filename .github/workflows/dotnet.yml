@@ -13,13 +13,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+        
     - name: Restore dependencies
       run: dotnet restore src/LocaleNames.sln
+      
     - name: Build
       run: dotnet build --no-restore src/LocaleNames.sln
+      
     - name: Test
-      run: dotnet test --no-build --verbosity normal src/LocaleNames.sln
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info src/LocaleNames.Test/LocaleNames.Test.csproj
+      
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+          github-token: ${{ secrets.github_token }}
+          path-to-lcov: ${{ github.workspace }}/src/LocaleNames.Test/lcov.info
+
