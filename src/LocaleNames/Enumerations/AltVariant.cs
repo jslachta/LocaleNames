@@ -50,8 +50,6 @@ namespace LocaleNames.Enumerations
         {
             switch (variant)
             {
-                case AltVariant.Common:
-                    return string.Empty;
                 case AltVariant.Alternative:
                     return "-alt-variant";
                 case AltVariant.Short:
@@ -61,6 +59,7 @@ namespace LocaleNames.Enumerations
                 case AltVariant.Menu:
                     return "-alt-menu";
                 default:
+                case AltVariant.Common:
                     return string.Empty;
             }
         }

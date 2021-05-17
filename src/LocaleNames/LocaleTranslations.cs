@@ -19,7 +19,7 @@ namespace LocaleNames
     {
         #region CACHE
 
-        private static Dictionary<CultureInfo, LocaleTranslations> CachedLocaleNames { get; set; }
+        private static Dictionary<CultureInfo, LocaleTranslations> CachedLocaleNames { get; }
             = new Dictionary<CultureInfo, LocaleTranslations>();
 
         /// <summary>
@@ -50,12 +50,9 @@ namespace LocaleNames
             {
                 cultureInfo = CultureInfo.GetCultureInfo(languageCode);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                if (e is ArgumentNullException || e is CultureNotFoundException)
-                {
-                    cultureInfo = CultureInfo.InvariantCulture;
-                }
+                cultureInfo = CultureInfo.InvariantCulture;
             }
 
             return ForCultureInfo(cultureInfo);
