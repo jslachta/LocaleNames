@@ -9,7 +9,6 @@ namespace LocaleNames.Test
     [TestClass]
     public class FactoryTests
     {
-
         /// <summary>
         /// Use the en-US culture when the InvariantCulture is given.
         /// </summary>

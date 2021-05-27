@@ -8,7 +8,6 @@ namespace LocaleNames.Test
     [TestClass]
     public class FindLanguageNameTests
     {
-
         [TestMethod]
         public void LocaleNames_Find_language_name_for_given_culture()
         {

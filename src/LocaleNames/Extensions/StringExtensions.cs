@@ -27,6 +27,5 @@ namespace LocaleNames.Extensions
 
             return inputText;
         }
-
     }
 }

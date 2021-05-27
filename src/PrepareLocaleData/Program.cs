@@ -183,7 +183,6 @@ namespace PrepareLocaleData
                     Values = targetDictionary
                 };
 
-
                 var targetJson = JsonConvert.SerializeObject(dict, Formatting.None);
                 File.WriteAllText(targetFilePath, GzipUtils.Compress(targetJson), new UTF8Encoding(false));
 

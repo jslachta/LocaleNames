@@ -76,8 +76,8 @@ namespace LocaleNames.Utils
                 {
                     compressionStream.Write(input, 0, input.Length);
                     compressionStream.Flush();
-
                 }
+
                 return result.ToArray();
             }
         }
