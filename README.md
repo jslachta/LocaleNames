@@ -6,7 +6,7 @@
 
 This project aims to provide localized language names and country names.
 
-The translation data are generated from [CLDR locale data for internationalization](https://github.com/unicode-cldr/cldr-localenames-full "CLDR locale data for internationalization"). 
+The translation data are generated from [CLDR locale data for internationalization](https://github.com/unicode-org/cldr-json "CLDR locale data for internationalization"). 
 
 # Usage
 
