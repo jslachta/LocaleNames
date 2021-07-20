@@ -10,6 +10,20 @@ namespace LocaleNames.Test
     public class FactoryTests
     {
         /// <summary>
+        /// On Windows the LocaleNames should have invariant CultureInfo.
+        /// </summary>
+        [TestMethod]
+        public void LocaleNames_Factory_ForLanguageCode_On_Windows_Should_Have_Invariant_Culture()
+        {
+            var localeNames = LocaleTranslations.ForLanguageCode("unknown code");
+
+            if (OperatingSystem.IsWindows())
+            {
+                Assert.IsTrue(localeNames.CultureInfo == CultureInfo.InvariantCulture);
+            }
+        }
+
+        /// <summary>
         /// Use the en-US culture when the InvariantCulture is given.
         /// </summary>
         [TestMethod]
@@ -30,7 +44,7 @@ namespace LocaleNames.Test
         {
             /*
              * if a valid language code is given, the cultureinfo name should match.
-             */ 
+             */
             var translations = LocaleTranslations.ForLanguageCode("cs-CZ");
 
             Assert.AreEqual(new System.Globalization.CultureInfo("cs-CZ"), translations.CultureInfo);
