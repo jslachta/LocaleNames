@@ -1,5 +1,5 @@
 # Locale Names
-[![NuGet](https://img.shields.io/nuget/v/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames//) 
+[![NuGet](https://img.shields.io/nuget/v/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/) 
 [![NuGet](https://img.shields.io/nuget/dt/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/)
 [![Coverage Status](https://coveralls.io/repos/github/jslachta/LocaleNames/badge.svg?branch=master)](https://coveralls.io/github/jslachta/LocaleNames?branch=master)
 [![CodeFactor](https://codefactor.io/repository/github/jslachta/localenames/badge)](https://codefactor.io/repository/github/jslachta/localenames)
