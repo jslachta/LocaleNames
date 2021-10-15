@@ -8,11 +8,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-#if NETSTANDARD2_0
-using Newtonsoft.Json;
-#else
 using System.Text.Json;
-#endif
 
 namespace LocaleNames
 {
@@ -243,11 +239,7 @@ namespace LocaleNames
                         var compressedResourceValue = streamReader.ReadToEnd();
                         var decompressedResourceValue = GzipUtils.Decompress(compressedResourceValue);
 
-#if NETSTANDARD2_0
-                        dict = JsonConvert.DeserializeObject<ResourceLocale>(decompressedResourceValue).Values;
-#else
                         dict = JsonSerializer.Deserialize<ResourceLocale>(decompressedResourceValue).Values;
-#endif
 
                         isFound = true;
                     }
