@@ -2,12 +2,32 @@
 using System;
 using System.Globalization;
 using LocaleNames;
+using System.Linq;
 
 namespace LocaleNames.Test
 {
     [TestClass]
     public class FindLanguageCodeTests
     {
+        [TestMethod]
+        public void LocaleNames_All_Language_Codes_Should_Not_Provide_Variants()
+        {
+            var localeNames = LocaleTranslations.ForLanguageCode("en-US");
+
+            var languageCodes = localeNames.AllLanguageCodes;
+
+            Assert.IsTrue(languageCodes.Any(), "Testing on empty collection does not make sense.");
+
+            /*
+             * language code should not provide language variants, only the unique list of language codes
+             */
+
+            Assert.IsFalse(languageCodes.Any(i => i.Contains("-alt-variant")));
+            Assert.IsFalse(languageCodes.Any(i => i.Contains("-alt-long")));
+            Assert.IsFalse(languageCodes.Any(i => i.Contains("-alt-menu")));
+            Assert.IsFalse(languageCodes.Any(i => i.Contains("-alt-short")));
+        }
+
         [TestMethod]
         public void LocaleNames_Find_language_code_by_name()
         {
