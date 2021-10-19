@@ -2,12 +2,35 @@
 using System;
 using System.Globalization;
 using LocaleNames;
+using System.Linq;
+using LocaleNames.Extensions;
 
 namespace LocaleNames.Test
 {
     [TestClass]
     public class FindCountryCodeTests
     {
+        [TestMethod]
+        public void LocaleNames_All_Country_Codes_Should_Not_Provide_Variants_And_Continents()
+        {
+            var localeNames = LocaleTranslations.ForLanguageCode("en-US");
+
+            var countryCodes = localeNames.AllCountryCodes;
+
+            Assert.IsTrue(countryCodes.Any(), "Testing on empty collection does not make sense.");
+
+            /*
+             * language code should not provide language variants, only the unique list of language codes
+             */
+
+            Assert.IsFalse(countryCodes.Any(i => i.IsCountryCodeContinent()));
+
+            Assert.IsFalse(countryCodes.Any(i => i.Contains("-alt-variant")));
+            Assert.IsFalse(countryCodes.Any(i => i.Contains("-alt-long")));
+            Assert.IsFalse(countryCodes.Any(i => i.Contains("-alt-menu")));
+            Assert.IsFalse(countryCodes.Any(i => i.Contains("-alt-short")));
+        }
+
         [TestMethod]
         public void LocaleNames_Find_country_code_by_name()
         {

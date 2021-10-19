@@ -13,6 +13,10 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleTranslations.ForCultureInfo(new CultureInfo("cs-CZ"));
 
+            Assert.AreEqual("čeština", localeNames.FindLanguageName("cs"));
+
+            Assert.AreEqual("čeština", localeNames.FindLanguageName("cs-CZ"));
+
             Assert.AreEqual("angličtina (USA)", localeNames.FindLanguageName("en-US"));
 
             Assert.AreEqual("němčina (walser)", localeNames.FindLanguageName("wae"));

@@ -11,10 +11,23 @@ namespace LocaleNames.Extensions
     public static class StringExtensions
     {
         /// <summary>
+        /// Determines whether the provided country code is continent.
+        /// </summary>
+        /// <param name="countryCode">The country code</param>
+        /// <returns>Returns true if countryCode is continent, otherwise false.</returns>
+        public static bool IsCountryCodeContinent(this string countryCode)
+        {
+            if (string.IsNullOrWhiteSpace(countryCode)) return false;
+
+            int result = 0;
+            return int.TryParse(countryCode, out result);
+        }
+
+        /// <summary>
         /// Strips the locale variants from the given string.
         /// </summary>
         /// <param name="inputText">The text.</param>
-        /// <returns></returns>
+        /// <returns>The stripped locale variant</returns>
         public static string StripLocaleVariants(this string inputText)
         {
             foreach (AltVariant suit in (AltVariant[])Enum.GetValues(typeof(AltVariant)))

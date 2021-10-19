@@ -259,6 +259,12 @@ namespace LocaleNames
         #region FIND LANGUAGE NAMES/CODES
 
         /// <summary>
+        /// Provides all language codes.
+        /// </summary>
+        public IReadOnlyCollection<string> AllLanguageCodes
+            => new ReadOnlyCollection<string>(LanguageNames.Select(i => i.Key.StripLocaleVariants()).Distinct().ToList());
+
+        /// <summary>
         /// Finds the name of the country.
         /// </summary>
         /// <param name="languageCode">The country code.</param>
@@ -326,6 +332,16 @@ namespace LocaleNames
         #endregion
 
         #region FIND COUNTRY NAMES/CODES
+
+        /// <summary>
+        /// Provides all country codes.
+        /// </summary>
+        public IReadOnlyCollection<string> AllCountryCodes
+            => new ReadOnlyCollection<string>(
+                CountryNames
+                .Where(i => !i.Key.IsCountryCodeContinent())
+                .Select(i => i.Key.StripLocaleVariants())
+                .Distinct().ToList());
 
         /// <summary>
         /// Finds the name of the country.
