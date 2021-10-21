@@ -11,7 +11,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_name_for_given_culture()
         {
-            var localeNames = LocaleTranslations.ForCultureInfo(new CultureInfo("cs-CZ"));
+            var localeNames = LocaleNames.ForCultureInfo(new CultureInfo("cs-CZ"));
 
             Assert.AreEqual("čeština", localeNames.FindLanguageName("cs"));
 
@@ -25,7 +25,7 @@ namespace LocaleNames.Test
 
             Assert.AreEqual(null, localeNames.FindLanguageName("unknown code"));
 
-            localeNames = LocaleTranslations.ForCultureInfo(new CultureInfo("yue"));
+            localeNames = LocaleNames.ForCultureInfo(new CultureInfo("yue"));
 
             Assert.AreEqual("德文", localeNames.FindLanguageName("de"));
 
@@ -37,7 +37,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_name_for_current_culture()
         {
-            var localeNames = LocaleTranslations.ForCurrentCulture();
+            var localeNames = LocaleNames.ForCurrentCulture();
 
             Assert.AreEqual("angličtina (USA)", localeNames.FindLanguageName("en-US"));
 
@@ -49,7 +49,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_name_for_language_code()
         {
-            var localeNames = LocaleTranslations.ForLanguageCode("en-US");
+            var localeNames = LocaleNames.ForLanguageCode("en-US");
 
             Assert.AreEqual("German", localeNames.FindLanguageName("de"));
 
@@ -65,7 +65,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_name_for_unknown_language_code()
         {
-            var localeNames = LocaleTranslations.ForLanguageCode("unknown-CODE");
+            var localeNames = LocaleNames.ForLanguageCode("unknown-CODE");
 
             Assert.AreEqual(null, localeNames.FindLanguageName("de"));
         }

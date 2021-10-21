@@ -1,4 +1,5 @@
-﻿using LocaleNames.Utils;
+﻿using LocaleNames.Model;
+using LocaleNames.Utils;
 using Newtonsoft.Json;
 using PrepareLocaleData.Model;
 using System;

@@ -18,9 +18,7 @@ namespace LocaleNames.Extensions
         public static bool IsCountryCodeContinent(this string countryCode)
         {
             if (string.IsNullOrWhiteSpace(countryCode)) return false;
-
-            int result = 0;
-            return int.TryParse(countryCode, out result);
+            return int.TryParse(countryCode, out _);
         }
 
         /// <summary>

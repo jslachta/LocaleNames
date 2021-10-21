@@ -1,7 +1,7 @@
 ﻿using LocaleNames.Enumerations;
 using LocaleNames.Extensions;
+using LocaleNames.Model;
 using LocaleNames.Utils;
-using PrepareLocaleData.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,12 +15,12 @@ namespace LocaleNames
     /// <summary>
     /// Locale Names.
     /// </summary>
-    public class LocaleTranslations
+    public class LocaleNames
     {
         #region CACHE
 
-        private static Dictionary<CultureInfo, LocaleTranslations> CachedLocaleNames { get; }
-            = new Dictionary<CultureInfo, LocaleTranslations>();
+        private static Dictionary<CultureInfo, LocaleNames> CachedLocaleNames { get; }
+            = new Dictionary<CultureInfo, LocaleNames>();
 
         /// <summary>
         /// Clears the cache.
@@ -38,11 +38,11 @@ namespace LocaleNames
         #region FACTORY
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleTranslations"/> for given language code.
+        /// Creates instance of <see cref="LocaleNames"/> for given language code.
         /// </summary>
         /// <param name="languageCode">The language code.</param>
         /// <returns></returns>
-        public static LocaleTranslations ForLanguageCode(string languageCode)
+        public static LocaleNames ForLanguageCode(string languageCode)
         {
             CultureInfo cultureInfo = null;
 
@@ -59,10 +59,10 @@ namespace LocaleNames
         }
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleTranslations"/> for current culture.
+        /// Creates instance of <see cref="LocaleNames"/> for current culture.
         /// </summary>
         /// <returns></returns>
-        public static LocaleTranslations ForCurrentCulture()
+        public static LocaleNames ForCurrentCulture()
         {
             var currentCulture = CultureInfo.CurrentCulture;
 
@@ -70,11 +70,11 @@ namespace LocaleNames
         }
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleTranslations"/> for given culture.
+        /// Creates instance of <see cref="LocaleNames"/> for given culture.
         /// </summary>
         /// <param name="cultureInfo">The culture information.</param>
         /// <returns></returns>
-        public static LocaleTranslations ForCultureInfo(CultureInfo cultureInfo)
+        public static LocaleNames ForCultureInfo(CultureInfo cultureInfo)
         {
             lock (CachedLocaleNames)
             {
@@ -87,7 +87,7 @@ namespace LocaleNames
                 }
                 else
                 {
-                    var localeNames = new LocaleTranslations(cultureInfo);
+                    var localeNames = new LocaleNames(cultureInfo);
                     CachedLocaleNames.Add(cultureInfo, localeNames);
 
                     return localeNames;
@@ -170,10 +170,10 @@ namespace LocaleNames
         #region CONSTRUCTOR
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocaleTranslations"/> class.
+        /// Initializes a new instance of the <see cref="LocaleNames"/> class.
         /// </summary>
         /// <param name="culture">The culture.</param>
-        LocaleTranslations(CultureInfo culture)
+        LocaleNames(CultureInfo culture)
         {
             CultureInfo = culture;
         }
@@ -324,7 +324,7 @@ namespace LocaleNames
         /// <returns></returns>
         public string FindLanguageCode(string countryName)
         {
-            var value = LanguageNames.FirstOrDefault(i => i.Value == countryName);
+            var value = LanguageNames.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
 
             return value.Key;
         }
@@ -380,7 +380,7 @@ namespace LocaleNames
         /// <returns></returns>
         public string FindCountryCode(string countryName)
         {
-            var value = CountryNames.FirstOrDefault(i => i.Value == countryName);
+            var value = CountryNames.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
             var result = value.Key;
 
             return result.StripLocaleVariants();

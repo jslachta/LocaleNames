@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PrepareLocaleData.Model
+namespace LocaleNames.Model
 {
     /// <summary>
     /// DTO for loading the data from embedded resource.
