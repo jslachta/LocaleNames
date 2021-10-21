@@ -10,28 +10,40 @@ The translation data are generated from [CLDR locale data for internationalizati
 
 # Usage
 
+### Find all language codes
+
+```
+var allCountryCodes = LocaleNames.ForLanguageCode("en-US").AllLanguageCodes;
+```
+
 ### Find language name
 
 ```
-var translatedLanguageName = LocaleTranslations.ForCultureInfo(new CultureInfo("en-US")).FindLanguageName("cs-CZ");
+var translatedLanguageName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindLanguageName("cs-CZ");
 ```
 
 ### Find language code
 
 ```
-var languageCode = LocaleTranslations.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
+var languageCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
 ```
 
 ### Find country name
 
 ```
-var translatedCountryName = LocaleTranslations.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
+var translatedCountryName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
+```
+
+### Find all country codes
+
+```
+var allCountryCodes = LocaleNames.ForLanguageCode("en-US").AllCountryCodes;
 ```
 
 ### Find country code
 
 ```
-var countryCode = LocaleTranslations.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
+var countryCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
 ```
 
 # Contributing

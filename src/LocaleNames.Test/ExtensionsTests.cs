@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using LocaleNames.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
-using LocaleNames;
-using System.Linq;
-using LocaleNames.Extensions;
 
-namespace LocaleNames.Test
+namespace LocaleTranslations.Test
 {
     [TestClass]
     public class ExtensionsTests
@@ -19,8 +17,6 @@ namespace LocaleNames.Test
              * It looks like that continents has a numerical code.
              */
 
-            var codes = LocaleNames.LocaleTranslations.ForCurrentCulture().AllCountryCodes;
-
             // 001 - World
             Assert.IsTrue(StringExtensions.IsCountryCodeContinent("001"));
 
@@ -32,6 +28,12 @@ namespace LocaleNames.Test
 
             // Return false on country
             Assert.IsFalse(StringExtensions.IsCountryCodeContinent("CZ"));
+
+            // Return false on empty
+            Assert.IsFalse(StringExtensions.IsCountryCodeContinent(String.Empty));
+
+            // Return false on null
+            Assert.IsFalse(StringExtensions.IsCountryCodeContinent(null));
         }
     }
 }

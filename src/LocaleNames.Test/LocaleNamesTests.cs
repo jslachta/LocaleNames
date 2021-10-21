@@ -11,12 +11,12 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Is_loading_from_cache()
         {
-            LocaleTranslations.ClearCache();
-            var localeName = LocaleTranslations.ForCultureInfo(new CultureInfo("cs-CZ"));
+            LocaleNames.ClearCache();
+            var localeName = LocaleNames.ForCultureInfo(new CultureInfo("cs-CZ"));
 
             Assert.IsFalse(localeName.IsFromCache);
 
-            localeName = LocaleTranslations.ForCultureInfo(new CultureInfo("cs-CZ"));
+            localeName = LocaleNames.ForCultureInfo(new CultureInfo("cs-CZ"));
 
             Assert.IsTrue(localeName.IsFromCache);
         }

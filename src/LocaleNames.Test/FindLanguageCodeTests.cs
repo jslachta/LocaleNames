@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
-using LocaleNames;
 using System.Linq;
+using LocaleNames;
 
 namespace LocaleNames.Test
 {
@@ -12,7 +12,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_All_Language_Codes_Should_Not_Provide_Variants()
         {
-            var localeNames = LocaleTranslations.ForLanguageCode("en-US");
+            var localeNames = LocaleNames.ForLanguageCode("en-US");
 
             var languageCodes = localeNames.AllLanguageCodes;
 
@@ -31,7 +31,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_code_by_name()
         {
-            var localeNames = LocaleTranslations.ForLanguageCode("en-US");
+            var localeNames = LocaleNames.ForLanguageCode("en-US");
 
             Assert.AreEqual("de", localeNames.FindLanguageCode("German"));
 
