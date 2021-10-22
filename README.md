@@ -13,7 +13,7 @@ The translation data are generated from [CLDR locale data for internationalizati
 ### Find all language codes
 
 ```
-var allCountryCodes = LocaleNames.ForLanguageCode("en-US").AllLanguageCodes;
+var allLanguageCodes = LocaleNames.ForLanguageCode("en-US").AllLanguageCodes;
 ```
 
 ### Find language name
@@ -28,16 +28,16 @@ var translatedLanguageName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")
 var languageCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
 ```
 
-### Find country name
-
-```
-var translatedCountryName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
-```
-
 ### Find all country codes
 
 ```
 var allCountryCodes = LocaleNames.ForLanguageCode("en-US").AllCountryCodes;
+```
+
+### Find country name
+
+```
+var translatedCountryName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
 ```
 
 ### Find country code
