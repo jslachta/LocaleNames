@@ -40,6 +40,7 @@
 		<EmbeddedResource Include="Resources\language.az_Latn.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.az.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.bas.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.be_tarask.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.be.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.bem.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.bez.languages.json.gz" />
@@ -55,7 +56,7 @@
 		<EmbeddedResource Include="Resources\language.bs_Latn.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.bs.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_AD.languages.json.gz" />
-		<EmbeddedResource Include="Resources\language.ca_ES_VALENCIA.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.ca_ES_valencia.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_FR.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_IT.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca.languages.json.gz" />
@@ -186,7 +187,6 @@
 		<EmbeddedResource Include="Resources\language.en_TZ.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_UG.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_UM.languages.json.gz" />
-		<EmbeddedResource Include="Resources\language.en_US_POSIX.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VC.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VG.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VI.languages.json.gz" />
@@ -346,6 +346,7 @@
 		<EmbeddedResource Include="Resources\language.kam.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.kde.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.kea.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.kgp.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.khq.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ki.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.kk.languages.json.gz" />
@@ -457,7 +458,6 @@
 		<EmbeddedResource Include="Resources\language.ro_MD.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ro.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.rof.languages.json.gz" />
-		<EmbeddedResource Include="Resources\language.root.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_BY.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_KG.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_KZ.languages.json.gz" />
@@ -472,6 +472,7 @@
 		<EmbeddedResource Include="Resources\language.sat_Olck.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.sat.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.sbp.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.sc.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd_Arab.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd_Deva.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd.languages.json.gz" />
@@ -534,6 +535,7 @@
 		<EmbeddedResource Include="Resources\language.tzm.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ug.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.uk.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.und.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ur_IN.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.ur.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.uz_Arab.languages.json.gz" />
@@ -553,6 +555,9 @@
 		<EmbeddedResource Include="Resources\language.yi.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.yo_BJ.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.yo.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl_CO.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl_VE.languages.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue_Hans.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue_Hant.languages.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue.languages.json.gz" />
@@ -606,6 +611,7 @@
 		<EmbeddedResource Include="Resources\language.az_Latn.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.az.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.bas.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.be_tarask.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.be.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.bem.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.bez.territories.json.gz" />
@@ -621,7 +627,7 @@
 		<EmbeddedResource Include="Resources\language.bs_Latn.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.bs.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_AD.territories.json.gz" />
-		<EmbeddedResource Include="Resources\language.ca_ES_VALENCIA.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.ca_ES_valencia.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_FR.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca_IT.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ca.territories.json.gz" />
@@ -752,7 +758,6 @@
 		<EmbeddedResource Include="Resources\language.en_TZ.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_UG.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_UM.territories.json.gz" />
-		<EmbeddedResource Include="Resources\language.en_US_POSIX.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VC.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VG.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.en_VI.territories.json.gz" />
@@ -912,6 +917,7 @@
 		<EmbeddedResource Include="Resources\language.kam.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.kde.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.kea.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.kgp.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.khq.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ki.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.kk.territories.json.gz" />
@@ -1023,7 +1029,6 @@
 		<EmbeddedResource Include="Resources\language.ro_MD.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ro.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.rof.territories.json.gz" />
-		<EmbeddedResource Include="Resources\language.root.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_BY.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_KG.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ru_KZ.territories.json.gz" />
@@ -1038,6 +1043,7 @@
 		<EmbeddedResource Include="Resources\language.sat_Olck.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.sat.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.sbp.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.sc.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd_Arab.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd_Deva.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.sd.territories.json.gz" />
@@ -1100,6 +1106,7 @@
 		<EmbeddedResource Include="Resources\language.tzm.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ug.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.uk.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.und.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ur_IN.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.ur.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.uz_Arab.territories.json.gz" />
@@ -1119,6 +1126,9 @@
 		<EmbeddedResource Include="Resources\language.yi.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.yo_BJ.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.yo.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl_CO.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl_VE.territories.json.gz" />
+		<EmbeddedResource Include="Resources\language.yrl.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue_Hans.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue_Hant.territories.json.gz" />
 		<EmbeddedResource Include="Resources\language.yue.territories.json.gz" />
