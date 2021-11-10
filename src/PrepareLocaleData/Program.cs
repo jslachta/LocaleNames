@@ -8,8 +8,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PrepareLocaleData
 {
@@ -36,7 +38,7 @@ namespace PrepareLocaleData
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                string codeBase = Assembly.GetExecutingAssembly().Location;
                 UriBuilder uri = new UriBuilder(codeBase);
                 string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
@@ -59,16 +61,22 @@ namespace PrepareLocaleData
                 "LocaleNames", "Resources");
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            DownloadData();
-            ExtractData();
-            PrepareLocaleData();
+            Console.WriteLine("Downloading data started.");
+            await DownloadData();
+            Console.WriteLine("Downloading data finished.");
 
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Extracting data started.");
+            ExtractData();
+            Console.WriteLine("Extracting data finished.");
+
+            Console.WriteLine("Preparation LocaleNames data started.");
+            PrepareLocaleData();
+            Console.WriteLine("Preparation LocaleNames data finished.");
         }
 
-        static void DownloadData()
+        static async Task DownloadData()
         {
             if (!Directory.Exists(TempDirectory))
             {
@@ -80,9 +88,10 @@ namespace PrepareLocaleData
                 File.Delete(ArchivePath);
             }
 
-            using (WebClient client = new WebClient())
+            using (HttpClient client = new HttpClient())
             {
-                client.DownloadFile(DownloadSite, ArchivePath);
+                byte[] fileBytes = await client.GetByteArrayAsync(DownloadSite);
+                File.WriteAllBytes(ArchivePath, fileBytes);
             }
         }
 
