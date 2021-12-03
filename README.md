@@ -45,6 +45,8 @@ var translatedCountryName = LocaleNames.ForCultureInfo(new CultureInfo("en-US"))
 ```
 var countryCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
 ```
+# Stats
+![Alt](https://repobeats.axiom.co/api/embed/864145fa59a424553c94a73d2343776612860b15.svg "Repobeats analytics image")
 
 # Contributing
 
