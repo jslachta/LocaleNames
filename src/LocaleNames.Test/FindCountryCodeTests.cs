@@ -15,7 +15,7 @@ namespace LocaleNames.Test
         {
             var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
 
-            var countryCodes = localeNames.AllCountryCodes;
+            var countryCodes = localeNames.GetAllCountryCodes();
 
             Assert.IsTrue(countryCodes.Any(), "Testing on empty collection does not make sense.");
 

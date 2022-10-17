@@ -12,18 +12,6 @@ namespace LocaleNames.Utils
     public static class GzipUtils
     {
         /// <summary>
-        /// Decompresses the specified input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
-        public static string Decompress(string input)
-        {
-            byte[] compressed = Convert.FromBase64String(input);
-            byte[] decompressed = Decompress(compressed);
-            return Encoding.UTF8.GetString(decompressed);
-        }
-
-        /// <summary>
         /// Compresses the specified input.
         /// </summary>
         /// <param name="input">The input.</param>
@@ -33,6 +21,41 @@ namespace LocaleNames.Utils
             byte[] encoded = Encoding.UTF8.GetBytes(input);
             byte[] compressed = Compress(encoded);
             return Convert.ToBase64String(compressed);
+        }
+
+        /// <summary>
+        /// Compresses the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
+        public static byte[] Compress(byte[] input)
+        {
+            using (var result = new MemoryStream())
+            {
+                var lengthBytes = BitConverter.GetBytes(input.Length);
+                result.Write(lengthBytes, 0, 4);
+
+                using (var compressionStream = new GZipStream(result,
+                    CompressionMode.Compress))
+                {
+                    compressionStream.Write(input, 0, input.Length);
+                    compressionStream.Flush();
+                }
+
+                return result.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Decompresses the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
+        public static string Decompress(string input)
+        {
+            byte[] compressed = Convert.FromBase64String(input);
+            byte[] decompressed = Decompress(compressed);
+            return Encoding.UTF8.GetString(decompressed);
         }
 
         /// <summary>
@@ -56,29 +79,6 @@ namespace LocaleNames.Utils
                     decompressionStream.Read(result, 0, length);
                     return result;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Compresses the specified input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
-        public static byte[] Compress(byte[] input)
-        {
-            using (var result = new MemoryStream())
-            {
-                var lengthBytes = BitConverter.GetBytes(input.Length);
-                result.Write(lengthBytes, 0, 4);
-
-                using (var compressionStream = new GZipStream(result,
-                    CompressionMode.Compress))
-                {
-                    compressionStream.Write(input, 0, input.Length);
-                    compressionStream.Flush();
-                }
-
-                return result.ToArray();
             }
         }
     }

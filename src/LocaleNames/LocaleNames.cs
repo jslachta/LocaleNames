@@ -22,12 +22,12 @@ namespace LocaleNames
         /// <summary>
         /// Gets a value indicating whether are language translations empty.
         /// </summary>
-        public bool AreLanguageTranslationsEmpty => !(LanguageNames.Value.Keys.Count > 0);
+        public bool AreLanguageTranslationsEmpty => LanguageNames.Value.Keys.Count <= 0;
 
         /// <summary>
         /// Gets a value indicating whether are countryname translations empty.
         /// </summary>
-        public bool AreCountryNameTranslationsEmpty => !(CountryNames.Value.Keys.Count > 0);
+        public bool AreCountryNameTranslationsEmpty => CountryNames.Value.Keys.Count <= 0;
 
         /// <summary>
         /// Gets a value indicating whether this instance is from cache.
@@ -51,7 +51,7 @@ namespace LocaleNames
         /// <value>
         /// The language names.
         /// </value>
-        private Lazy<ReadOnlyDictionary<string, string>> LanguageNames;
+        private readonly Lazy<ReadOnlyDictionary<string, string>> LanguageNames;
 
         /// <summary>
         /// Gets the language names.
@@ -59,7 +59,7 @@ namespace LocaleNames
         /// <value>
         /// The language names.
         /// </value>
-        private Lazy<ReadOnlyDictionary<string, string>> CountryNames;
+        private readonly Lazy<ReadOnlyDictionary<string, string>> CountryNames;
 
         #endregion PROPERTIES
 
@@ -160,7 +160,7 @@ namespace LocaleNames
         /// <summary>
         /// Provides all language codes.
         /// </summary>
-        public IReadOnlyCollection<string> AllLanguageCodes
+        public IReadOnlyCollection<string> GetAllLanguageCodes()
             => new ReadOnlyCollection<string>(LanguageNames.Value.Select(i => i.Key.StripLocaleVariants()).Distinct().ToList());
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace LocaleNames
         /// <summary>
         /// Provides all country codes.
         /// </summary>
-        public IReadOnlyCollection<string> AllCountryCodes
+        public IReadOnlyCollection<string> GetAllCountryCodes()
             => new ReadOnlyCollection<string>(
                 CountryNames
                 .Value
