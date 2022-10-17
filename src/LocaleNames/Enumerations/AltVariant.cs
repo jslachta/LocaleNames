@@ -7,32 +7,36 @@ namespace LocaleNames.Enumerations
     /// <summary>
     /// Provides variants for name.
     /// </summary>
-    [Flags]
     public enum AltVariant
     {
         /// <summary>
+        /// The none variant.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// The common name variant.
         /// </summary>
-        Common = 0,
+        Common = 1,
 
         /// <summary>
         /// The alternative name variant.
         /// </summary>
-        Alternative = 1,
+        Alternative = 2,
 
         /// <summary>
         /// The short name variant.
         /// </summary>
-        Short = 2,
+        Short = 4,
 
         /// <summary>
         /// The long name variant.
         /// </summary>
-        Long = 4,
+        Long = 8,
 
         /// <summary>
         /// The menu name variant.
         /// </summary>
-        Menu = 8
+        Menu = 16
     }
 }

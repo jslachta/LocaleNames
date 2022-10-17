@@ -15,7 +15,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Factory_ForLanguageCode_On_Windows_Should_Have_Invariant_Culture()
         {
-            var localeNames = LocaleNames.ForLanguageCode("unknown code");
+            var localeNames = LocaleNamesFactory.ForLanguageCode("unknown code");
 
             if (OperatingSystem.IsWindows())
             {
@@ -29,7 +29,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Factory_ForCultureInfo_Existing_Culture_Test()
         {
-            var translations = LocaleNames.ForCultureInfo(new System.Globalization.CultureInfo("en-US"));
+            var translations = LocaleNamesFactory.ForCultureInfo(new System.Globalization.CultureInfo("en-US"));
 
             Assert.AreEqual(new System.Globalization.CultureInfo("en-US"), translations.CultureInfo);
             Assert.IsFalse(translations.AreCountryNameTranslationsEmpty);
@@ -45,7 +45,7 @@ namespace LocaleNames.Test
             /*
              * if a valid language code is given, the cultureinfo name should match.
              */
-            var translations = LocaleNames.ForLanguageCode("cs-CZ");
+            var translations = LocaleNamesFactory.ForLanguageCode("cs-CZ");
 
             Assert.AreEqual(new System.Globalization.CultureInfo("cs-CZ"), translations.CultureInfo);
             Assert.IsFalse(translations.AreCountryNameTranslationsEmpty);
@@ -61,7 +61,7 @@ namespace LocaleNames.Test
             /*
              * if a not valid language code is given, the LocaleTranslations will not have any translations.
              */
-            var translations = LocaleNames.ForLanguageCode("non-existing-code");
+            var translations = LocaleNamesFactory.ForLanguageCode("non-existing-code");
 
             Assert.IsTrue(translations.AreCountryNameTranslationsEmpty);
             Assert.IsTrue(translations.AreLanguageTranslationsEmpty);

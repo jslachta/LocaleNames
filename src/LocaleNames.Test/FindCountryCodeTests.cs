@@ -13,7 +13,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_All_Country_Codes_Should_Not_Provide_Variants_And_Continents()
         {
-            var localeNames = LocaleNames.ForLanguageCode("en-US");
+            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
 
             var countryCodes = localeNames.AllCountryCodes;
 
@@ -34,7 +34,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_country_code_by_name()
         {
-            var localeNames = LocaleNames.ForLanguageCode("en-US");
+            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
 
             Assert.AreEqual("DE", localeNames.FindCountryCode("Germany"));
 

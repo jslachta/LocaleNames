@@ -13,41 +13,41 @@ The translation data are generated from [CLDR locale data for internationalizati
 ### Find all language codes
 
 ```
-var allLanguageCodes = LocaleNames.ForLanguageCode("en-US").AllLanguageCodes;
+var allLanguageCodes = LocaleNamesFactory.ForLanguageCode("en-US").AllLanguageCodes;
 ```
 
 ### Find language name
 
 ```
-var translatedLanguageName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindLanguageName("cs-CZ");
+var translatedLanguageName = LocaleNamesFactory.ForCultureInfo(new CultureInfo("en-US")).FindLanguageName("cs-CZ");
 ```
 
 ### Find language code
 
 ```
-var languageCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
+var languageCode = LocaleNamesFactory.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
 ```
 
 ### Find all country codes
 
 ```
-var allCountryCodes = LocaleNames.ForLanguageCode("en-US").AllCountryCodes;
+var allCountryCodes = LocaleNamesFactory.ForLanguageCode("en-US").AllCountryCodes;
 ```
 
 ### Find country name
 
 ```
-var translatedCountryName = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
+var translatedCountryName = LocaleNamesFactory.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
 ```
 
 ### Find country code
 
 ```
-var countryCode = LocaleNames.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
+var countryCode = LocaleNamesFactory.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
 ```
 # Stats
 ![Alt](https://repobeats.axiom.co/api/embed/864145fa59a424553c94a73d2343776612860b15.svg "Repobeats analytics image")
 
 # Contributing
 
-Contributions are welcome.  Feel free to file issues and pull requests on the repo.
+Contributions are welcome. Feel free to file issues and pull requests on the repo.

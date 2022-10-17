@@ -7,7 +7,7 @@ using System.Text;
 namespace LocaleNames.Utils
 {
     /// <summary>
-    /// 
+    /// Gzip utils
     /// </summary>
     public static class GzipUtils
     {

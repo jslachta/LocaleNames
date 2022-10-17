@@ -13,101 +13,21 @@ using System.Text.Json;
 namespace LocaleNames
 {
     /// <summary>
-    /// Locale Names.
+    /// 
     /// </summary>
     public class LocaleNames
     {
-        #region CACHE
-
-        private static Dictionary<CultureInfo, LocaleNames> CachedLocaleNames { get; }
-            = new Dictionary<CultureInfo, LocaleNames>();
-
-        /// <summary>
-        /// Clears the cache.
-        /// </summary>
-        public static void ClearCache()
-        {
-            lock (CachedLocaleNames)
-            {
-                CachedLocaleNames.Clear();
-            }
-        }
-
-        #endregion CACHE
-
-        #region FACTORY
-
-        /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for given language code.
-        /// </summary>
-        /// <param name="languageCode">The language code.</param>
-        /// <returns></returns>
-        public static LocaleNames ForLanguageCode(string languageCode)
-        {
-            CultureInfo cultureInfo = null;
-
-            try
-            {
-                cultureInfo = CultureInfo.GetCultureInfo(languageCode);
-            }
-            catch (Exception)
-            {
-                cultureInfo = CultureInfo.InvariantCulture;
-            }
-
-            return ForCultureInfo(cultureInfo);
-        }
-
-        /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for current culture.
-        /// </summary>
-        /// <returns></returns>
-        public static LocaleNames ForCurrentCulture()
-        {
-            var currentCulture = CultureInfo.CurrentCulture;
-
-            return ForCultureInfo(currentCulture);
-        }
-
-        /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for given culture.
-        /// </summary>
-        /// <param name="cultureInfo">The culture information.</param>
-        /// <returns></returns>
-        public static LocaleNames ForCultureInfo(CultureInfo cultureInfo)
-        {
-            lock (CachedLocaleNames)
-            {
-                if (CachedLocaleNames.ContainsKey(cultureInfo))
-                {
-                    var cachedlocalenames = CachedLocaleNames[cultureInfo];
-                    cachedlocalenames.IsFromCache = true;
-
-                    return cachedlocalenames;
-                }
-                else
-                {
-                    var localeNames = new LocaleNames(cultureInfo);
-                    CachedLocaleNames.Add(cultureInfo, localeNames);
-
-                    return localeNames;
-                }
-            }
-        }
-
-        #endregion FACTORY
-
         #region PROPERTIES
 
         /// <summary>
         /// Gets a value indicating whether are language translations empty.
         /// </summary>
-        public bool AreLanguageTranslationsEmpty => !(LanguageNames.Keys.Count > 0);
+        public bool AreLanguageTranslationsEmpty => !(LanguageNames.Value.Keys.Count > 0);
 
         /// <summary>
         /// Gets a value indicating whether are countryname translations empty.
         /// </summary>
-        public bool AreCountryNameTranslationsEmpty => !(CountryNames.Keys.Count > 0);
+        public bool AreCountryNameTranslationsEmpty => !(CountryNames.Value.Keys.Count > 0);
 
         /// <summary>
         /// Gets a value indicating whether this instance is from cache.
@@ -115,7 +35,7 @@ namespace LocaleNames
         /// <value>
         ///   <c>true</c> if this instance is from cache; otherwise, <c>false</c>.
         /// </value>
-        public bool IsFromCache { get; private set; } = false;
+        public bool IsFromCache { get; internal set; } = false;
 
         /// <summary>
         /// Gets the culture information.
@@ -125,45 +45,21 @@ namespace LocaleNames
         /// </value>
         public CultureInfo CultureInfo { get; private set; }
 
-        private IDictionary<string, string> languageNames;
         /// <summary>
         /// Gets the language names.
         /// </summary>
         /// <value>
         /// The language names.
         /// </value>
-        private IDictionary<string, string> LanguageNames
-        {
-            get
-            {
-                if (languageNames == null)
-                {
-                    languageNames = TryLoadDictionary(CultureInfo, "languages");
-                }
+        private Lazy<ReadOnlyDictionary<string, string>> LanguageNames;
 
-                return languageNames;
-            }
-        }
-
-        private IDictionary<string, string> countryNames;
         /// <summary>
-        /// Gets the country names.
+        /// Gets the language names.
         /// </summary>
         /// <value>
-        /// The country names.
+        /// The language names.
         /// </value>
-        private IDictionary<string, string> CountryNames
-        {
-            get
-            {
-                if (countryNames == null)
-                {
-                    countryNames = TryLoadDictionary(CultureInfo, "territories");
-                }
-
-                return countryNames;
-            }
-        }
+        private Lazy<ReadOnlyDictionary<string, string>> CountryNames;
 
         #endregion PROPERTIES
 
@@ -173,9 +69,12 @@ namespace LocaleNames
         /// Initializes a new instance of the <see cref="LocaleNames"/> class.
         /// </summary>
         /// <param name="culture">The culture.</param>
-        LocaleNames(CultureInfo culture)
+        internal LocaleNames(CultureInfo culture)
         {
             CultureInfo = culture;
+
+            CountryNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "territories"), true);
+            LanguageNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "languages"), true);
         }
 
         #endregion CONSTRUCTOR
@@ -188,7 +87,7 @@ namespace LocaleNames
         /// <param name="cultureInfo">The culture information.</param>
         /// <param name="postfix">The postfix.</param>
         /// <returns></returns>
-        private IDictionary<string, string> TryLoadDictionary(CultureInfo cultureInfo, string postfix)
+        private ReadOnlyDictionary<string, string> TryLoadDictionary(CultureInfo cultureInfo, string postfix)
         {
             IDictionary<string, string> resultDictionary = null;
 
@@ -209,7 +108,7 @@ namespace LocaleNames
                 LoadDictionary($"{cultureInfo.TwoLetterISOLanguageName}_POSIX", postfix, ref resultDictionary);
             }
 
-            return resultDictionary;
+            return new ReadOnlyDictionary<string, string>(resultDictionary);
         }
 
         /// <summary>
@@ -228,7 +127,7 @@ namespace LocaleNames
             string targetManifestResourceName = this
                 .GetType().Assembly
                 .GetManifestResourceNames()
-                .Where(i => i.EndsWith(resourceName)).FirstOrDefault();
+                .FirstOrDefault(i => i.EndsWith(resourceName));
 
             if (targetManifestResourceName != null)
             {
@@ -262,7 +161,7 @@ namespace LocaleNames
         /// Provides all language codes.
         /// </summary>
         public IReadOnlyCollection<string> AllLanguageCodes
-            => new ReadOnlyCollection<string>(LanguageNames.Select(i => i.Key.StripLocaleVariants()).Distinct().ToList());
+            => new ReadOnlyCollection<string>(LanguageNames.Value.Select(i => i.Key.StripLocaleVariants()).Distinct().ToList());
 
         /// <summary>
         /// Finds the name of the country.
@@ -297,16 +196,16 @@ namespace LocaleNames
             {
                 CultureInfo ci = new CultureInfo(languageCode);
 
-                languageNames = LanguageNames.FindLocaleValues(ci.Name);
+                languageNames = LanguageNames.Value.FindLocaleValues(ci.Name);
 
                 if (!languageNames.Any())
                 {
-                    languageNames = LanguageNames.FindLocaleValues(ci.TwoLetterISOLanguageName);
+                    languageNames = LanguageNames.Value.FindLocaleValues(ci.TwoLetterISOLanguageName);
                 }
 
                 if (!languageNames.Any())
                 {
-                    languageNames = LanguageNames.FindLocaleValues(ci.ThreeLetterISOLanguageName);
+                    languageNames = LanguageNames.Value.FindLocaleValues(ci.ThreeLetterISOLanguageName);
                 }
             }
             catch (CultureNotFoundException)
@@ -324,12 +223,12 @@ namespace LocaleNames
         /// <returns></returns>
         public string FindLanguageCode(string countryName)
         {
-            var value = LanguageNames.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
+            var value = LanguageNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
 
             return value.Key;
         }
 
-        #endregion
+        #endregion FIND LANGUAGE NAMES/CODES
 
         #region FIND COUNTRY NAMES/CODES
 
@@ -339,6 +238,7 @@ namespace LocaleNames
         public IReadOnlyCollection<string> AllCountryCodes
             => new ReadOnlyCollection<string>(
                 CountryNames
+                .Value
                 .Where(i => !i.Key.IsCountryCodeContinent())
                 .Select(i => i.Key.StripLocaleVariants())
                 .Distinct().ToList());
@@ -370,7 +270,7 @@ namespace LocaleNames
         /// <returns></returns>
         public IReadOnlyDictionary<AltVariant, string> FindCountryNames(string countryCode)
         {
-            return CountryNames.FindLocaleValues(countryCode);
+            return CountryNames.Value.FindLocaleValues(countryCode);
         }
 
         /// <summary>
@@ -380,12 +280,12 @@ namespace LocaleNames
         /// <returns></returns>
         public string FindCountryCode(string countryName)
         {
-            var value = CountryNames.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
+            var value = CountryNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
             var result = value.Key;
 
             return result.StripLocaleVariants();
         }
 
-        #endregion FIND METHODS
+        #endregion FIND COUNTRY NAMES/CODES
     }
 }
