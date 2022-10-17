@@ -27,7 +27,7 @@ namespace LocaleNames.Test
             " sagittis, urna turpis tincidunt nunc, et posuere diam dui sed ex. Cras " +
             "tincidunt volutpat dolor sit amet tristique. ";
 
-        public string LongString = new string(string.Join(" ", Enumerable.Repeat(InputString, 100)));
+        public string LongString = string.Join(" ", Enumerable.Repeat(InputString, 100));
 
         [TestMethod]
         public void CompressionDecompressionTest()
