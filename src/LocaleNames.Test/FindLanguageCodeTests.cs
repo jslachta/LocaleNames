@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using LocaleNames;
+using System.Text;
 
 namespace LocaleNames.Test
 {
@@ -12,7 +13,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_All_Language_Codes_Should_Not_Provide_Variants()
         {
-            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
+            var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
             var languageCodes = localeNames.GetAllLanguageCodes();
 
@@ -31,7 +32,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void LocaleNames_Find_language_code_by_name()
         {
-            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
+            var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
             Assert.AreEqual("de", localeNames.FindLanguageCode("German"));
 
