@@ -11,7 +11,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void Find_country_name_by_code()
         {
-            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
+            var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
             Assert.AreEqual("Germany", localeNames.FindCountryName("DE"));
             Assert.AreEqual("Czechia", localeNames.FindCountryName("CZ"));
@@ -22,7 +22,7 @@ namespace LocaleNames.Test
         [TestMethod]
         public void Find_all_variants_of_country_name_by_code()
         {
-            var localeNames = LocaleNamesFactory.ForLanguageCode("en-US");
+            var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
             var result = localeNames.FindCountryNames("CZ");
 
             Assert.IsTrue(result.Count == 2, "CZ country name has only two variants");

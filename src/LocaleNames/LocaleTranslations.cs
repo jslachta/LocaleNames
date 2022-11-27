@@ -13,9 +13,9 @@ using System.Text.Json;
 namespace LocaleNames
 {
     /// <summary>
-    /// 
+    /// Locale translations for a single language.
     /// </summary>
-    public class LocaleNames
+    public class LocaleTranslations
     {
         #region PROPERTIES
 
@@ -66,10 +66,10 @@ namespace LocaleNames
         #region CONSTRUCTOR
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocaleNames"/> class.
+        /// Initializes a new instance of the <see cref="LocaleTranslations"/> class.
         /// </summary>
         /// <param name="culture">The culture.</param>
-        internal LocaleNames(CultureInfo culture)
+        internal LocaleTranslations(CultureInfo culture)
         {
             CultureInfo = culture;
 
@@ -170,18 +170,7 @@ namespace LocaleNames
         /// <param name="variant"></param>
         /// <returns></returns>
         public string FindLanguageName(string languageCode, AltVariant variant = AltVariant.Common)
-        {
-            var languageNames = FindLanguageNames(languageCode);
-
-            if (languageNames.ContainsKey(variant))
-            {
-                return languageNames[variant];
-            }
-            else
-            {
-                return null;
-            }
-        }
+            => FindLanguageNames(languageCode).FirstOrDefault(i => i.Key == variant).Value;
 
         /// <summary>
         /// Finds all name variants of the language.
@@ -222,11 +211,7 @@ namespace LocaleNames
         /// <param name="countryName">Name of the country.</param>
         /// <returns></returns>
         public string FindLanguageCode(string countryName)
-        {
-            var value = LanguageNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
-
-            return value.Key;
-        }
+            => LanguageNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0).Key;
 
         #endregion FIND LANGUAGE NAMES/CODES
 
@@ -250,18 +235,7 @@ namespace LocaleNames
         /// <param name="variant"></param>
         /// <returns></returns>
         public string FindCountryName(string countryCode, AltVariant variant = AltVariant.Common)
-        {
-            var countryNames = FindCountryNames(countryCode);
-
-            if (countryNames.ContainsKey(variant))
-            {
-                return countryNames[variant];
-            }
-            else
-            {
-                return null;
-            }
-        }
+            => FindCountryNames(countryCode).FirstOrDefault(i => i.Key == variant).Value;
 
         /// <summary>
         /// Finds all name variants of the country.
@@ -269,9 +243,7 @@ namespace LocaleNames
         /// <param name="countryCode">country code</param>
         /// <returns></returns>
         public IReadOnlyDictionary<AltVariant, string> FindCountryNames(string countryCode)
-        {
-            return CountryNames.Value.FindLocaleValues(countryCode);
-        }
+            => CountryNames.Value.FindLocaleValues(countryCode);
 
         /// <summary>
         /// Finds the country code.

@@ -9,25 +9,23 @@ namespace LocaleNames
     /// <summary>
     /// Locale Names.
     /// </summary>
-    public static class LocaleNamesFactory
+    public static class LocaleTranslationsFactory
     {
-        private static ConcurrentDictionary<CultureInfo, LocaleNames> CachedLocaleNames
-            = new ConcurrentDictionary<CultureInfo, LocaleNames>();
+        private static ConcurrentDictionary<CultureInfo, LocaleTranslations> CachedLocaleNames
+            = new ConcurrentDictionary<CultureInfo, LocaleTranslations>();
 
         /// <summary>
         /// Clears the cache.
         /// </summary>
         public static void ClearCache()
-        {
-            CachedLocaleNames.Clear();
-        }
+            => CachedLocaleNames.Clear();
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for given language code.
+        /// Creates instance of <see cref="LocaleTranslations"/> for given language code.
         /// </summary>
         /// <param name="languageCode">The language code.</param>
         /// <returns></returns>
-        public static LocaleNames ForLanguageCode(string languageCode)
+        public static LocaleTranslations ForLanguageCode(string languageCode)
         {
             CultureInfo cultureInfo = null;
 
@@ -44,10 +42,10 @@ namespace LocaleNames
         }
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for current culture.
+        /// Creates instance of <see cref="LocaleTranslations"/> for current culture.
         /// </summary>
         /// <returns></returns>
-        public static LocaleNames ForCurrentCulture()
+        public static LocaleTranslations ForCurrentCulture()
         {
             var currentCulture = CultureInfo.CurrentCulture;
 
@@ -55,11 +53,11 @@ namespace LocaleNames
         }
 
         /// <summary>
-        /// Creates instance of <see cref="LocaleNames"/> for given culture.
+        /// Creates instance of <see cref="LocaleTranslations"/> for given culture.
         /// </summary>
         /// <param name="cultureInfo">The culture information.</param>
         /// <returns></returns>
-        public static LocaleNames ForCultureInfo(CultureInfo cultureInfo)
+        public static LocaleTranslations ForCultureInfo(CultureInfo cultureInfo)
         {
             if (CachedLocaleNames.ContainsKey(cultureInfo))
             {
@@ -70,7 +68,7 @@ namespace LocaleNames
             }
             else
             {
-                var localeNames = new LocaleNames(cultureInfo);
+                var localeNames = new LocaleTranslations(cultureInfo);
                 CachedLocaleNames.TryAdd(cultureInfo, localeNames);
 
                 return localeNames;
