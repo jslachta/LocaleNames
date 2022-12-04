@@ -17,6 +17,8 @@
 mono_crash.*
 
 # Build results
+Coverage/
+NuGet/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
 
     - name: Restore dependencies
       run: dotnet restore src/LocaleNames.sln
@@ -26,10 +26,10 @@ jobs:
       run: dotnet build --no-restore src/LocaleNames.sln
 
     - name: Test
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info src/LocaleNames.Test/LocaleNames.Test.csproj
+      run: dotnet test src/LocaleNames.Test/LocaleNames.Test.csproj /p:CollectCoverage=true
 
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.1.2
       with:
           github-token: ${{ secrets.github_token }}
-          path-to-lcov: ${{ github.workspace }}/src/LocaleNames.Test/lcov.info
+          path-to-lcov: ${{ github.workspace }}/Coverage/lcov.info

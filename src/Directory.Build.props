@@ -1,0 +1,5 @@
+<Project>
+	<!-- This target is replaced by GitInfo when restored. Allows Versions.targets to rely on it before restore. -->
+	<Target Name="GitVersion" />
+	<Target Name="GitInfo" />
+</Project>

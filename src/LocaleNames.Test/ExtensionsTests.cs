@@ -1,7 +1,6 @@
 ﻿using LocaleNames.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Globalization;
 
 namespace LocaleTranslations.Test
 {
