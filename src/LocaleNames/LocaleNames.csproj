@@ -1,83 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net50;net60</TargetFrameworks>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net60;net70</TargetFrameworks>
+		<Authors>Jiri Slachta</Authors>
+		<Copyright>Copyright © Jiri Slachta</Copyright>
+		<PackageTags>locale, translations</PackageTags>
+		
+		<PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
+		
+		<RepositoryType>git</RepositoryType>
+		
+		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+		<Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
+		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Authors>Jiri Slachta</Authors>
-    <PackageTags>locale, translations</PackageTags>
-    <PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+	</PropertyGroup>
 
-    <RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<Import Project="..\Configuration.targets" />
 
-    <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
-    <Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
-    <Copyright>Copyright © Jiri Slachta</Copyright>
-    <PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
-    <GitTagRegex Condition="'$(GitTagRegex)' == ''">v*</GitTagRegex>
-    <GenerateNuspecDependsOn>ReadPackageVersionFromOutputAssembly;$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
+	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
+		<PackageReference Include="System.Text.Json" Version="[4.6.0,)" />
+	</ItemGroup>
 
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-  </PropertyGroup>
-
-  <Target Name="ReadPackageVersionFromOutputAssembly" DependsOnTargets="Build">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="PackAssembly" />
-    </GetAssemblyIdentity>
-    <PropertyGroup>
-      <PackageVersion>%(PackAssembly.Version)</PackageVersion>
-    </PropertyGroup>
-  </Target>
-
-  <Target Name="ReadPackageVersionFromOutputAssemblySingleTfm" Returns="@(PackAssembly)" Condition="'$(IsCrossTargetingBuild)' != 'true'">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="PackAssembly" />
-    </GetAssemblyIdentity>
-    <PropertyGroup>
-      <PackageVersion>%(PackAssembly.Version)</PackageVersion>
-    </PropertyGroup>
-  </Target>
-
-  <Target Name="ReadPackageVersionFromOutputAssemblyMultipleTfms" Condition="'$(IsCrossTargetingBuild)' == 'true'">
-    <PropertyGroup>
-      <FirstTargetFramework>$([System.String]::Copy($(TargetFrameworks)).Split(';').GetValue(0))</FirstTargetFramework>
-    </PropertyGroup>
-    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="ReadPackageVersionFromOutputAssemblySingleTfm" Properties="TargetFramework=$(FirstTargetFramework)">
-      <Output TaskParameter="TargetOutputs" ItemName="PackAssembly" />
-    </MSBuild>
-    <PropertyGroup>
-      <PackageVersion>%(PackAssembly.Version)</PackageVersion>
-    </PropertyGroup>
-  </Target>
-
-  <Target Name="ReadPackageVersionFromOutputAssembly" DependsOnTargets="Build;ReadPackageVersionFromOutputAssemblySingleTfm;ReadPackageVersionFromOutputAssemblyMultipleTfms" />
-
-  <ItemGroup>
-    <PackageReference Include="GitInfo" Version="2.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
-    <PackageReference Include="System.Text.Json" Version="[4.6.0,)" />
-  </ItemGroup>
-
-  <Import Project="Resources.include" />
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\language.*.json.gz" />
+	</ItemGroup>
 </Project>

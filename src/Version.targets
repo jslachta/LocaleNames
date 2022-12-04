@@ -1,0 +1,87 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<PackageReference Include="MSBuilder.GenerateAssemblyInfo" Version="0.2.2" PrivateAssets="All" />
+		<PackageReference Include="GitInfo" Version="2.3.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<GitTagRegex Condition="'$(GitTagRegex)' == ''">v*</GitTagRegex>
+		<GitInfoReportImportance>low</GitInfoReportImportance>
+		<PackageOutputPath>$(RepoRoot)\NuGet</PackageOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CoreCompileDependsOn>
+			SetVersions;
+			$(CoreCompileDependsOn);
+		</CoreCompileDependsOn>
+		<GenerateNuspecDependsOn>
+			SetVersions;
+			$(GenerateNuspecDependsOn);
+		</GenerateNuspecDependsOn>
+		<GetPackageVersionDependsOn>
+			SetVersions;
+			$(GetPackageVersionDependsOn);
+		</GetPackageVersionDependsOn>
+		<SetVersionsBefore>
+			GetAssemblyVersion;
+			$(SetVersionsBefore);
+		</SetVersionsBefore>
+		<SetVersionsDependsOn>
+			GitInfo;
+			GitVersion;
+			$(SetVersionsDependsOn);
+		</SetVersionsDependsOn>
+		<SetGitInfoPropsBefore>
+			GitInfo;
+			GitVersion;
+		</SetGitInfoPropsBefore>
+	</PropertyGroup>
+
+	<Target Name="SetVersions" BeforeTargets="$(SetVersionsBefore)" DependsOnTargets="$(SetVersionsDependsOn)" Returns="$(Version)">
+		<PropertyGroup>
+			<GitDefaultBranch>master</GitDefaultBranch>
+			<GitIgnoreBranchVersion>true</GitIgnoreBranchVersion>
+			<GitIgnoreTagVersion>true</GitIgnoreTagVersion>
+		</PropertyGroup>
+
+		<PropertyGroup>
+			<IsMasterBranch>false</IsMasterBranch>
+			<IsMasterBranch Condition="'$(GitBranch)' == 'master'">true</IsMasterBranch>
+
+			<IsReleaseBranch>false</IsReleaseBranch>
+			<IsReleaseBranch Condition="$(GitBranch.StartsWith('release'))">true</IsReleaseBranch>
+
+			<IsHotfixBranch>false</IsHotfixBranch>
+			<IsHotfixBranch Condition="$(GitBranch.StartsWith('hotfix'))">true</IsHotfixBranch>
+
+			<IsReleasableBranch>false</IsReleasableBranch>
+			<IsReleasableBranch Condition="'$(IsMasterBranch)' == 'true' or '$(IsReleaseBranch)' == 'true' or '$(IsHotfixBranch)' == 'true'">true</IsReleasableBranch>
+
+			<VersionMajor>$(GitBaseVersionMajor)</VersionMajor>
+			<VersionMinor>$(GitBaseVersionMinor)</VersionMinor>
+			<VersionBuild>$(GitBaseVersionPatch)</VersionBuild>
+			<VersionRevision>$(GitCommits)</VersionRevision>
+			<VersionLabel>$(GitSemVerDashLabel)</VersionLabel>
+			<VersionLongLabel>$(VersionLabel)-$(GitCommit)</VersionLongLabel>
+		</PropertyGroup>
+
+		<PropertyGroup>
+			<ShortVersion>$(VersionMajor).$(VersionMinor).$(VersionBuild)</ShortVersion>
+			<Version>$(ShortVersion).$(VersionRevision)</Version>
+			<AssemblyVersion>$(Version)</AssemblyVersion>
+			<PackageVersion>$(Version)$(VersionLabel)</PackageVersion>
+			<PackageVersion Condition="'$(VersionRevision)' == '0'">$(ShortVersion)$(VersionLabel)</PackageVersion>
+			<PackageReferenceVersion>$(PackageVersion)</PackageReferenceVersion>
+			<InformationalVersion>$(Version)$(VersionLongLabel)</InformationalVersion>
+			<FileVersion>$(Version)</FileVersion>
+		</PropertyGroup>
+	</Target>
+</Project>
