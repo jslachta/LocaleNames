@@ -7,11 +7,17 @@ using LocaleNames.Extensions;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// FindCountryCode tests.
+    /// </summary>
     [TestClass]
     public class FindCountryCodeTests
     {
+        /// <summary>
+        /// All country codes should not provide variants and continents.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_All_Country_Codes_Should_Not_Provide_Variants_And_Continents()
+        public void All_Country_Codes_Should_Not_Provide_Variants_And_Continents()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
@@ -31,8 +37,11 @@ namespace LocaleNames.Test
             Assert.IsFalse(countryCodes.Any(i => i.Contains("-alt-short")));
         }
 
+        /// <summary>
+        /// Finds the country code by country name.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_country_code_by_name()
+        public void Find_country_code_by_name()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 

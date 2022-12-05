@@ -1,15 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
-using LocaleNames;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// FindLanguageName tests.
+    /// </summary>
     [TestClass]
     public class FindLanguageNameTests
     {
+        /// <summary>
+        /// Finds the language name for given culture.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_language_name_for_given_culture()
+        public void Find_language_name_for_given_culture()
         {
             var localeNames = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("cs-CZ"));
 
@@ -34,8 +39,11 @@ namespace LocaleNames.Test
             Assert.AreEqual("英文 (美國)", localeNames.FindLanguageName("en-US"));
         }
 
+        /// <summary>
+        /// Finds the language name for current culture.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_language_name_for_current_culture()
+        public void Find_language_name_for_current_culture()
         {
             var localeNames = LocaleTranslationsFactory.ForCurrentCulture();
 
@@ -46,8 +54,11 @@ namespace LocaleNames.Test
             Assert.AreEqual("čínština (tradiční)", localeNames.FindLanguageName("zh-Hant"));
         }
 
+        /// <summary>
+        /// Finds the language name for language code.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_language_name_for_language_code()
+        public void Find_language_name_for_language_code()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
@@ -62,8 +73,11 @@ namespace LocaleNames.Test
             Assert.AreEqual("Chinese, Cantonese", localeNames.FindLanguageName("yue", Enumerations.AltVariant.Menu));
         }
 
+        /// <summary>
+        /// Finds the language name for unknown language code.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_language_name_for_unknown_language_code()
+        public void Find_language_name_for_unknown_language_code()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("unknown-CODE");
 

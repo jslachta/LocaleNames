@@ -1,13 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Globalization;
-using LocaleNames;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// FindCountryName tests.
+    /// </summary>
     [TestClass]
     public class FindCountryNameTests
     {
+        /// <summary>
+        /// Finds the country name by code.
+        /// </summary>
         [TestMethod]
         public void Find_country_name_by_code()
         {
@@ -19,6 +23,9 @@ namespace LocaleNames.Test
             Assert.AreEqual(null, localeNames.FindCountryName("unknown code"));
         }
 
+        /// <summary>
+        /// Finds all variants of country name by code.
+        /// </summary>
         [TestMethod]
         public void Find_all_variants_of_country_name_by_code()
         {

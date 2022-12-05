@@ -4,9 +4,15 @@ using System;
 
 namespace LocaleTranslations.Test
 {
+    /// <summary>
+    /// Extensions tests.
+    /// </summary>
     [TestClass]
     public class ExtensionsTests
     {
+        /// <summary>
+        /// Check whether the country code is continent.
+        /// </summary>
         [TestMethod]
         public void LocaleNames_IsCountryCodeContinent()
         {

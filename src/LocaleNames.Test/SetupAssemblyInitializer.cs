@@ -1,15 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Threading;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// AssemblyInitializer
+    /// </summary>
     [TestClass]
     public class SetupAssemblyInitializer
     {
+        /// <summary>
+        /// The Assembly initialization.
+        /// </summary>
+        /// <param name="context">The context.</param>
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {

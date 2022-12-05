@@ -1,13 +1,13 @@
 ﻿using LocaleNames.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// GzipUtils test.
+    /// </summary>
     [TestClass]
     public class GzipUtilsTest
     {
@@ -27,8 +27,11 @@ namespace LocaleNames.Test
             " sagittis, urna turpis tincidunt nunc, et posuere diam dui sed ex. Cras " +
             "tincidunt volutpat dolor sit amet tristique. ";
 
-        public string LongString = string.Join(" ", Enumerable.Repeat(InputString, 100));
+        static string LongString = string.Join(" ", Enumerable.Repeat(InputString, 100));
 
+        /// <summary>
+        /// Checks whether the input string going through compression and decompression is the same.
+        /// </summary>
         [TestMethod]
         public void CompressionDecompressionTest()
         {
