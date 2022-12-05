@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<Import Project="..\Configuration.targets" />
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net60;net70</TargetFrameworks>
 		<Authors>Jiri Slachta</Authors>
 		<Copyright>Copyright © Jiri Slachta</Copyright>
 		<PackageTags>locale, translations</PackageTags>
-		
+
 		<PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
-		
+
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
-		
+
 		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
 		<Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
 		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
@@ -21,17 +22,20 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
+
+		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
-
-	<Import Project="..\Configuration.targets" />
-
+	
 	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
 		<PackageReference Include="System.Text.Json" Version="[4.6.0,)" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="True" PackagePath="\" Link="Properties\README.md" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\language.*.json.gz" />
 	</ItemGroup>
