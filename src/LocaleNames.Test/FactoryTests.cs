@@ -1,11 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// <see cref="LocaleTranslationsFactory"/> tests.
+    /// </summary>
     [TestClass]
     public class FactoryTests
     {
@@ -13,7 +14,7 @@ namespace LocaleNames.Test
         /// On Windows the LocaleNames should have invariant CultureInfo.
         /// </summary>
         [TestMethod]
-        public void LocaleNames_Factory_ForLanguageCode_On_Windows_Should_Have_Invariant_Culture()
+        public void Factory_ForLanguageCode_On_Windows_Should_Have_Invariant_Culture()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("unknown code");
 
@@ -27,7 +28,7 @@ namespace LocaleNames.Test
         /// Use the en-US culture when the InvariantCulture is given.
         /// </summary>
         [TestMethod]
-        public void LocaleNames_Factory_ForCultureInfo_Existing_Culture_Test()
+        public void Factory_ForCultureInfo_Existing_Culture_Test()
         {
             var translations = LocaleTranslationsFactory.ForCultureInfo(new System.Globalization.CultureInfo("en-US"));
 
@@ -40,7 +41,7 @@ namespace LocaleNames.Test
         /// Locales the names factory test.
         /// </summary>
         [TestMethod]
-        public void LocaleNames_Factory_ForLanguageCode_Test()
+        public void Factory_ForLanguageCode_Test()
         {
             /*
              * if a valid language code is given, the cultureinfo name should match.
@@ -56,7 +57,7 @@ namespace LocaleNames.Test
         /// For an unknown language code translations has invariant culture.
         /// </summary>
         [TestMethod]
-        public void LocaleNames_Factory_ForLanguageCode_InvalidLanguageCode_Test()
+        public void Factory_ForLanguageCode_InvalidLanguageCode_Test()
         {
             /*
              * if a not valid language code is given, the LocaleTranslations will not have any translations.

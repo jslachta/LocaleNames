@@ -1,17 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Globalization;
 using System.Linq;
-using LocaleNames;
-using System.Text;
 
 namespace LocaleNames.Test
 {
+    /// <summary>
+    /// FindLanguageCode tests.
+    /// </summary>
     [TestClass]
     public class FindLanguageCodeTests
     {
+        /// <summary>
+        /// All language codes should not provide variants.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_All_Language_Codes_Should_Not_Provide_Variants()
+        public void All_Language_Codes_Should_Not_Provide_Variants()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 
@@ -29,8 +32,11 @@ namespace LocaleNames.Test
             Assert.IsFalse(languageCodes.Any(i => i.Contains("-alt-short")));
         }
 
+        /// <summary>
+        /// Finds the language code by name.
+        /// </summary>
         [TestMethod]
-        public void LocaleNames_Find_language_code_by_name()
+        public void Find_language_code_by_name()
         {
             var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
 

@@ -16,7 +16,7 @@ namespace PrepareLocaleData;
 
 class Program
 {
-    const string DownloadSite = "https://github.com/unicode-org/cldr-json/releases/download/41.0.0/cldr-41.0.0-json-full.zip";
+    const string DownloadSite = "https://github.com/unicode-org/cldr-json/releases/download/42.0.0/cldr-42.0.0-json-full.zip";
 
     static string TempDirectory
         => Path.Combine(Path.GetTempPath(), "LocaleNames");
@@ -136,10 +136,6 @@ class Program
 
         Directory.CreateDirectory(ResourceDirectory);
 
-        StringBuilder sb = new StringBuilder();
-        sb.Append("<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\n");
-        sb.Append("\t<ItemGroup>\n");
-
         foreach (var filePath in Directory.GetFiles(UnpackedArchivePath))
         {
             /*
@@ -187,13 +183,6 @@ class Program
 
             var targetJson = JsonConvert.SerializeObject(dict, Formatting.None);
             File.WriteAllText(targetFilePath, GzipUtils.Compress(targetJson), new UTF8Encoding(false));
-
-            sb.Append($"\t\t<EmbeddedResource Include=\"Resources\\{targetFilename}\" />\n");
         }
-
-        sb.Append("\t</ItemGroup>\n");
-        sb.Append("</Project>");
-
-        File.WriteAllText(ResourceTargets, sb.ToString(), new UTF8Encoding(false));
     }
 }
