@@ -4,9 +4,11 @@
 		<CollectCoverage>true</CollectCoverage>
 		<ExcludeByAttribute>GeneratedCodeAttribute</ExcludeByAttribute>
 		<CoverletOutputFormat>lcov</CoverletOutputFormat>
-		<CoverletOutput>$(RepoRoot)\out\coverage\lcov.info</CoverletOutput>
 	</PropertyGroup>
 	<Import Project="..\Configuration.targets" />
+	<PropertyGroup>
+		<CoverletOutput>$(RepoRoot)/out/coverage/lcov.info</CoverletOutput>
+	 </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
 	</ItemGroup>
