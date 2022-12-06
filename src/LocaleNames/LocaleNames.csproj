@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\Configuration.targets" />
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net60;net70</TargetFrameworks>
 		<Authors>Jiri Slachta</Authors>
 		<Copyright>Copyright © Jiri Slachta</Copyright>
 		<PackageTags>locale, translations</PackageTags>
 
+		<PackageId>LocaleNames</PackageId>
+		
+		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
 
@@ -14,7 +16,6 @@
 
 		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
 		<Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
-		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
 
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
@@ -27,6 +28,7 @@
 
 		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
+	<Import Project="..\Configuration.targets" />
 	
 	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
 		<PackageReference Include="System.Text.Json" Version="[4.6.0,)" />

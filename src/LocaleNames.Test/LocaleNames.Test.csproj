@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\Configuration.targets" />
 	<PropertyGroup>
 		<TargetFramework>net70</TargetFramework>
-		<IsPackable>false</IsPackable>
 		<CollectCoverage>true</CollectCoverage>
 		<ExcludeByAttribute>GeneratedCodeAttribute</ExcludeByAttribute>
 		<CoverletOutputFormat>lcov</CoverletOutputFormat>
-		<CoverletOutput>$(RepoRoot)\Coverage\lcov.info</CoverletOutput>
+		<CoverletOutput>$(RepoRoot)\out\coverage\lcov.info</CoverletOutput>
 	</PropertyGroup>
+	<Import Project="..\Configuration.targets" />
 	<ItemGroup>
 		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
 	</ItemGroup>

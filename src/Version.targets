@@ -13,8 +13,8 @@
 
 	<PropertyGroup>
 		<GitTagRegex Condition="'$(GitTagRegex)' == ''">v*</GitTagRegex>
-		<GitInfoReportImportance>low</GitInfoReportImportance>
-		<PackageOutputPath>$(RepoRoot)\NuGet</PackageOutputPath>
+		<GitInfoReportImportance>high</GitInfoReportImportance>
+		<PackageOutputPath>$(RepoRoot)\out\NuGet</PackageOutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup>

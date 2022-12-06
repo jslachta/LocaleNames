@@ -1,26 +1,13 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	
-	<Import Project="Version.targets" />
-
-	<!-- Common -->
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Platforms>AnyCPU</Platforms>
 		<RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))</RepoRoot>
-		<!--<CodeAnalysisRuleSet>$(RepoRoot)\Configuration\CodeAnalysis.ruleset</CodeAnalysisRuleSet>-->
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<CodeAnalysisRuleSet>$(RepoRoot)\src\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<IsPackable Condition="'$(PackageId)' != ''">true</IsPackable>
+		<IsPackable Condition="'$(PackageId)' == ''">false</IsPackable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(Configuration.Contains('Release'))">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<DefineConstants>TRACE</DefineConstants>
-	</PropertyGroup>
+	<Import Project="Version.targets" />
 
 </Project>
