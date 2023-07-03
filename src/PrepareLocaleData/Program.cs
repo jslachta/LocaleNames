@@ -16,7 +16,7 @@ namespace PrepareLocaleData;
 
 class Program
 {
-    const string DownloadSite = "https://github.com/unicode-org/cldr-json/releases/download/42.0.0/cldr-42.0.0-json-full.zip";
+    const string DownloadSite = "https://github.com/unicode-org/cldr-json/archive/refs/tags/43.1.0.zip";
 
     static string TempDirectory
         => Path.Combine(Path.GetTempPath(), "LocaleNames");
@@ -32,7 +32,7 @@ class Program
         get
         {
             string codeBase = Assembly.GetExecutingAssembly().Location;
-            UriBuilder uri = new UriBuilder(codeBase);
+            UriBuilder uri = new(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path);
         }
@@ -81,11 +81,10 @@ class Program
             File.Delete(ArchivePath);
         }
 
-        using (HttpClient client = new HttpClient())
-        {
-            byte[] fileBytes = await client.GetByteArrayAsync(DownloadSite);
-            File.WriteAllBytes(ArchivePath, fileBytes);
-        }
+        using HttpClient client = new();
+        
+        byte[] fileBytes = await client.GetByteArrayAsync(DownloadSite);
+        File.WriteAllBytes(ArchivePath, fileBytes);
     }
 
     static void ExtractData()
@@ -107,10 +106,8 @@ class Program
 
         foreach (var entry in zipEntries)
         {
-            var x = entry.FullName.Split('/');
-
-            string languageCode = x[2];
-            string filename = x[3];
+            string languageCode = new DirectoryInfo(Path.GetDirectoryName(entry.FullName)).Name;
+            string filename = Path.GetFileName(entry.FullName);
 
             if (!string.IsNullOrWhiteSpace(languageCode)! && !string.IsNullOrWhiteSpace(filename))
             {
@@ -176,7 +173,7 @@ class Program
               targetFilename
               );
 
-            ResourceLocale dict = new ResourceLocale()
+            ResourceLocale dict = new()
             {
                 Values = targetDictionary
             };
