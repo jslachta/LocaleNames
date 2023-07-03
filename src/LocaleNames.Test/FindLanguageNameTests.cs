@@ -36,7 +36,7 @@ namespace LocaleNames.Test
 
             Assert.AreEqual("捷克文", localeNames.FindLanguageName("cs"));
 
-            Assert.AreEqual("英文 (美國)", localeNames.FindLanguageName("en-US"));
+            Assert.AreEqual("英文", localeNames.FindLanguageName("en-US"));
         }
 
         /// <summary>

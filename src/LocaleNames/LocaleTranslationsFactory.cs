@@ -11,8 +11,7 @@ namespace LocaleNames
     /// </summary>
     public static class LocaleTranslationsFactory
     {
-        private static ConcurrentDictionary<CultureInfo, LocaleTranslations> CachedLocaleNames
-            = new ConcurrentDictionary<CultureInfo, LocaleTranslations>();
+        private static ConcurrentDictionary<CultureInfo, LocaleTranslations> CachedLocaleNames = new();
 
         /// <summary>
         /// Clears the cache.

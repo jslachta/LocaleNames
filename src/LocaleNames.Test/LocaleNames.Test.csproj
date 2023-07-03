@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net70</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<CollectCoverage>true</CollectCoverage>
 		<ExcludeByAttribute>GeneratedCodeAttribute</ExcludeByAttribute>
 		<CoverletOutputFormat>lcov</CoverletOutputFormat>

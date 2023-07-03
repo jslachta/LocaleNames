@@ -127,13 +127,14 @@ namespace LocaleNames
             string targetManifestResourceName = this
                 .GetType().Assembly
                 .GetManifestResourceNames()
-                .FirstOrDefault(i => i.EndsWith(resourceName));
+                .ToList()
+                .Find(i => i.EndsWith(resourceName));
 
             if (targetManifestResourceName != null)
             {
                 using (Stream resourceStream = this.GetType().Assembly.GetManifestResourceStream(targetManifestResourceName))
                 {
-                    using (StreamReader streamReader = new StreamReader(resourceStream))
+                    using (StreamReader streamReader = new(resourceStream))
                     {
                         var compressedResourceValue = streamReader.ReadToEnd();
                         var decompressedResourceValue = GzipUtils.Decompress(compressedResourceValue);
@@ -183,7 +184,7 @@ namespace LocaleNames
 
             try
             {
-                CultureInfo ci = new CultureInfo(languageCode);
+                CultureInfo ci = new(languageCode);
 
                 languageNames = LanguageNames.Value.FindLocaleValues(ci.Name);
 
