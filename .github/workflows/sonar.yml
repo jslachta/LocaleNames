@@ -16,7 +16,7 @@ jobs:
         fetch-depth: 0
 
     - name: sonarscan-dotnet
-      uses: highbyte/sonarscan-dotnet@v2.2.1
+      uses: highbyte/sonarscan-dotnet@master
       with:
         # The key of the SonarQube project
         sonarProjectKey: jslachta_LocaleNames
