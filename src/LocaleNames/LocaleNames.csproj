@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net60;net70</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
 		<Authors>Jiri Slachta</Authors>
 		<Copyright>Copyright © Jiri Slachta</Copyright>
 		<PackageTags>locale, translations</PackageTags>
@@ -28,6 +28,7 @@
 
 		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
+	
 	<Import Project="..\Configuration.targets" />
 	
 	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
