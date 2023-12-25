@@ -16,7 +16,7 @@ namespace PrepareLocaleData;
 
 class Program
 {
-    const string DownloadSite = "https://github.com/unicode-org/cldr-json/archive/refs/tags/43.1.0.zip";
+    const string DownloadSite = "https://github.com/unicode-org/cldr-json/releases/download/44.1.0/cldr-44.1.0-json-full.zip";
 
     static string TempDirectory
         => Path.Combine(Path.GetTempPath(), "LocaleNames");
