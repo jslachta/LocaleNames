@@ -26,7 +26,7 @@ namespace LocaleNames.Test
 
             Assert.AreEqual("němčina (walser)", localeNames.FindLanguageName("wae"));
 
-            Assert.AreEqual("čínština (tradiční)", localeNames.FindLanguageName("zh-Hant"));
+            Assert.AreEqual("čínština (zjednodušená)", localeNames.FindLanguageName("zh-Hans"));
 
             Assert.AreEqual(null, localeNames.FindLanguageName("unknown code"));
 
@@ -51,7 +51,7 @@ namespace LocaleNames.Test
 
             Assert.AreEqual("němčina (walser)", localeNames.FindLanguageName("wae"));
 
-            Assert.AreEqual("čínština (tradiční)", localeNames.FindLanguageName("zh-Hant"));
+            Assert.AreEqual("čínština (zjednodušená)", localeNames.FindLanguageName("zh-Hans"));
         }
 
         /// <summary>
