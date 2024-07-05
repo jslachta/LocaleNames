@@ -84,7 +84,7 @@ class Program
         using HttpClient client = new();
         
         byte[] fileBytes = await client.GetByteArrayAsync(DownloadSite);
-        File.WriteAllBytes(ArchivePath, fileBytes);
+        await File.WriteAllBytesAsync(ArchivePath, fileBytes);
     }
 
     static void ExtractData()
