@@ -25,6 +25,10 @@ namespace LocaleNames.Extensions
                     return "-alt-long";
                 case AltVariant.Menu:
                     return "-alt-menu";
+                case AltVariant.Narrow:
+                    return "-alt-narrow";
+                case AltVariant.Formal:
+                    return "-alt-formal";
                 default:
                 case AltVariant.Common:
                     return string.Empty;

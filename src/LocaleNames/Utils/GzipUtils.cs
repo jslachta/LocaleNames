@@ -76,7 +76,21 @@ namespace LocaleNames.Utils
                     CompressionMode.Decompress))
                 {
                     var result = new byte[length];
-                    decompressionStream.Read(result, 0, length);
+                    var offset = 0;
+
+                    // GZipStream.Read may return fewer bytes than requested, read until the whole content is loaded.
+                    while (offset < length)
+                    {
+                        var read = decompressionStream.Read(result, offset, length - offset);
+
+                        if (read <= 0)
+                        {
+                            throw new EndOfStreamException("Unexpected end of compressed data.");
+                        }
+
+                        offset += read;
+                    }
+
                     return result;
                 }
             }

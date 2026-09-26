@@ -42,6 +42,21 @@ namespace LocaleNames.Test
         }
 
         /// <summary>
+        /// Checks whether a large input (decompressed in multiple reads) going through compression and decompression is the same.
+        /// </summary>
+        [TestMethod]
+        public void LargeInputCompressionDecompressionTest()
+        {
+            var random = new Random(42);
+            var largeString = new string(Enumerable.Range(0, 500_000).Select(_ => (char)random.Next('a', 'z' + 1)).ToArray());
+
+            var compressedResult = GzipUtils.Compress(largeString);
+            var decompressedResult = GzipUtils.Decompress(compressedResult);
+
+            Assert.AreEqual(largeString, decompressedResult);
+        }
+
+        /// <summary>
         /// Check whether Gzip compresses the input string.
         /// </summary>
         [TestMethod]
@@ -54,7 +69,7 @@ namespace LocaleNames.Test
 
             int resultLength = result.Length;
 
-            Assert.IsTrue(resultLength < longStringLength);
+            Assert.IsLessThan(longStringLength, resultLength);
         }
     }
 }
