@@ -37,6 +37,16 @@ namespace LocaleNames.Enumerations
         /// <summary>
         /// The menu name variant.
         /// </summary>
-        Menu = 16
+        Menu = 16,
+
+        /// <summary>
+        /// The narrow variant (used by currency symbols).
+        /// </summary>
+        Narrow = 32,
+
+        /// <summary>
+        /// The formal variant (used by currency symbols).
+        /// </summary>
+        Formal = 64
     }
 }

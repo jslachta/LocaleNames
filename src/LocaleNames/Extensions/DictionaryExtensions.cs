@@ -48,6 +48,16 @@ namespace LocaleNames.Extensions
                 names.Add(AltVariant.Menu, sourceDictionary[$"{key}-alt-menu"]);
             }
 
+            if (sourceDictionary.ContainsKey($"{key}-alt-narrow"))
+            {
+                names.Add(AltVariant.Narrow, sourceDictionary[$"{key}-alt-narrow"]);
+            }
+
+            if (sourceDictionary.ContainsKey($"{key}-alt-formal"))
+            {
+                names.Add(AltVariant.Formal, sourceDictionary[$"{key}-alt-formal"]);
+            }
+
             return new ReadOnlyDictionary<AltVariant, string>(names);
         }
     }

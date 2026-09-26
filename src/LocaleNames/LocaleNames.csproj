@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 		<Authors>Jiri Slachta</Authors>
 		<Copyright>Copyright © Jiri Slachta</Copyright>
 		<PackageTags>locale, translations</PackageTags>
@@ -30,10 +30,6 @@
 	</PropertyGroup>
 	
 	<Import Project="..\Configuration.targets" />
-	
-	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
-		<PackageReference Include="System.Text.Json" Version="[4.6.0,)" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="True" PackagePath="\" Link="Properties\README.md" />

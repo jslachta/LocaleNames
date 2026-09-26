@@ -30,6 +30,11 @@ namespace LocaleNames
         public bool AreCountryNameTranslationsEmpty => CountryNames.Value.Keys.Count <= 0;
 
         /// <summary>
+        /// Gets a value indicating whether are currency translations empty.
+        /// </summary>
+        public bool AreCurrencyTranslationsEmpty => CurrencyNames.Value.Keys.Count <= 0;
+
+        /// <summary>
         /// Gets a value indicating whether this instance is from cache.
         /// </summary>
         /// <value>
@@ -61,6 +66,14 @@ namespace LocaleNames
         /// </value>
         private readonly Lazy<ReadOnlyDictionary<string, string>> CountryNames;
 
+        /// <summary>
+        /// Gets the currency names and symbols.
+        /// </summary>
+        /// <value>
+        /// The currency names and symbols.
+        /// </value>
+        private readonly Lazy<ReadOnlyDictionary<string, string>> CurrencyNames;
+
         #endregion PROPERTIES
 
         #region CONSTRUCTOR
@@ -75,6 +88,7 @@ namespace LocaleNames
 
             CountryNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "territories"), true);
             LanguageNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "languages"), true);
+            CurrencyNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "currencies"), true);
         }
 
         #endregion CONSTRUCTOR
@@ -260,5 +274,87 @@ namespace LocaleNames
         }
 
         #endregion FIND COUNTRY NAMES/CODES
+
+        #region FIND CURRENCY NAMES/SYMBOLS/CODES
+
+        /// <summary>
+        /// Provides all currency codes (ISO 4217).
+        /// </summary>
+        public IReadOnlyCollection<string> GetAllCurrencyCodes()
+            => new ReadOnlyCollection<string>(
+                CurrencyNames
+                .Value
+                .Select(i => i.Key.Split('-')[0])
+                .Distinct().ToList());
+
+        /// <summary>
+        /// Finds the name of the currency.
+        /// </summary>
+        /// <param name="currencyCode">The currency code (ISO 4217).</param>
+        /// <returns></returns>
+        public string FindCurrencyName(string currencyCode)
+            => CurrencyNames.Value.TryGetValue(NormalizeCurrencyCode(currencyCode), out var name) ? name : null;
+
+        /// <summary>
+        /// Finds the name of the currency for the given plural category (e.g. "české koruny" for <see cref="PluralCategory.Few"/>).
+        /// </summary>
+        /// <param name="currencyCode">The currency code (ISO 4217).</param>
+        /// <param name="pluralCategory">The plural category.</param>
+        /// <returns></returns>
+        public string FindCurrencyName(string currencyCode, PluralCategory pluralCategory)
+            => FindCurrencyPluralNames(currencyCode).TryGetValue(pluralCategory, out var name) ? name : null;
+
+        /// <summary>
+        /// Finds all plural forms of the currency name.
+        /// </summary>
+        /// <param name="currencyCode">The currency code (ISO 4217).</param>
+        /// <returns></returns>
+        public IReadOnlyDictionary<PluralCategory, string> FindCurrencyPluralNames(string currencyCode)
+        {
+            var code = NormalizeCurrencyCode(currencyCode);
+            var names = new Dictionary<PluralCategory, string>();
+
+            foreach (PluralCategory category in Enum.GetValues<PluralCategory>())
+            {
+                if (CurrencyNames.Value.TryGetValue($"{code}-count-{category.ToString().ToLowerInvariant()}", out var name))
+                {
+                    names.Add(category, name);
+                }
+            }
+
+            return new ReadOnlyDictionary<PluralCategory, string>(names);
+        }
+
+        /// <summary>
+        /// Finds the symbol of the currency.
+        /// </summary>
+        /// <param name="currencyCode">The currency code (ISO 4217).</param>
+        /// <param name="variant">The symbol variant (<see cref="AltVariant.Common"/>, <see cref="AltVariant.Narrow"/>, <see cref="AltVariant.Alternative"/> or <see cref="AltVariant.Formal"/>).</param>
+        /// <returns></returns>
+        public string FindCurrencySymbol(string currencyCode, AltVariant variant = AltVariant.Common)
+            => FindCurrencySymbols(currencyCode).FirstOrDefault(i => i.Key == variant).Value;
+
+        /// <summary>
+        /// Finds all variants of the currency symbol.
+        /// </summary>
+        /// <param name="currencyCode">The currency code (ISO 4217).</param>
+        /// <returns></returns>
+        public IReadOnlyDictionary<AltVariant, string> FindCurrencySymbols(string currencyCode)
+            => CurrencyNames.Value.FindLocaleValues($"{NormalizeCurrencyCode(currencyCode)}-symbol");
+
+        /// <summary>
+        /// Finds the currency code.
+        /// </summary>
+        /// <param name="currencyName">Name of the currency.</param>
+        /// <returns></returns>
+        public string FindCurrencyCode(string currencyName)
+            => CurrencyNames.Value
+                .FirstOrDefault(i => !i.Key.Contains('-') && string.Compare(i.Value, currencyName) == 0)
+                .Key;
+
+        private static string NormalizeCurrencyCode(string currencyCode)
+            => currencyCode?.ToUpperInvariant() ?? string.Empty;
+
+        #endregion FIND CURRENCY NAMES/SYMBOLS/CODES
     }
 }

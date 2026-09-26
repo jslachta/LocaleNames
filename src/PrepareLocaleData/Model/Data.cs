@@ -9,5 +9,8 @@ namespace PrepareLocaleData.Model
 
         [JsonProperty("localeDisplayNames")]
         public LocaleDisplayNames LocaleDisplayNames { get; set; }
+
+        [JsonProperty("numbers")]
+        public Numbers Numbers { get; set; }
     }
 }

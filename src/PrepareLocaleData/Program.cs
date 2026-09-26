@@ -3,6 +3,7 @@ using LocaleNames.Utils;
 using Newtonsoft.Json;
 using PrepareLocaleData.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -102,7 +103,7 @@ class Program
             .Where(i =>
                 i.FullName.Count(f => f == '/') > 2
                 && i.FullName.EndsWith(".json")
-                && (i.FullName.Contains("languages") || i.FullName.Contains("territories")));
+                && (i.FullName.Contains("languages") || i.FullName.Contains("territories") || i.FullName.Contains("currencies")));
 
         foreach (var entry in zipEntries)
         {
@@ -162,6 +163,12 @@ class Program
 
                 targetFilename = $"language.{sourceFilenameComponents[1]}.languages.json.gz";
             }
+            else if (sourceFilename.Contains("currencies"))
+            {
+                targetDictionary = FlattenCurrencies(cldrContainer.Main.Data.Numbers?.Currencies);
+
+                targetFilename = $"language.{sourceFilenameComponents[1]}.currencies.json.gz";
+            }
 
             if (targetDictionary == null)
             {
@@ -181,5 +188,43 @@ class Program
             var targetJson = JsonConvert.SerializeObject(dict, Formatting.None);
             File.WriteAllText(targetFilePath, GzipUtils.Compress(targetJson), new UTF8Encoding(false));
         }
+    }
+
+    /// <summary>
+    /// Flattens the CLDR currencies into a single dictionary.
+    /// The display name is stored under the currency code (e.g. "CZK"),
+    /// other values under the currency code with suffix
+    /// (e.g. "CZK-count-few", "CZK-symbol", "CZK-symbol-alt-narrow").
+    /// Formatting values (decimal, group, pattern) are skipped.
+    /// </summary>
+    private static Dictionary<string, string> FlattenCurrencies(Dictionary<string, Dictionary<string, string>> currencies)
+    {
+        Dictionary<string, string> result = new();
+
+        if (currencies == null)
+        {
+            return result;
+        }
+
+        foreach (var currency in currencies)
+        {
+            foreach (var value in currency.Value)
+            {
+                if (value.Key == "displayName")
+                {
+                    result[currency.Key] = value.Value;
+                }
+                else if (value.Key.StartsWith("displayName-count-"))
+                {
+                    result[$"{currency.Key}-{value.Key["displayName-".Length..]}"] = value.Value;
+                }
+                else if (value.Key.StartsWith("symbol"))
+                {
+                    result[$"{currency.Key}-{value.Key}"] = value.Value;
+                }
+            }
+        }
+
+        return result;
     }
 }

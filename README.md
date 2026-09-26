@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jslachta/LocaleNames/badge.svg?branch=master)](https://coveralls.io/github/jslachta/LocaleNames?branch=master)
 [![CodeFactor](https://codefactor.io/repository/github/jslachta/localenames/badge)](https://codefactor.io/repository/github/jslachta/localenames)
 
-.NET library providing localized language names and country names.
+.NET library providing localized language names, country names and currency names.
 
 The translation data are generated from [CLDR locale data for internationalization](https://github.com/unicode-org/cldr-json "CLDR locale data for internationalization"). 
 
@@ -44,6 +44,35 @@ var translatedCountryName = LocaleTranslationsFactory.ForCultureInfo(new Culture
 
 ```
 var countryCode = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
+```
+
+### Find all currency codes
+
+```
+var allCurrencyCodes = LocaleTranslationsFactory.ForLanguageCode("en-US").GetAllCurrencyCodes();
+```
+
+### Find currency name
+
+```
+var translations = LocaleTranslationsFactory.ForLanguageCode("cs-CZ");
+
+var currencyName = translations.FindCurrencyName("CZK");                        // česká koruna
+var pluralName = translations.FindCurrencyName("CZK", PluralCategory.Few);      // české koruny
+var pluralNames = translations.FindCurrencyPluralNames("CZK");                  // all plural forms
+```
+
+### Find currency symbol
+
+```
+var symbol = LocaleTranslationsFactory.ForLanguageCode("en-US").FindCurrencySymbol("CZK");                       // CZK
+var narrowSymbol = LocaleTranslationsFactory.ForLanguageCode("en-US").FindCurrencySymbol("CZK", AltVariant.Narrow); // Kč
+```
+
+### Find currency code
+
+```
+var currencyCode = LocaleTranslationsFactory.ForLanguageCode("cs-CZ").FindCurrencyCode("česká koruna");
 ```
 # Stats
 ![Alt](https://repobeats.axiom.co/api/embed/864145fa59a424553c94a73d2343776612860b15.svg "Repobeats analytics image")
