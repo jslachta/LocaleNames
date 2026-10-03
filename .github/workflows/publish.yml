@@ -1,0 +1,64 @@
+name: Publish snapshot
+
+# Manual publish of the current state of a branch to GitHub Packages and as a GitHub prerelease.
+# The release uses a snapshot-* tag, separate from the v* release tags handled by ci.yml.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  publish:
+    name: Publish snapshot
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: packages
+          path: packages
+
+      # --skip-duplicate: a second run from the same commit publishes nothing, because the
+      # version is derived from the commit count since the last v* tag.
+      - name: Push to GitHub Packages
+        run: >
+          dotnet nuget push "packages/*.nupkg"
+          --api-key "${{ secrets.GITHUB_TOKEN }}"
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          --skip-duplicate
+
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          TAG="snapshot-${VERSION}"
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" packages/*.nupkg --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" packages/*.nupkg \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "Snapshot ${VERSION}" \
+              --notes "Snapshot of \`${GITHUB_REF_NAME}\` at \`${GITHUB_SHA}\`." \
+              --prerelease \
+              --latest=false
+          fi
