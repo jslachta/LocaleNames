@@ -1,0 +1,145 @@
+name: Build
+
+# Shared by ci.yml and publish.yml so the two never drift apart. Not triggerable on its own.
+on:
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: false
+    outputs:
+      version:
+        description: Package version produced by this build.
+        value: ${{ jobs.build.outputs.version }}
+      prerelease:
+        description: Whether that version carries a prerelease label.
+        value: ${{ jobs.build.outputs.prerelease }}
+
+env:
+  CONFIGURATION: Release
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+  DOTNET_NOLOGO: '1'
+  SONAR_PROJECT_KEY: jslachta_LocaleNames
+  SONAR_ORGANIZATION: jslachta
+
+jobs:
+  build:
+    name: Library, tests and Sonar
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.pack.outputs.version }}
+      prerelease: ${{ steps.pack.outputs.prerelease }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # GitInfo derives the version from the nearest v* tag (src/Version.targets), and Sonar
+          # needs history for blame data. A shallow checkout would silently yield 0.0.0.
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Setup Java (SonarScanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Secrets are not available to pull requests from forks; Sonar is skipped there.
+      - name: Check Sonar availability
+        id: sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: echo "enabled=${{ env.SONAR_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Install SonarScanner
+        if: steps.sonar.outputs.enabled == 'true'
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Sonar begin
+        if: steps.sonar.outputs.enabled == 'true'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          dotnet sonarscanner begin
+          /k:"${{ env.SONAR_PROJECT_KEY }}"
+          /o:"${{ env.SONAR_ORGANIZATION }}"
+          /d:sonar.token="$SONAR_TOKEN"
+          /d:sonar.host.url="https://sonarcloud.io"
+          /d:sonar.cs.opencover.reportsPaths="out/coverage/coverage.opencover.xml"
+          /d:sonar.cs.vstest.reportsPaths="artifacts/test-results/*.trx"
+
+      - name: Restore
+        run: dotnet restore src/LocaleNames.sln
+
+      - name: Build
+        run: dotnet build src/LocaleNames.sln -c ${{ env.CONFIGURATION }} --no-restore
+
+      # coverlet.msbuild is configured in the test csproj (lcov by default); Sonar needs opencover.
+      - name: Test
+        run: >
+          dotnet test src/LocaleNames.Test/LocaleNames.Test.csproj
+          -c ${{ env.CONFIGURATION }}
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory artifacts/test-results
+          /p:CollectCoverage=true
+          /p:CoverletOutputFormat=opencover
+          /p:CoverletOutput=${{ github.workspace }}/out/coverage/
+
+      - name: Sonar end
+        if: steps.sonar.outputs.enabled == 'true'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+
+      - name: Pack
+        id: pack
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          dotnet pack src/LocaleNames/LocaleNames.csproj \
+            -c "$CONFIGURATION" \
+            --no-build \
+            -o artifacts/packages
+
+          PACKAGE=$(ls artifacts/packages/*.nupkg | head -1)
+          VERSION=$(basename "$PACKAGE" .nupkg | sed 's/^LocaleNames\.//')
+
+          # Anything with a prerelease label is not a stable release.
+          case "$VERSION" in
+            *-*) PRERELEASE=true ;;
+            *)   PRERELEASE=false ;;
+          esac
+
+          echo "version=$VERSION"       >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+
+          echo "Packed $VERSION (prerelease=$PRERELEASE)"
+          ls -1 artifacts/packages
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: |
+            artifacts/packages/*.nupkg
+            artifacts/packages/*.snupkg
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: artifacts/test-results
+          retention-days: 7
