@@ -314,7 +314,7 @@ namespace LocaleNames
             var code = NormalizeCurrencyCode(currencyCode);
             var names = new Dictionary<PluralCategory, string>();
 
-            foreach (PluralCategory category in Enum.GetValues<PluralCategory>())
+            foreach (PluralCategory category in Enum.GetValues(typeof(PluralCategory)).Cast<PluralCategory>())
             {
                 if (CurrencyNames.Value.TryGetValue($"{code}-count-{category.ToString().ToLowerInvariant()}", out var name))
                 {
