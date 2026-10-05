@@ -3,7 +3,7 @@
 		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
 		<Authors>Jiri Slachta</Authors>
 		<Copyright>Copyright © Jiri Slachta</Copyright>
-		<PackageTags>locale, translations</PackageTags>
+		<PackageTags>locale;localization;translations;cldr;country;language;currency</PackageTags>
 
 		<PackageId>LocaleNames</PackageId>
 		
@@ -15,7 +15,7 @@
 		<RepositoryType>git</RepositoryType>
 
 		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
-		<Description>The LocaleNames library provides language and country names translation to almost any language.</Description>
+		<Description>Localized names of languages, countries and currencies for .NET, with lookup in both directions. Powered by Unicode CLDR.</Description>
 
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 

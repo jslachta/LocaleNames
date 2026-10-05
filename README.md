@@ -1,82 +1,62 @@
-# Locale Names
-[![NuGet](https://img.shields.io/nuget/v/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/) 
-[![NuGet](https://img.shields.io/nuget/dt/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/)
+# LocaleNames
+
+[![NuGet](https://img.shields.io/nuget/v/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/)
+[![Downloads](https://img.shields.io/nuget/dt/LocaleNames.svg)](https://www.nuget.org/packages/LocaleNames/)
 [![Coverage Status](https://coveralls.io/repos/github/jslachta/LocaleNames/badge.svg?branch=master)](https://coveralls.io/github/jslachta/LocaleNames?branch=master)
 [![CodeFactor](https://codefactor.io/repository/github/jslachta/localenames/badge)](https://codefactor.io/repository/github/jslachta/localenames)
 
-.NET library providing localized language names, country names and currency names.
+Names of languages, countries and currencies in almost any language, for .NET. Look a name up by its code, or a code by its name.
 
-The translation data are generated from [CLDR locale data for internationalization](https://github.com/unicode-org/cldr-json "CLDR locale data for internationalization"). 
+The data comes from [Unicode CLDR](https://github.com/unicode-org/cldr-json), is embedded in the package, and needs no network access or OS culture data. Targets `netstandard2.0`, `net8.0` and `net10.0`.
 
-# Usage
-
-### Find all language codes
+## Install
 
 ```
-var allLanguageCodes = LocaleTranslationsFactory.ForLanguageCode("en-US").AllLanguageCodes;
+dotnet add package LocaleNames
 ```
 
-### Find language name
+## Usage
 
-```
-var translatedLanguageName = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US")).FindLanguageName("cs-CZ");
-```
+Get a translations object for the language you want the names in, then query it.
 
-### Find language code
-
-```
-var languageCode = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US")).FindLanguageCode("Czech");
+```csharp
+var cs = LocaleTranslationsFactory.ForLanguageCode("cs-CZ");
+var en = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US"));
 ```
 
-### Find all country codes
+### Languages
 
-```
-var allCountryCodes = LocaleTranslationsFactory.ForLanguageCode("en-US").AllCountryCodes;
-```
-
-### Find country name
-
-```
-var translatedCountryName = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US")).FindCountryName("DE");
+```csharp
+en.FindLanguageName("cs-CZ");   // Czech (Czechia)
+en.FindLanguageCode("Czech");   // cs
+en.AllLanguageCodes;
 ```
 
-### Find country code
+### Countries
 
-```
-var countryCode = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US")).FindCountryCode("Germany");
-```
-
-### Find all currency codes
-
-```
-var allCurrencyCodes = LocaleTranslationsFactory.ForLanguageCode("en-US").GetAllCurrencyCodes();
+```csharp
+en.FindCountryName("DE");       // Germany
+en.FindCountryCode("Germany");  // DE
+en.AllCountryCodes;
 ```
 
-### Find currency name
+### Currencies
 
-```
-var translations = LocaleTranslationsFactory.ForLanguageCode("cs-CZ");
+```csharp
+cs.FindCurrencyName("CZK");                      // česká koruna
+cs.FindCurrencyName("CZK", PluralCategory.Few);  // české koruny
+cs.FindCurrencyPluralNames("CZK");               // all plural forms
+cs.FindCurrencyCode("česká koruna");             // CZK
 
-var currencyName = translations.FindCurrencyName("CZK");                        // česká koruna
-var pluralName = translations.FindCurrencyName("CZK", PluralCategory.Few);      // české koruny
-var pluralNames = translations.FindCurrencyPluralNames("CZK");                  // all plural forms
-```
-
-### Find currency symbol
-
-```
-var symbol = LocaleTranslationsFactory.ForLanguageCode("en-US").FindCurrencySymbol("CZK");                       // CZK
-var narrowSymbol = LocaleTranslationsFactory.ForLanguageCode("en-US").FindCurrencySymbol("CZK", AltVariant.Narrow); // Kč
+en.FindCurrencySymbol("CZK");                       // CZK
+en.FindCurrencySymbol("CZK", AltVariant.Narrow);    // Kč
+en.GetAllCurrencyCodes();
 ```
 
-### Find currency code
+## Contributing
 
-```
-var currencyCode = LocaleTranslationsFactory.ForLanguageCode("cs-CZ").FindCurrencyCode("česká koruna");
-```
-# Stats
-![Alt](https://repobeats.axiom.co/api/embed/864145fa59a424553c94a73d2343776612860b15.svg "Repobeats analytics image")
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-# Contributing
+## Activity
 
-Contributions are welcome. Feel free to file issues and pull requests on the repo.
+![Repobeats](https://repobeats.axiom.co/api/embed/864145fa59a424553c94a73d2343776612860b15.svg "Repobeats analytics image")
