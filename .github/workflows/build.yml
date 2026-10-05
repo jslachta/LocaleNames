@@ -94,6 +94,14 @@ jobs:
           /p:CoverletOutputFormat=opencover
           /p:CoverletOutput=${{ github.workspace }}/out/coverage/
 
+      - name: Test LocaleNames.Embed
+        run: >
+          dotnet test src/LocaleNames.Embed.Test/LocaleNames.Embed.Test.csproj
+          -c ${{ env.CONFIGURATION }}
+          --no-build
+          --logger "trx;LogFileName=embed-test-results.trx"
+          --results-directory artifacts/test-results
+
       - name: Sonar end
         if: steps.sonar.outputs.enabled == 'true'
         env:
@@ -106,12 +114,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          dotnet pack src/LocaleNames/LocaleNames.csproj \
+          dotnet pack src/LocaleNames.sln \
             -c "$CONFIGURATION" \
             --no-build \
             -o artifacts/packages
 
-          PACKAGE=$(ls artifacts/packages/*.nupkg | head -1)
+          # The meta package; LocaleNames.Core, .Data and .Embed are packed next to it.
+          PACKAGE=$(ls artifacts/packages/LocaleNames.[0-9]*.nupkg | head -1)
           VERSION=$(basename "$PACKAGE" .nupkg | sed 's/^LocaleNames\.//')
 
           # Anything with a prerelease label is not a stable release.

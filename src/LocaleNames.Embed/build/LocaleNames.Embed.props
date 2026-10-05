@@ -1,0 +1,12 @@
+<Project>
+	<!--
+		Marks the referencing assembly as a holder of locale resources, so LocaleNames.Core finds them.
+		Needs GenerateAssemblyInfo (default); otherwise call LocaleResourceProvider.Register(assembly).
+	-->
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>LocaleNames.Resources</_Parameter1>
+			<_Parameter2>true</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+</Project>

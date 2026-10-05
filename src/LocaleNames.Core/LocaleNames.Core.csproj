@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+		<PackageId>LocaleNames.Core</PackageId>
+		<Description>Code of the LocaleNames library - lookup of localized names of languages, countries and currencies. Contains no data, reference LocaleNames.Data or LocaleNames.Embed for it.</Description>
+	</PropertyGroup>
+
+	<Import Project="..\Configuration.targets" />
+
+	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
+		<PackageReference Include="System.Text.Json" Version="[8.0.5,)" />
+	</ItemGroup>
+</Project>

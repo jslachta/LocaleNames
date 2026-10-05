@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!-- Build-only package: no assembly. Referencing it embeds the LocaleNames.Data resources into the referencing assembly. -->
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>LocaleNames.Embed</PackageId>
+		<Description>Embeds the LocaleNames CLDR data (names of languages, countries and currencies) directly into your assembly at build time, optionally only for selected locales.</Description>
+	</PropertyGroup>
+
+	<Import Project="..\Configuration.targets" />
+
+	<PropertyGroup>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IncludeSymbols>false</IncludeSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);NU5128;NU5100</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="build\**" Pack="true" PackagePath="build" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
+
+		<!-- Only the raw files and build props of the package are used, the assembly with the same data must not end up next to the consumer. -->
+		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" ExcludeAssets="compile;runtime;native" PrivateAssets="none" />
+	</ItemGroup>
+</Project>
