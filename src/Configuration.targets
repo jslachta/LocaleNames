@@ -9,5 +9,6 @@
 	</PropertyGroup>
 
 	<Import Project="Version.targets" />
+	<Import Project="Packaging.targets" />
 
 </Project>

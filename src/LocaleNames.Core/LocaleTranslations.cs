@@ -137,16 +137,9 @@ namespace LocaleNames
             key = key.Replace("-", "_");
             bool isFound = false;
 
-            string resourceName = $"language.{key}.{postfix}.json.gz";
-            string targetManifestResourceName = this
-                .GetType().Assembly
-                .GetManifestResourceNames()
-                .ToList()
-                .Find(i => i.EndsWith(resourceName));
-
-            if (targetManifestResourceName != null)
+            using (Stream resourceStream = LocaleResourceProvider.Open($"language.{key}.{postfix}.json.gz"))
             {
-                using (Stream resourceStream = this.GetType().Assembly.GetManifestResourceStream(targetManifestResourceName))
+                if (resourceStream != null)
                 {
                     using (StreamReader streamReader = new(resourceStream))
                     {

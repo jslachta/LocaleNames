@@ -44,7 +44,7 @@ class Program
         get => Path.Combine(
             AssemblyDirectory,
             "..", "..", "..", "..",
-            "LocaleNames", "Resources.include");
+            "LocaleNames.Data", "Resources.include");
     }
 
     public static string ResourceDirectory
@@ -52,7 +52,7 @@ class Program
         get => Path.Combine(
             AssemblyDirectory,
             "..", "..", "..", "..",
-            "LocaleNames", "Resources");
+            "LocaleNames.Data", "Resources");
     }
 
     static async Task Main(string[] args)

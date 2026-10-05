@@ -1,45 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+	<!-- Meta package: contains no code, only references LocaleNames.Core and LocaleNames.Data. -->
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
-		<Authors>Jiri Slachta</Authors>
-		<Copyright>Copyright © Jiri Slachta</Copyright>
-		<PackageTags>locale;localization;translations;cldr;country;language;currency</PackageTags>
-
 		<PackageId>LocaleNames</PackageId>
-		
-		<PackageReleaseNotes>Check: https://github.com/jslachta/LocaleNames/releases </PackageReleaseNotes>
-		<PackageProjectUrl>https://github.com/jslachta/LocaleNames</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/jslachta/LocaleNames</RepositoryUrl>
-
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryType>git</RepositoryType>
-
-		<PackageLicenseExpression>Unlicense</PackageLicenseExpression>
 		<Description>Localized names of languages, countries and currencies for .NET, with lookup in both directions. Powered by Unicode CLDR.</Description>
-
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-
-		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<IncludeSymbols>true</IncludeSymbols>
-
-		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
-	
+
 	<Import Project="..\Configuration.targets" />
 
-	<ItemGroup>
-		<None Include="..\..\README.md" Pack="True" PackagePath="\" Link="Properties\README.md" />
-	</ItemGroup>
+	<PropertyGroup>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IncludeSymbols>false</IncludeSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+	</PropertyGroup>
 
-	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
-		<PackageReference Include="System.Text.Json" Version="[8.0.5,)" />
-	</ItemGroup>
-
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\language.*.json.gz" />
+		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
+		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" />
 	</ItemGroup>
 </Project>

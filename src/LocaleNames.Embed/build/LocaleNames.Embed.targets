@@ -1,0 +1,38 @@
+<Project>
+	<!--
+		Properties:
+		  LocaleNamesEmbedLocales   Semicolon separated locales to embed, e.g. "cs;en;en_GB" (underscore, as in the file names).
+		                            Every locale has to be listed on its own, "en" does not include "en_GB". Empty = all.
+		  LocaleNamesDataDirectory  Directory with the language.*.json.gz files. Set by the LocaleNames.Data
+		                            package, or resolved from a LocaleNames.Data project reference.
+	-->
+	<Target Name="LocaleNamesEmbedResources" BeforeTargets="AssignTargetPaths">
+
+		<ItemGroup>
+			<_LocaleNamesDataProject Include="@(ProjectReference)" Condition="'%(ProjectReference.Filename)' == 'LocaleNames.Data'" />
+		</ItemGroup>
+
+		<PropertyGroup>
+			<_LocaleNamesDir>$(LocaleNamesDataDirectory)</_LocaleNamesDir>
+			<_LocaleNamesDir Condition="'$(_LocaleNamesDir)' == '' And '@(_LocaleNamesDataProject)' != ''">%(_LocaleNamesDataProject.RootDir)%(_LocaleNamesDataProject.Directory)Resources</_LocaleNamesDir>
+		</PropertyGroup>
+
+		<Error Condition="'$(_LocaleNamesDir)' == '' Or !Exists('$(_LocaleNamesDir)')"
+		       Text="LocaleNames.Embed: the LocaleNames.Data resources were not found (looked in '$(_LocaleNamesDir)'). Set LocaleNamesDataDirectory." />
+
+		<ItemGroup>
+			<_LocaleNamesLocale Include="$(LocaleNamesEmbedLocales)" />
+			<_LocaleNamesFile Include="$(_LocaleNamesDir)\language.*.json.gz" Condition="'@(_LocaleNamesLocale)' == ''" />
+			<_LocaleNamesFile Include="$(_LocaleNamesDir)\language.%(_LocaleNamesLocale.Identity).*.json.gz" Condition="'@(_LocaleNamesLocale)' != ''" />
+		</ItemGroup>
+
+		<Error Condition="'@(_LocaleNamesFile)' == ''"
+		       Text="LocaleNames.Embed: no resources match LocaleNamesEmbedLocales='$(LocaleNamesEmbedLocales)' in '$(_LocaleNamesDir)'." />
+
+		<ItemGroup>
+			<EmbeddedResource Include="@(_LocaleNamesFile)"
+			                  LogicalName="LocaleNames.Resources.%(Filename)%(Extension)"
+			                  Visible="false" />
+		</ItemGroup>
+	</Target>
+</Project>

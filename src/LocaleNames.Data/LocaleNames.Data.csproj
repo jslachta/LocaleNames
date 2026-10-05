@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>LocaleNames.Data</PackageId>
+		<Description>Unicode CLDR data (names of languages, countries and currencies) for the LocaleNames library, embedded in the assembly.</Description>
+	</PropertyGroup>
+
+	<Import Project="..\Configuration.targets" />
+
+	<PropertyGroup>
+		<!-- Resources only, there is no code to document. -->
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\language.*.json.gz" />
+
+		<!-- Raw copy of the same files, consumed by LocaleNames.Embed to embed them into another assembly. -->
+		<None Include="Resources\language.*.json.gz" Pack="true" PackagePath="resources" Visible="false" />
+
+		<None Include="build\**" Pack="true" PackagePath="build" />
+	</ItemGroup>
+</Project>

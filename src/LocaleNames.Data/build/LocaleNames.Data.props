@@ -1,0 +1,6 @@
+<Project>
+	<!-- Tells LocaleNames.Embed where the raw resource files of this package are. -->
+	<PropertyGroup>
+		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == ''">$(MSBuildThisFileDirectory)..\resources</LocaleNamesDataDirectory>
+	</PropertyGroup>
+</Project>

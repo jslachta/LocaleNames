@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!--
+		Verifies LocaleNames.Embed: this assembly references only LocaleNames.Core, the data comes from the
+		resources embedded into it at build time (a subset of locales, to verify the filter too).
+		LocaleNames.Data is referenced just to be built and located, its assembly must not be copied here.
+	-->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<LocaleNamesEmbedLocales>cs;en;en_GB</LocaleNamesEmbedLocales>
+		<!-- No marker attribute is generated, the test registers the assembly explicitly. -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<Import Project="..\Configuration.targets" />
+
+	<!-- Inside the repository there is no package to import these automatically. -->
+	<Import Project="..\LocaleNames.Embed\build\LocaleNames.Embed.props" />
+	<Import Project="..\LocaleNames.Embed\build\LocaleNames.Embed.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
+		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+		<PackageReference Include="MSTest.TestAdapter" Version="4.4.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="4.4.1" />
+	</ItemGroup>
+</Project>
