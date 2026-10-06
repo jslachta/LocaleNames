@@ -105,7 +105,13 @@ namespace LocaleNames
         {
             IDictionary<string, string> resultDictionary = null;
 
-            var result = LoadDictionary(cultureInfo.Name, postfix, ref resultDictionary);
+            var result = false;
+
+            // walk the culture chain (e.g. sr-Latn-RS -> sr-Latn -> sr) so that intermediate script locales are honored
+            for (var culture = cultureInfo; !result && !string.IsNullOrEmpty(culture.Name); culture = culture.Parent)
+            {
+                result = LoadDictionary(culture.Name, postfix, ref resultDictionary);
+            }
 
             if (!result)
             {

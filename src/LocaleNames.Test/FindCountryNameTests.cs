@@ -24,6 +24,30 @@ namespace LocaleNames.Test
         }
 
         /// <summary>
+        /// Fallback uses the intermediate script locale (sr-Latn-RS -> sr_Latn, not sr).
+        /// </summary>
+        [TestMethod]
+        public void Find_country_name_falls_back_to_script_locale()
+        {
+            // values taken from language.sr_Latn.territories and language.zh_Hant.territories resources
+            Assert.AreEqual("Nemačka", LocaleTranslationsFactory.ForLanguageCode("sr-Latn-RS").FindCountryName("DE"));
+            Assert.AreEqual("德國", LocaleTranslationsFactory.ForLanguageCode("zh-TW").FindCountryName("DE"));
+        }
+
+        /// <summary>
+        /// Fallback through the culture chain does not change results of other cultures.
+        /// </summary>
+        [TestMethod]
+        public void Find_country_name_fallback_regression()
+        {
+            // values were verified against the behavior before the culture chain fallback was introduced
+            Assert.AreEqual("Německo", LocaleTranslationsFactory.ForLanguageCode("cs-CZ").FindCountryName("DE"));
+            Assert.AreEqual("Germany", LocaleTranslationsFactory.ForLanguageCode("en-US").FindCountryName("DE"));
+            Assert.AreEqual("Alemanha", LocaleTranslationsFactory.ForLanguageCode("pt-PT").FindCountryName("DE"));
+            Assert.AreEqual("Deutschland", LocaleTranslationsFactory.ForLanguageCode("de-AT").FindCountryName("DE"));
+        }
+
+        /// <summary>
         /// Finds all variants of country name by code.
         /// </summary>
         [TestMethod]
