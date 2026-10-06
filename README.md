@@ -57,9 +57,9 @@ var en = LocaleTranslationsFactory.ForCultureInfo(new CultureInfo("en-US"));
 ### Languages
 
 ```csharp
-en.FindLanguageName("cs-CZ");   // Czech (Czechia)
+en.FindLanguageName("cs-CZ");   // Czech
 en.FindLanguageCode("Czech");   // cs
-en.AllLanguageCodes;
+en.GetAllLanguageCodes();
 ```
 
 ### Countries
@@ -67,7 +67,7 @@ en.AllLanguageCodes;
 ```csharp
 en.FindCountryName("DE");       // Germany
 en.FindCountryCode("Germany");  // DE
-en.AllCountryCodes;
+en.GetAllCountryCodes();
 ```
 
 ### Currencies
