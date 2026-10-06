@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LocaleNames.Test
 {
@@ -51,6 +53,31 @@ namespace LocaleNames.Test
             Assert.AreEqual(new System.Globalization.CultureInfo("cs-CZ"), translations.CultureInfo);
             Assert.IsFalse(translations.AreCountryNameTranslationsEmpty);
             Assert.IsFalse(translations.AreLanguageTranslationsEmpty);
+        }
+
+        /// <summary>
+        /// Concurrent calls must all receive the same cached instance.
+        /// </summary>
+        [TestMethod]
+        public void Factory_ForLanguageCode_Concurrent_Calls_Return_Same_Instance()
+        {
+            LocaleTranslationsFactory.ClearCache();
+
+            var results = new LocaleTranslations[100];
+
+            Parallel.For(0, results.Length, i => results[i] = LocaleTranslationsFactory.ForLanguageCode("fr"));
+
+            Assert.IsTrue(results.All(r => ReferenceEquals(r, results[0])));
+        }
+
+        /// <summary>
+        /// Passing a null cultureInfo to <see cref="LocaleTranslationsFactory.ForCultureInfo"/>
+        /// throws <see cref="ArgumentNullException"/>.
+        /// </summary>
+        [TestMethod]
+        public void Factory_ForCultureInfo_Throws_ArgumentNullException_On_Null_CultureInfo()
+        {
+            Assert.Throws<ArgumentNullException>(() => LocaleTranslationsFactory.ForCultureInfo(null));
         }
 
         /// <summary>

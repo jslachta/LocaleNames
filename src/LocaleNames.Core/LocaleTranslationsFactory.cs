@@ -58,20 +58,19 @@ namespace LocaleNames
         /// <returns></returns>
         public static LocaleTranslations ForCultureInfo(CultureInfo cultureInfo)
         {
-            if (CachedLocaleNames.ContainsKey(cultureInfo))
+            if (cultureInfo == null)
             {
-                var cachedlocalenames = CachedLocaleNames[cultureInfo];
+                throw new ArgumentNullException(nameof(cultureInfo));
+            }
+
+            if (CachedLocaleNames.TryGetValue(cultureInfo, out var cachedlocalenames))
+            {
                 cachedlocalenames.IsFromCache = true;
 
                 return cachedlocalenames;
             }
-            else
-            {
-                var localeNames = new LocaleTranslations(cultureInfo);
-                CachedLocaleNames.TryAdd(cultureInfo, localeNames);
 
-                return localeNames;
-            }
+            return CachedLocaleNames.GetOrAdd(cultureInfo, c => new LocaleTranslations(c));
         }
     }
 }
