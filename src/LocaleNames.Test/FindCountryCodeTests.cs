@@ -53,5 +53,16 @@ namespace LocaleNames.Test
 
             Assert.AreEqual("GB", localeNames.FindCountryCode("United Kingdom"));
         }
+
+        /// <summary>
+        /// Unknown country name returns null instead of throwing.
+        /// </summary>
+        [TestMethod]
+        public void Find_country_code_by_unknown_name_returns_null()
+        {
+            var localeNames = LocaleTranslationsFactory.ForLanguageCode("en-US");
+
+            Assert.IsNull(localeNames.FindCountryCode("NonExistingCountryName"));
+        }
     }
 }
