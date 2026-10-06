@@ -263,7 +263,7 @@ namespace LocaleNames
             var value = CountryNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
             var result = value.Key;
 
-            return result.StripLocaleVariants();
+            return result?.StripLocaleVariants();
         }
 
         #endregion FIND COUNTRY NAMES/CODES
