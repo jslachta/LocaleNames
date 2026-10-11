@@ -34,5 +34,18 @@ namespace LocaleNames.Extensions
                     return string.Empty;
             }
         }
+
+        /// <summary>
+        /// Gets the locale postfix of a single variant.
+        /// </summary>
+        /// <param name="variant">The variant.</param>
+        /// <param name="postfix">The postfix, empty for <see cref="AltVariant.Common"/>.</param>
+        /// <returns><c>false</c> for <see cref="AltVariant.None"/> and values that are not a single variant.</returns>
+        public static bool TryGetLocalePostfix(this AltVariant variant, out string postfix)
+        {
+            postfix = variant.GetLocalePostfix();
+
+            return postfix.Length != 0 || variant == AltVariant.Common;
+        }
     }
 }

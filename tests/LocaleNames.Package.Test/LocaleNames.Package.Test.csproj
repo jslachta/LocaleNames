@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!--
+		Consumes the PACKED packages (not the projects), the way a user does, to verify what the project references can not:
+		the build assets of the packages, the selection of locales, and trimming and native AOT.
+		Not part of the solution. Run by run.sh, which sets the properties below:
+
+		  LnPackage         LocaleNames | LocaleNames.Data | LocaleNames.Data.NoBuild (Data without its build assets)
+		  LnAot             true = published with native AOT
+		  LnSelect          true = LocaleNamesLocales is set
+		  LocaleNamesVersion  version of the packages
+	-->
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<PublishAot Condition="'$(LnAot)' == 'true'">true</PublishAot>
+		<LocaleNamesLocales Condition="'$(LnSelect)' == 'true'">cs;en;en_GB;sr_Latn</LocaleNamesLocales>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LocaleNames" Version="$(LocaleNamesVersion)" Condition="'$(LnPackage)' == 'LocaleNames'" />
+		<PackageReference Include="LocaleNames.Data" Version="$(LocaleNamesVersion)" Condition="'$(LnPackage)' == 'LocaleNames.Data'" />
+		<PackageReference Include="LocaleNames.Data" Version="$(LocaleNamesVersion)" ExcludeAssets="build" Condition="'$(LnPackage)' == 'LocaleNames.Data.NoBuild'" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\samples\LocaleNames.Sample.Aot\Program.cs" Link="Program.cs" />
+	</ItemGroup>
+</Project>

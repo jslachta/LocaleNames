@@ -65,8 +65,6 @@ namespace LocaleNames
 
             if (CachedLocaleNames.TryGetValue(cultureInfo, out var cachedlocalenames))
             {
-                cachedlocalenames.IsFromCache = true;
-
                 return cachedlocalenames;
             }
 

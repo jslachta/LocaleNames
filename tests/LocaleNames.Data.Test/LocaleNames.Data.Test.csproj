@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!--
+		Verifies the selection of locales (LocaleNamesLocales): this assembly references only LocaleNames.Core, the data
+		comes from the resources embedded into it at build time (a subset of locales, to verify the filter too).
+		LocaleNames.Data is referenced only to be built first, its assembly must not be used here.
+	-->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<LocaleNamesLocales>cs;en;en_GB</LocaleNamesLocales>
+		<!-- No marker attribute is generated, the test registers the assembly explicitly. -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<Import Project="..\..\targets\Configuration.targets" />
+
+	<!-- Inside the repository there is no package to import these automatically. -->
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.props" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\LocaleNames.Core\LocaleNames.Core.csproj" />
+		<ProjectReference Include="..\..\src\LocaleNames.Data\LocaleNames.Data.csproj" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
+	</ItemGroup>
+</Project>

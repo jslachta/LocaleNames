@@ -1,0 +1,14 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Platforms>AnyCPU</Platforms>
+		<RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))</RepoRoot>
+		<CodeAnalysisRuleSet>$(RepoRoot)\targets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<IsPackable Condition="'$(PackageId)' != ''">true</IsPackable>
+		<IsPackable Condition="'$(PackageId)' == ''">false</IsPackable>
+	</PropertyGroup>
+
+	<Import Project="Version.targets" />
+	<Import Project="Packaging.targets" />
+
+</Project>

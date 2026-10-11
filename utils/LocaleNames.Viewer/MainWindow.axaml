@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:LocaleNames.Viewer"
+        x:Class="LocaleNames.Viewer.MainWindow"
+        Title="LocaleNames viewer"
+        Width="900" Height="640" MinWidth="520" MinHeight="320"
+        DragDrop.AllowDrop="True">
+	<Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+		<Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+			<Button x:Name="OpenButton" Grid.Column="0" Content="Open .lnb…" />
+			<TextBox x:Name="FilterBox" Grid.Column="1"
+			         PlaceholderText="Filter by code or translation" IsEnabled="False" />
+		</Grid>
+
+		<TextBlock x:Name="InfoText" Grid.Row="1" Margin="0,10,0,6"
+		           Text="Open a language.{locale}.{type}.lnb file, or drop it here." />
+
+		<DataGrid x:Name="Grid" Grid.Row="2"
+		          IsReadOnly="True" CanUserSortColumns="True" CanUserResizeColumns="True"
+		          GridLinesVisibility="Horizontal" SelectionMode="Extended">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="#" Binding="{Binding Index}" x:DataType="vm:LnbRow" Width="70" />
+				<DataGridTextColumn Header="Code" Binding="{Binding Key}" x:DataType="vm:LnbRow" Width="220" />
+				<DataGridTextColumn Header="Translation" Binding="{Binding Value}" x:DataType="vm:LnbRow" Width="*" />
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<TextBlock x:Name="StatusText" Grid.Row="3" Margin="0,8,0,0" Opacity="0.7" />
+	</Grid>
+</Window>

@@ -1,14 +1,15 @@
 ﻿using LocaleNames.Enumerations;
 using LocaleNames.Extensions;
-using LocaleNames.Model;
 using LocaleNames.Utils;
 using System;
 using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Collections.Frozen;
+#endif
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace LocaleNames
 {
@@ -18,6 +19,13 @@ namespace LocaleNames
     public class LocaleTranslations
     {
         #region PROPERTIES
+
+        // listed explicitly: Enum.GetValues(Type) is not safe for native AOT; with the postfix of the resource key
+        private static readonly KeyValuePair<PluralCategory, string>[] PluralCategories =
+        {
+            new(PluralCategory.Zero, "-count-zero"), new(PluralCategory.One, "-count-one"), new(PluralCategory.Two, "-count-two"),
+            new(PluralCategory.Few, "-count-few"), new(PluralCategory.Many, "-count-many"), new(PluralCategory.Other, "-count-other"),
+        };
 
         /// <summary>
         /// Gets a value indicating whether are language translations empty.
@@ -33,14 +41,6 @@ namespace LocaleNames
         /// Gets a value indicating whether are currency translations empty.
         /// </summary>
         public bool AreCurrencyTranslationsEmpty => CurrencyNames.Value.Keys.Count <= 0;
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is from cache.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is from cache; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsFromCache { get; internal set; } = false;
 
         /// <summary>
         /// Gets the culture information.
@@ -74,6 +74,15 @@ namespace LocaleNames
         /// </value>
         private readonly Lazy<ReadOnlyDictionary<string, string>> CurrencyNames;
 
+        // reverse lookups (name -> code), built on the first use
+        private readonly Lazy<IReadOnlyDictionary<string, string>> LanguageCodes;
+        private readonly Lazy<IReadOnlyDictionary<string, string>> CountryCodes;
+        private readonly Lazy<IReadOnlyDictionary<string, string>> CurrencyCodes;
+
+        private readonly Lazy<IReadOnlyCollection<string>> AllLanguageCodes;
+        private readonly Lazy<IReadOnlyCollection<string>> AllCountryCodes;
+        private readonly Lazy<IReadOnlyCollection<string>> AllCurrencyCodes;
+
         #endregion PROPERTIES
 
         #region CONSTRUCTOR
@@ -89,6 +98,20 @@ namespace LocaleNames
             CountryNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "territories"), true);
             LanguageNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "languages"), true);
             CurrencyNames = new Lazy<ReadOnlyDictionary<string, string>>(() => TryLoadDictionary(CultureInfo, "currencies"), true);
+
+            LanguageCodes = new Lazy<IReadOnlyDictionary<string, string>>(
+                () => BuildCodeLookup(LanguageNames.Value, key => key), true);
+            CountryCodes = new Lazy<IReadOnlyDictionary<string, string>>(
+                () => BuildCodeLookup(CountryNames.Value, key => key.StripLocaleVariants()), true);
+            CurrencyCodes = new Lazy<IReadOnlyDictionary<string, string>>(
+                () => BuildCodeLookup(CurrencyNames.Value.Where(i => !i.Key.Contains('-')), key => key), true);
+
+            AllLanguageCodes = new Lazy<IReadOnlyCollection<string>>(
+                () => ToCollection(LanguageNames.Value.Select(i => i.Key.StripLocaleVariants())), true);
+            AllCountryCodes = new Lazy<IReadOnlyCollection<string>>(
+                () => ToCollection(CountryNames.Value.Where(i => !i.Key.IsCountryCodeContinent()).Select(i => i.Key.StripLocaleVariants())), true);
+            AllCurrencyCodes = new Lazy<IReadOnlyCollection<string>>(
+                () => ToCollection(CurrencyNames.Value.Select(i => i.Key.Split('-')[0])), true);
         }
 
         #endregion CONSTRUCTOR
@@ -101,7 +124,7 @@ namespace LocaleNames
         /// <param name="cultureInfo">The culture information.</param>
         /// <param name="postfix">The postfix.</param>
         /// <returns></returns>
-        private ReadOnlyDictionary<string, string> TryLoadDictionary(CultureInfo cultureInfo, string postfix)
+        private static ReadOnlyDictionary<string, string> TryLoadDictionary(CultureInfo cultureInfo, string postfix)
         {
             IDictionary<string, string> resultDictionary = null;
 
@@ -138,24 +161,18 @@ namespace LocaleNames
         /// <param name="postfix">The postfix.</param>
         /// <param name="dict">The dictionary.</param>
         /// <returns></returns>
-        private bool LoadDictionary(string key, string postfix, ref IDictionary<string, string> dict)
+        private static bool LoadDictionary(string key, string postfix, ref IDictionary<string, string> dict)
         {
             key = key.Replace("-", "_");
             bool isFound = false;
 
-            using (Stream resourceStream = LocaleResourceProvider.Open($"language.{key}.{postfix}.json.gz"))
+            using (Stream resourceStream = LocaleResourceProvider.Open($"language.{key}.{postfix}.lnb"))
             {
                 if (resourceStream != null)
                 {
-                    using (StreamReader streamReader = new(resourceStream))
-                    {
-                        var compressedResourceValue = streamReader.ReadToEnd();
-                        var decompressedResourceValue = GzipUtils.Decompress(compressedResourceValue);
+                    dict = LocaleResourceFormat.Deserialize(resourceStream);
 
-                        dict = JsonSerializer.Deserialize<ResourceLocale>(decompressedResourceValue).Values;
-
-                        isFound = true;
-                    }
+                    isFound = true;
                 }
             }
 
@@ -167,6 +184,78 @@ namespace LocaleNames
             return isFound;
         }
 
+        /// <summary>
+        /// Builds the lookup of a code by its name. The first entry of a name wins, as the entries keep the order of the data.
+        /// </summary>
+        private static IReadOnlyDictionary<string, string> BuildCodeLookup(
+            IEnumerable<KeyValuePair<string, string>> entries,
+            Func<string, string> codeSelector)
+        {
+            var result = new Dictionary<string, string>(StringComparer.Ordinal);
+
+            foreach (var item in entries)
+            {
+                var name = Normalize(item.Value);
+
+                if (!result.ContainsKey(name))
+                {
+                    result.Add(name, codeSelector(item.Key));
+                }
+            }
+
+#if NET8_0_OR_GREATER
+            return result.ToFrozenDictionary(StringComparer.Ordinal);
+#else
+            return result;
+#endif
+        }
+
+        private static string FindCode(IReadOnlyDictionary<string, string> codes, string name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            return codes.TryGetValue(Normalize(name), out var code) ? code : null;
+        }
+
+        // The names are compared ordinally, like the culture sensitive comparison they replace, canonically
+        // equivalent forms (NFC, NFD) match each other and the invisible characters are ignored (the data differs
+        // in them, e.g. in the zero width non-joiner, between the forms of the same name).
+        private static string Normalize(string value)
+        {
+            if (!value.IsNormalized())
+            {
+                value = value.Normalize();
+            }
+
+            if (!value.Any(IsIgnored))
+            {
+                return value;
+            }
+
+            var result = new System.Text.StringBuilder(value.Length);
+
+            foreach (var c in value.Where(c => !IsIgnored(c)))
+            {
+                result.Append(c);
+            }
+
+            return result.ToString();
+        }
+
+        // invisible formatting characters (soft hyphen, zero width joiners, direction marks, byte order mark, ...)
+        private static bool IsIgnored(char c) => char.GetUnicodeCategory(c) == UnicodeCategory.Format;
+
+        private static ReadOnlyCollection<string> ToCollection(IEnumerable<string> codes)
+            => new ReadOnlyCollection<string>(codes.Distinct().ToList());
+
+        private static string FindLocaleValue(ReadOnlyDictionary<string, string> values, string key, AltVariant variant)
+            => key != null && variant.TryGetLocalePostfix(out var postfix) && values.TryGetValue(key + postfix, out var value)
+                ? value
+                : null;
+
         #endregion DICTIONARY INIT
 
         #region FIND LANGUAGE NAMES/CODES
@@ -175,7 +264,7 @@ namespace LocaleNames
         /// Provides all language codes.
         /// </summary>
         public IReadOnlyCollection<string> GetAllLanguageCodes()
-            => new ReadOnlyCollection<string>(LanguageNames.Value.Select(i => i.Key.StripLocaleVariants()).Distinct().ToList());
+            => AllLanguageCodes.Value;
 
         /// <summary>
         /// Finds the name of the country.
@@ -201,12 +290,12 @@ namespace LocaleNames
 
                 languageNames = LanguageNames.Value.FindLocaleValues(ci.Name);
 
-                if (!languageNames.Any())
+                if (languageNames.Count == 0)
                 {
                     languageNames = LanguageNames.Value.FindLocaleValues(ci.TwoLetterISOLanguageName);
                 }
 
-                if (!languageNames.Any())
+                if (languageNames.Count == 0)
                 {
                     languageNames = LanguageNames.Value.FindLocaleValues(ci.ThreeLetterISOLanguageName);
                 }
@@ -225,7 +314,7 @@ namespace LocaleNames
         /// <param name="countryName">Name of the country.</param>
         /// <returns></returns>
         public string FindLanguageCode(string countryName)
-            => LanguageNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0).Key;
+            => FindCode(LanguageCodes.Value, countryName);
 
         #endregion FIND LANGUAGE NAMES/CODES
 
@@ -235,12 +324,7 @@ namespace LocaleNames
         /// Provides all country codes.
         /// </summary>
         public IReadOnlyCollection<string> GetAllCountryCodes()
-            => new ReadOnlyCollection<string>(
-                CountryNames
-                .Value
-                .Where(i => !i.Key.IsCountryCodeContinent())
-                .Select(i => i.Key.StripLocaleVariants())
-                .Distinct().ToList());
+            => AllCountryCodes.Value;
 
         /// <summary>
         /// Finds the name of the country.
@@ -249,7 +333,7 @@ namespace LocaleNames
         /// <param name="variant"></param>
         /// <returns></returns>
         public string FindCountryName(string countryCode, AltVariant variant = AltVariant.Common)
-            => FindCountryNames(countryCode).FirstOrDefault(i => i.Key == variant).Value;
+            => FindLocaleValue(CountryNames.Value, countryCode, variant);
 
         /// <summary>
         /// Finds all name variants of the country.
@@ -265,12 +349,7 @@ namespace LocaleNames
         /// <param name="countryName">Name of the country.</param>
         /// <returns></returns>
         public string FindCountryCode(string countryName)
-        {
-            var value = CountryNames.Value.FirstOrDefault(i => string.Compare(i.Value, countryName) == 0);
-            var result = value.Key;
-
-            return result?.StripLocaleVariants();
-        }
+            => FindCode(CountryCodes.Value, countryName);
 
         #endregion FIND COUNTRY NAMES/CODES
 
@@ -280,11 +359,7 @@ namespace LocaleNames
         /// Provides all currency codes (ISO 4217).
         /// </summary>
         public IReadOnlyCollection<string> GetAllCurrencyCodes()
-            => new ReadOnlyCollection<string>(
-                CurrencyNames
-                .Value
-                .Select(i => i.Key.Split('-')[0])
-                .Distinct().ToList());
+            => AllCurrencyCodes.Value;
 
         /// <summary>
         /// Finds the name of the currency.
@@ -313,11 +388,11 @@ namespace LocaleNames
             var code = NormalizeCurrencyCode(currencyCode);
             var names = new Dictionary<PluralCategory, string>();
 
-            foreach (PluralCategory category in Enum.GetValues(typeof(PluralCategory)).Cast<PluralCategory>())
+            foreach (var category in PluralCategories)
             {
-                if (CurrencyNames.Value.TryGetValue($"{code}-count-{category.ToString().ToLowerInvariant()}", out var name))
+                if (CurrencyNames.Value.TryGetValue(code + category.Value, out var name))
                 {
-                    names.Add(category, name);
+                    names.Add(category.Key, name);
                 }
             }
 
@@ -331,7 +406,7 @@ namespace LocaleNames
         /// <param name="variant">The symbol variant (<see cref="AltVariant.Common"/>, <see cref="AltVariant.Narrow"/>, <see cref="AltVariant.Alternative"/> or <see cref="AltVariant.Formal"/>).</param>
         /// <returns></returns>
         public string FindCurrencySymbol(string currencyCode, AltVariant variant = AltVariant.Common)
-            => FindCurrencySymbols(currencyCode).FirstOrDefault(i => i.Key == variant).Value;
+            => FindLocaleValue(CurrencyNames.Value, $"{NormalizeCurrencyCode(currencyCode)}-symbol", variant);
 
         /// <summary>
         /// Finds all variants of the currency symbol.
@@ -347,9 +422,7 @@ namespace LocaleNames
         /// <param name="currencyName">Name of the currency.</param>
         /// <returns></returns>
         public string FindCurrencyCode(string currencyName)
-            => CurrencyNames.Value
-                .FirstOrDefault(i => !i.Key.Contains('-') && string.Compare(i.Value, currencyName) == 0)
-                .Key;
+            => FindCode(CurrencyCodes.Value, currencyName);
 
         private static string NormalizeCurrencyCode(string currencyCode)
             => currencyCode?.ToUpperInvariant() ?? string.Empty;
