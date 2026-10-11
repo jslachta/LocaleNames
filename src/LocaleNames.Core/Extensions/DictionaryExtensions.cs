@@ -1,4 +1,5 @@
 ﻿using LocaleNames.Enumerations;
+using LocaleNames.Infrastructure.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,16 @@ namespace LocaleNames.Extensions
     /// </summary>
     public static class DictionaryExtensions
     {
+        // in the order the variants are returned in
+        private static readonly AltVariant[] Variants =
+        {
+            AltVariant.Common, AltVariant.Alternative, AltVariant.Short, AltVariant.Long,
+            AltVariant.Menu, AltVariant.Narrow, AltVariant.Formal,
+        };
+
+        private static readonly IReadOnlyDictionary<AltVariant, string> Empty =
+            new ReadOnlyDictionary<AltVariant, string>(new Dictionary<AltVariant, string>());
+
         /// <summary>
         /// Finds all name variants of the country.
         /// </summary>
@@ -21,44 +32,20 @@ namespace LocaleNames.Extensions
             this IDictionary<string, string> sourceDictionary,
             string key)
         {
-            Dictionary<AltVariant, string> names = new Dictionary<AltVariant, string>();
+            ExceptionGuard.ThrowIfNull(key);
 
-            if (sourceDictionary.ContainsKey(key))
+            Dictionary<AltVariant, string> names = null;
+
+            foreach (var variant in Variants)
             {
-                names.Add(AltVariant.Common, sourceDictionary[key]);
+                if (sourceDictionary.TryGetValue(key + variant.GetLocalePostfix(), out var value))
+                {
+                    names ??= new Dictionary<AltVariant, string>();
+                    names.Add(variant, value);
+                }
             }
 
-            if (sourceDictionary.ContainsKey($"{key}-alt-variant"))
-            {
-                names.Add(AltVariant.Alternative, sourceDictionary[$"{key}-alt-variant"]);
-            }
-
-            if (sourceDictionary.ContainsKey($"{key}-alt-short"))
-            {
-                names.Add(AltVariant.Short, sourceDictionary[$"{key}-alt-short"]);
-            }
-
-            if (sourceDictionary.ContainsKey($"{key}-alt-long"))
-            {
-                names.Add(AltVariant.Long, sourceDictionary[$"{key}-alt-long"]);
-            }
-
-            if (sourceDictionary.ContainsKey($"{key}-alt-menu"))
-            {
-                names.Add(AltVariant.Menu, sourceDictionary[$"{key}-alt-menu"]);
-            }
-
-            if (sourceDictionary.ContainsKey($"{key}-alt-narrow"))
-            {
-                names.Add(AltVariant.Narrow, sourceDictionary[$"{key}-alt-narrow"]);
-            }
-
-            if (sourceDictionary.ContainsKey($"{key}-alt-formal"))
-            {
-                names.Add(AltVariant.Formal, sourceDictionary[$"{key}-alt-formal"]);
-            }
-
-            return new ReadOnlyDictionary<AltVariant, string>(names);
+            return names == null ? Empty : new ReadOnlyDictionary<AltVariant, string>(names);
         }
     }
 }

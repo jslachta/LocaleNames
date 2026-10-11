@@ -1,0 +1,5 @@
+name: "LocaleNames CodeQL config"
+
+# Static analysis covers the library sources only, not tests and samples.
+paths:
+  - src

@@ -1,13 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
 		<PackageId>LocaleNames.Core</PackageId>
-		<Description>Code of the LocaleNames library - lookup of localized names of languages, countries and currencies. Contains no data, reference LocaleNames.Data or LocaleNames.Embed for it.</Description>
+		<Description>Code of the LocaleNames library - lookup of localized names of languages, countries and currencies. Contains no data, reference LocaleNames.Data for it.</Description>
+		<!-- Enables the trim and AOT analyzers (for the net10.0 target) and marks the assembly as trimmable and AOT compatible. -->
+		<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">true</IsAotCompatible>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
-	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2.0'))">
-		<PackageReference Include="System.Text.Json" Version="[8.0.5,)" />
+	<ItemGroup>
+		<InternalsVisibleTo Include="LocaleNames.Test" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
 	</ItemGroup>
 </Project>

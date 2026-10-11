@@ -1,0 +1,36 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Samples/">
+    <Project Path="samples/LocaleNames.Sample.Aot.Select/LocaleNames.Sample.Aot.Select.csproj" />
+    <Project Path="samples/LocaleNames.Sample.Aot/LocaleNames.Sample.Aot.csproj" />
+  </Folder>
+  <Folder Name="/Sources/">
+    <Project Path="src/LocaleNames.Core/LocaleNames.Core.csproj" />
+    <Project Path="src/LocaleNames.Data/LocaleNames.Data.csproj" />
+    <Project Path="src/LocaleNames/LocaleNames.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/LocaleNames.Data.Test/LocaleNames.Data.Test.csproj" />
+    <Project Path="tests/LocaleNames.Test/LocaleNames.Test.csproj" />
+  </Folder>
+  <Folder Name="/Utils/">
+    <Project Path="utils/LocaleNames.PrepareData/LocaleNames.PrepareData.csproj" />
+    <Project Path="utils/LocaleNames.Viewer/LocaleNames.Viewer.csproj" />
+  </Folder>
+  <Folder Name="/_Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="docs/data-format.md" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+    <File Path="targets/CodeAnalysis.ruleset" />
+    <File Path="targets/Configuration.targets" />
+    <File Path="targets/Packaging.targets" />
+    <File Path="targets/Version.targets" />
+  </Folder>
+</Solution>

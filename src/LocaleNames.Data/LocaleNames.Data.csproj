@@ -2,10 +2,10 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<PackageId>LocaleNames.Data</PackageId>
-		<Description>Unicode CLDR data (names of languages, countries and currencies) for the LocaleNames library, embedded in the assembly.</Description>
+		<Description>Unicode CLDR data (names of languages, countries and currencies) for the LocaleNames library, embedded in an assembly. Set LocaleNamesLocales to embed only selected locales into your own assembly instead.</Description>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
 	<PropertyGroup>
 		<!-- Resources only, there is no code to document. -->
@@ -13,11 +13,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\language.*.json.gz" />
+		<EmbeddedResource Include="Resources\language.*.lnb" />
 
-		<!-- Raw copy of the same files, consumed by LocaleNames.Embed to embed them into another assembly. -->
-		<None Include="Resources\language.*.json.gz" Pack="true" PackagePath="resources" Visible="false" />
+		<!-- Raw copy of the same files, embedded into the consuming assembly when it selects locales (LocaleNamesLocales). -->
+		<None Include="Resources\language.*.lnb" Pack="true" PackagePath="resources" Visible="false" />
 
 		<None Include="build\**" Pack="true" PackagePath="build" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- A dependency of the package, so that LocaleNames.Data alone gives the code too (the assembly itself has no code). -->
+		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.403" />
 	</ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using LocaleNames.Enumerations;
 
@@ -10,6 +11,18 @@ namespace LocaleNames.Extensions
     /// </summary>
     public static class StringExtensions
     {
+        // the common part of all the variant postfixes ("-alt-short", ...)
+        private const string AltVariantPrefix = "-alt-";
+
+        // listed explicitly: Enum.GetValues(Type) is not safe for native AOT
+        private static readonly string[] AltVariantPostfixes = new[]
+            {
+                AltVariant.Alternative, AltVariant.Short, AltVariant.Long,
+                AltVariant.Menu, AltVariant.Narrow, AltVariant.Formal,
+            }
+            .Select(variant => variant.GetLocalePostfix())
+            .ToArray();
+
         /// <summary>
         /// Determines whether the provided country code is continent.
         /// </summary>
@@ -29,12 +42,15 @@ namespace LocaleNames.Extensions
         /// <returns>The stripped locale variant</returns>
         public static string StripLocaleVariants(this string inputText)
         {
-            foreach (AltVariant suit in (AltVariant[])Enum.GetValues(typeof(AltVariant)))
+            // most of the keys have no variant
+            if (inputText.IndexOf(AltVariantPrefix, StringComparison.Ordinal) < 0)
             {
-                if (!string.IsNullOrWhiteSpace(suit.GetLocalePostfix()) && inputText.Contains(suit.GetLocalePostfix()))
-                {
-                    inputText = inputText.Replace(suit.GetLocalePostfix(), "");
-                }
+                return inputText;
+            }
+
+            foreach (var postfix in AltVariantPostfixes)
+            {
+                inputText = inputText.Replace(postfix, "");
             }
 
             return inputText;

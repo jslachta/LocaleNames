@@ -35,16 +35,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # GitInfo derives the version from the nearest v* tag (src/Version.targets), and Sonar
+          # GitInfo derives the version from the nearest v* tag (targets/Version.targets), and Sonar
           # needs history for blame data. A shallow checkout would silently yield 0.0.0.
           fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: |
-            8.0.x
-            10.0.x
+          dotnet-version: 10.0.x
 
       - name: Setup Java (SonarScanner)
         uses: actions/setup-java@v4
@@ -63,6 +61,7 @@ jobs:
         if: steps.sonar.outputs.enabled == 'true'
         run: dotnet tool install --global dotnet-sonarscanner
 
+      # Static analysis covers src only: tests, samples and utils are left out (sources and test sources alike).
       - name: Sonar begin
         if: steps.sonar.outputs.enabled == 'true'
         env:
@@ -75,17 +74,19 @@ jobs:
           /d:sonar.host.url="https://sonarcloud.io"
           /d:sonar.cs.opencover.reportsPaths="out/coverage/coverage.opencover.xml"
           /d:sonar.cs.vstest.reportsPaths="artifacts/test-results/*.trx"
+          /d:sonar.exclusions="samples/**,tests/**,utils/**"
+          /d:sonar.test.exclusions="tests/**"
 
       - name: Restore
-        run: dotnet restore src/LocaleNames.sln
+        run: dotnet restore LocaleNames.slnx
 
       - name: Build
-        run: dotnet build src/LocaleNames.sln -c ${{ env.CONFIGURATION }} --no-restore
+        run: dotnet build LocaleNames.slnx -c ${{ env.CONFIGURATION }} --no-restore
 
       # coverlet.msbuild is configured in the test csproj (lcov by default); Sonar needs opencover.
       - name: Test
         run: >
-          dotnet test src/LocaleNames.Test/LocaleNames.Test.csproj
+          dotnet test tests/LocaleNames.Test/LocaleNames.Test.csproj
           -c ${{ env.CONFIGURATION }}
           --no-build
           --logger "trx;LogFileName=test-results.trx"
@@ -94,12 +95,12 @@ jobs:
           /p:CoverletOutputFormat=opencover
           /p:CoverletOutput=${{ github.workspace }}/out/coverage/
 
-      - name: Test LocaleNames.Embed
+      - name: Test LocaleNames.Data
         run: >
-          dotnet test src/LocaleNames.Embed.Test/LocaleNames.Embed.Test.csproj
+          dotnet test tests/LocaleNames.Data.Test/LocaleNames.Data.Test.csproj
           -c ${{ env.CONFIGURATION }}
           --no-build
-          --logger "trx;LogFileName=embed-test-results.trx"
+          --logger "trx;LogFileName=data-test-results.trx"
           --results-directory artifacts/test-results
 
       - name: Sonar end
@@ -114,12 +115,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          dotnet pack src/LocaleNames.sln \
+          dotnet pack LocaleNames.slnx \
             -c "$CONFIGURATION" \
             --no-build \
             -o artifacts/packages
 
-          # The meta package; LocaleNames.Core, .Data and .Embed are packed next to it.
+          # The meta package; LocaleNames.Core and .Data are packed next to it.
           PACKAGE=$(ls artifacts/packages/LocaleNames.[0-9]*.nupkg | head -1)
           VERSION=$(basename "$PACKAGE" .nupkg | sed 's/^LocaleNames\.//')
 
@@ -134,6 +135,15 @@ jobs:
 
           echo "Packed $VERSION (prerelease=$PRERELEASE)"
           ls -1 artifacts/packages
+
+      # The packed packages are consumed the way a user does it: all locales, a selection of locales, trimming and
+      # native AOT, and a setup that must fail loudly. The project references used by the other tests can not
+      # show problems of the build assets of the packages.
+      - name: Install native AOT prerequisites
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+      - name: Test packages
+        run: bash tests/LocaleNames.Package.Test/run.sh artifacts/packages
 
       - name: Upload packages
         uses: actions/upload-artifact@v4

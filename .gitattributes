@@ -1,0 +1,3 @@
+# Shell scripts have to keep LF endings also in a Windows working copy (core.autocrlf), bash
+# does not run a script with CRLF (WSL, Git Bash on a checkout shared with Linux, Docker).
+*.sh text eol=lf
