@@ -1,5 +1,4 @@
-﻿using LocaleNames.Model;
-using LocaleNames.Utils;
+﻿using LocaleNames.Utils;
 using Newtonsoft.Json;
 using PrepareLocaleData.Model;
 using System;
@@ -17,6 +16,8 @@ namespace PrepareLocaleData;
 
 class Program
 {
+    const string ResourceExtension = ".lnb";
+
     const string DownloadSite = "https://github.com/unicode-org/cldr-json/archive/refs/tags/48.2.0.zip";
 
     static string TempDirectory
@@ -155,19 +156,19 @@ class Program
             {
                 targetDictionary = cldrContainer.Main.Data.LocaleDisplayNames.Territories;
 
-                targetFilename = $"language.{sourceFilenameComponents[1]}.territories.json.gz";
+                targetFilename = $"language.{sourceFilenameComponents[1]}.territories";
             }
             else if (sourceFilename.Contains("languages"))
             {
                 targetDictionary = cldrContainer.Main.Data.LocaleDisplayNames.Languages;
 
-                targetFilename = $"language.{sourceFilenameComponents[1]}.languages.json.gz";
+                targetFilename = $"language.{sourceFilenameComponents[1]}.languages";
             }
             else if (sourceFilename.Contains("currencies"))
             {
                 targetDictionary = FlattenCurrencies(cldrContainer.Main.Data.Numbers?.Currencies);
 
-                targetFilename = $"language.{sourceFilenameComponents[1]}.currencies.json.gz";
+                targetFilename = $"language.{sourceFilenameComponents[1]}.currencies";
             }
 
             if (targetDictionary == null)
@@ -177,16 +178,10 @@ class Program
 
             string targetFilePath = Path.Combine(
               ResourceDirectory,
-              targetFilename
+              targetFilename + ResourceExtension
               );
 
-            ResourceLocale dict = new()
-            {
-                Values = targetDictionary
-            };
-
-            var targetJson = JsonConvert.SerializeObject(dict, Formatting.None);
-            File.WriteAllText(targetFilePath, GzipUtils.Compress(targetJson), new UTF8Encoding(false));
+            File.WriteAllBytes(targetFilePath, LocaleResourceFormat.Serialize(targetDictionary));
         }
     }
 

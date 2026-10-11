@@ -10,6 +10,13 @@ namespace LocaleNames.Extensions
     /// </summary>
     public static class StringExtensions
     {
+        // listed explicitly: Enum.GetValues(Type) is not safe for native AOT
+        private static readonly AltVariant[] AltVariants =
+        {
+            AltVariant.None, AltVariant.Common, AltVariant.Alternative, AltVariant.Short,
+            AltVariant.Long, AltVariant.Menu, AltVariant.Narrow, AltVariant.Formal,
+        };
+
         /// <summary>
         /// Determines whether the provided country code is continent.
         /// </summary>
@@ -29,7 +36,7 @@ namespace LocaleNames.Extensions
         /// <returns>The stripped locale variant</returns>
         public static string StripLocaleVariants(this string inputText)
         {
-            foreach (AltVariant suit in (AltVariant[])Enum.GetValues(typeof(AltVariant)))
+            foreach (var suit in AltVariants)
             {
                 if (!string.IsNullOrWhiteSpace(suit.GetLocalePostfix()) && inputText.Contains(suit.GetLocalePostfix()))
                 {

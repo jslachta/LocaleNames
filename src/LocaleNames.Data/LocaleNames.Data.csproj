@@ -13,10 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\language.*.json.gz" />
+		<EmbeddedResource Include="Resources\language.*.lnb" />
 
 		<!-- Raw copy of the same files, consumed by LocaleNames.Embed to embed them into another assembly. -->
-		<None Include="Resources\language.*.json.gz" Pack="true" PackagePath="resources" Visible="false" />
+		<None Include="Resources\language.*.lnb" Pack="true" PackagePath="resources" Visible="false" />
 
 		<None Include="build\**" Pack="true" PackagePath="build" />
 	</ItemGroup>

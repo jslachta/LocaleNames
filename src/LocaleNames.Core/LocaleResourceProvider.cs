@@ -8,7 +8,7 @@ using System.Reflection;
 namespace LocaleNames
 {
     /// <summary>
-    /// Finds the embedded CLDR resources (<c>language.{locale}.{type}.json.gz</c>) the translations are loaded from.
+    /// Finds the embedded CLDR resources (<c>language.{locale}.{type}.lnb</c>) the translations are loaded from.
     /// </summary>
     /// <remarks>
     /// The resources are looked up in, in this order:
@@ -62,7 +62,7 @@ namespace LocaleNames
         }
 
         /// <summary>
-        /// Opens the resource stream for the given file name, e.g. <c>language.cs.languages.json.gz</c>.
+        /// Opens the resource stream for the given file name, e.g. <c>language.cs.languages.lnb</c>.
         /// </summary>
         /// <param name="fileName">Name of the resource file.</param>
         /// <returns>The stream, or <c>null</c> if the resource is not found. Caller disposes it.</returns>

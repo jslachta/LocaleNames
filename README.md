@@ -45,6 +45,12 @@ LocaleResourceProvider.Register(typeof(SomeTypeInYourAssembly).Assembly);
 
 With the full `LocaleNames` package no registration is needed, `LocaleNames.Data` is found on its own. A registered assembly is searched before it, so registering one there deliberately overrides the data in `LocaleNames.Data`.
 
+### Trimming and native AOT
+
+The library uses no reflection or runtime code generation, so it is trimming and native AOT compatible. The data is stored in a compact binary format, read by hand rather than deserialized from JSON.
+
+`LocaleNames.Data` is found by its name and nothing references it from code, so the package roots the assembly (`TrimmerRootAssembly`) to keep it from being trimmed. This is done by the package automatically. If the data is missing in a published AOT app anyway, check that `build/LocaleNames.Data.props` of the package is imported. With `LocaleNames.Embed` there is nothing to keep, the data is part of your assembly.
+
 ## Usage
 
 Get a translations object for the language you want the names in, then query it.

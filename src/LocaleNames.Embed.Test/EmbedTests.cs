@@ -45,10 +45,10 @@ namespace LocaleNames.Embed.Test
             CollectionAssert.IsSubsetOf(
                 new[]
                 {
-                    "LocaleNames.Resources.language.cs.languages.json.gz",
-                    "LocaleNames.Resources.language.cs.territories.json.gz",
-                    "LocaleNames.Resources.language.cs.currencies.json.gz",
-                    "LocaleNames.Resources.language.en_GB.territories.json.gz",
+                    "LocaleNames.Resources.language.cs.languages.lnb",
+                    "LocaleNames.Resources.language.cs.territories.lnb",
+                    "LocaleNames.Resources.language.cs.currencies.lnb",
+                    "LocaleNames.Resources.language.en_GB.territories.lnb",
                 },
                 names);
 

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!--
+		Console app published with native AOT (dotnet publish -c Release), run to verify the library works without
+		reflection and JIT. It is not packed nor part of the test run, it needs the native toolchain.
+	-->
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<PublishAot>true</PublishAot>
+		<InvariantGlobalization>false</InvariantGlobalization>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- Inside the repository there is no package to import this automatically. -->
+	<Import Project="..\LocaleNames.Data\build\LocaleNames.Data.props" />
+
+	<ItemGroup>
+		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
+	</ItemGroup>
+</Project>
