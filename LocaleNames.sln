@@ -3,33 +3,42 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocaleNames", "LocaleNames\LocaleNames.csproj", "{37660C7C-9E95-4B3F-8AC1-C691E3414E9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocaleNames", "src\LocaleNames\LocaleNames.csproj", "{37660C7C-9E95-4B3F-8AC1-C691E3414E9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocaleNames.Test", "LocaleNames.Test\LocaleNames.Test.csproj", "{538B7DA1-51D3-42C1-8575-B8F444DD88F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocaleNames.Test", "tests\LocaleNames.Test\LocaleNames.Test.csproj", "{538B7DA1-51D3-42C1-8575-B8F444DD88F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepareLocaleData", "PrepareLocaleData\PrepareLocaleData.csproj", "{37F5D566-CC99-4773-9C16-635FF5AE8D5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrepareLocaleData", "src\PrepareLocaleData\PrepareLocaleData.csproj", "{37F5D566-CC99-4773-9C16-635FF5AE8D5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE53DF98-DC29-4708-9737-2D6F42A76CD7}"
 	ProjectSection(SolutionItems) = preProject
-		CodeAnalysis.ruleset = CodeAnalysis.ruleset
-		Configuration.targets = Configuration.targets
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
-		Packaging.targets = Packaging.targets
-		Version.targets = Version.targets
+		Directory.Build.props = Directory.Build.props
+		docs\data-format.md = docs\data-format.md
+		LICENSE = LICENSE
+		nuget.config = nuget.config
+		README.md = README.md
+		targets\CodeAnalysis.ruleset = targets\CodeAnalysis.ruleset
+		targets\Configuration.targets = targets\Configuration.targets
+		targets\Packaging.targets = targets\Packaging.targets
+		targets\Version.targets = targets\Version.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Core", "LocaleNames.Core\LocaleNames.Core.csproj", "{2E862572-4BE4-47B1-8D2F-3590DE058C13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Core", "src\LocaleNames.Core\LocaleNames.Core.csproj", "{2E862572-4BE4-47B1-8D2F-3590DE058C13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Data", "LocaleNames.Data\LocaleNames.Data.csproj", "{926D7F89-F845-44BF-A367-704916F07B15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Data", "src\LocaleNames.Data\LocaleNames.Data.csproj", "{926D7F89-F845-44BF-A367-704916F07B15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Embed", "LocaleNames.Embed\LocaleNames.Embed.csproj", "{3249A4AB-2E52-4470-904E-64B09CE30BF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Embed", "src\LocaleNames.Embed\LocaleNames.Embed.csproj", "{3249A4AB-2E52-4470-904E-64B09CE30BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Embed.Test", "LocaleNames.Embed.Test\LocaleNames.Embed.Test.csproj", "{D1BE3BB4-D656-4C9F-80AF-9A1E6340CD14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Embed.Test", "tests\LocaleNames.Embed.Test\LocaleNames.Embed.Test.csproj", "{D1BE3BB4-D656-4C9F-80AF-9A1E6340CD14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Aot.Test", "LocaleNames.Aot.Test\LocaleNames.Aot.Test.csproj", "{728FDDB3-9090-4DFD-A145-7E355CBD780F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Sample.Aot", "samples\LocaleNames.Sample.Aot\LocaleNames.Sample.Aot.csproj", "{728FDDB3-9090-4DFD-A145-7E355CBD780F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Aot.Test.Embed", "LocaleNames.Aot.Test.Embed\LocaleNames.Aot.Test.Embed.csproj", "{BB216E28-5DE7-4AEE-B103-269DD99C37DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocaleNames.Sample.Aot.Embed", "samples\LocaleNames.Sample.Aot.Embed\LocaleNames.Sample.Aot.Embed.csproj", "{BB216E28-5DE7-4AEE-B103-269DD99C37DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A1F0C0DE-0001-4A00-8000-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A1F0C0DE-0002-4A00-8000-000000000002}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{A1F0C0DE-0003-4A00-8000-000000000003}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,5 +164,16 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F4AE269-11F5-4BE2-AF47-79C9E97F0E13}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{728FDDB3-9090-4DFD-A145-7E355CBD780F} = {A1F0C0DE-0003-4A00-8000-000000000003}
+		{D1BE3BB4-D656-4C9F-80AF-9A1E6340CD14} = {A1F0C0DE-0002-4A00-8000-000000000002}
+		{37660C7C-9E95-4B3F-8AC1-C691E3414E9C} = {A1F0C0DE-0001-4A00-8000-000000000001}
+		{538B7DA1-51D3-42C1-8575-B8F444DD88F3} = {A1F0C0DE-0002-4A00-8000-000000000002}
+		{3249A4AB-2E52-4470-904E-64B09CE30BF2} = {A1F0C0DE-0001-4A00-8000-000000000001}
+		{BB216E28-5DE7-4AEE-B103-269DD99C37DF} = {A1F0C0DE-0003-4A00-8000-000000000003}
+		{926D7F89-F845-44BF-A367-704916F07B15} = {A1F0C0DE-0001-4A00-8000-000000000001}
+		{2E862572-4BE4-47B1-8D2F-3590DE058C13} = {A1F0C0DE-0001-4A00-8000-000000000001}
+		{37F5D566-CC99-4773-9C16-635FF5AE8D5B} = {A1F0C0DE-0001-4A00-8000-000000000001}
 	EndGlobalSection
 EndGlobal

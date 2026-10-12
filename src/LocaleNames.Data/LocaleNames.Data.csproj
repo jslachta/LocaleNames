@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<PackageId>LocaleNames.Data</PackageId>
 		<Description>Unicode CLDR data (names of languages, countries and currencies) for the LocaleNames library, embedded in the assembly.</Description>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
 	<PropertyGroup>
 		<!-- Resources only, there is no code to document. -->

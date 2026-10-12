@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- Meta package: contains no code, only references LocaleNames.Core and LocaleNames.Data. -->
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
@@ -6,7 +6,7 @@
 		<Description>Localized names of languages, countries and currencies for .NET, with lookup in both directions. Powered by Unicode CLDR.</Description>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
 	<PropertyGroup>
 		<IncludeBuildOutput>false</IncludeBuildOutput>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!--
 		The same check as LocaleNames.Aot.Test, but the data is embedded into this assembly by LocaleNames.Embed
 		(a subset of locales), the LocaleNames.Data assembly is not used.
@@ -13,15 +13,15 @@
 	</PropertyGroup>
 
 	<!-- Inside the repository there is no package to import these automatically. -->
-	<Import Project="..\LocaleNames.Embed\build\LocaleNames.Embed.props" />
-	<Import Project="..\LocaleNames.Embed\build\LocaleNames.Embed.targets" />
+	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.props" />
+	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.targets" />
 
 	<ItemGroup>
-		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
-		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\src\LocaleNames.Core\LocaleNames.Core.csproj" />
+		<ProjectReference Include="..\..\src\LocaleNames.Data\LocaleNames.Data.csproj" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\LocaleNames.Aot.Test\Program.cs" Link="Program.cs" />
+		<Compile Include="..\LocaleNames.Sample.Aot\Program.cs" Link="Program.cs" />
 	</ItemGroup>
 </Project>

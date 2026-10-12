@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- Build-only package: no assembly. Referencing it embeds the LocaleNames.Data resources into the referencing assembly. -->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
 		<Description>Embeds the LocaleNames CLDR data (names of languages, countries and currencies) directly into your assembly at build time, optionally only for selected locales.</Description>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
 	<PropertyGroup>
 		<IncludeBuildOutput>false</IncludeBuildOutput>

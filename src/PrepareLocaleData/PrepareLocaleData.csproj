@@ -4,7 +4,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<StartupObject>PrepareLocaleData.Program</StartupObject>
 	</PropertyGroup>
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 	<ItemGroup>
 		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
 	</ItemGroup>

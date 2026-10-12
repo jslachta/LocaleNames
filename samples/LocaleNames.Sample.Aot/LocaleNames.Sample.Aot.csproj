@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!--
 		Console app published with native AOT (dotnet publish -c Release), run to verify the library works without
 		reflection and JIT. It is not packed nor part of the test run, it needs the native toolchain.
@@ -13,9 +13,9 @@
 	</PropertyGroup>
 
 	<!-- Inside the repository there is no package to import this automatically. -->
-	<Import Project="..\LocaleNames.Data\build\LocaleNames.Data.props" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.props" />
 
 	<ItemGroup>
-		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
+		<ProjectReference Include="..\..\src\LocaleNames\LocaleNames.csproj" />
 	</ItemGroup>
 </Project>

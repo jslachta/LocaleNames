@@ -47,7 +47,7 @@ With the full `LocaleNames` package no registration is needed, `LocaleNames.Data
 
 ### Trimming and native AOT
 
-The library uses no reflection or runtime code generation, so it is trimming and native AOT compatible. The data is stored in a compact binary format, read by hand rather than deserialized from JSON.
+The library uses no reflection or runtime code generation, so it is trimming and native AOT compatible. The data is stored in a compact binary format, read by hand rather than deserialized from JSON, see [the data format](docs/data-format.md).
 
 `LocaleNames.Data` is found by its name and nothing references it from code, so the package roots the assembly (`TrimmerRootAssembly`) to keep it from being trimmed. This is done by the package automatically. If the data is missing in a published AOT app anyway, check that `build/LocaleNames.Data.props` of the package is imported. With `LocaleNames.Embed` there is nothing to keep, the data is part of your assembly.
 

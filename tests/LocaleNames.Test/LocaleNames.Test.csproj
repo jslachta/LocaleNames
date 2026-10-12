@@ -5,12 +5,12 @@
 		<ExcludeByAttribute>GeneratedCodeAttribute</ExcludeByAttribute>
 		<CoverletOutputFormat>lcov</CoverletOutputFormat>
 	</PropertyGroup>
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 	<PropertyGroup>
 		<CoverletOutput>$(RepoRoot)/out/coverage/lcov.info</CoverletOutput>
 	 </PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\LocaleNames\LocaleNames.csproj" />
+		<ProjectReference Include="..\..\src\LocaleNames\LocaleNames.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="coverlet.msbuild" Version="10.0.1">

@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # GitInfo derives the version from the nearest v* tag (src/Version.targets), and Sonar
+          # GitInfo derives the version from the nearest v* tag (targets/Version.targets), and Sonar
           # needs history for blame data. A shallow checkout would silently yield 0.0.0.
           fetch-depth: 0
 
@@ -63,6 +63,7 @@ jobs:
         if: steps.sonar.outputs.enabled == 'true'
         run: dotnet tool install --global dotnet-sonarscanner
 
+      # Static analysis covers src only: tests and samples are left out (sources and test sources alike).
       - name: Sonar begin
         if: steps.sonar.outputs.enabled == 'true'
         env:
@@ -75,17 +76,19 @@ jobs:
           /d:sonar.host.url="https://sonarcloud.io"
           /d:sonar.cs.opencover.reportsPaths="out/coverage/coverage.opencover.xml"
           /d:sonar.cs.vstest.reportsPaths="artifacts/test-results/*.trx"
+          /d:sonar.exclusions="samples/**,tests/**"
+          /d:sonar.test.exclusions="tests/**"
 
       - name: Restore
-        run: dotnet restore src/LocaleNames.sln
+        run: dotnet restore LocaleNames.sln
 
       - name: Build
-        run: dotnet build src/LocaleNames.sln -c ${{ env.CONFIGURATION }} --no-restore
+        run: dotnet build LocaleNames.sln -c ${{ env.CONFIGURATION }} --no-restore
 
       # coverlet.msbuild is configured in the test csproj (lcov by default); Sonar needs opencover.
       - name: Test
         run: >
-          dotnet test src/LocaleNames.Test/LocaleNames.Test.csproj
+          dotnet test tests/LocaleNames.Test/LocaleNames.Test.csproj
           -c ${{ env.CONFIGURATION }}
           --no-build
           --logger "trx;LogFileName=test-results.trx"
@@ -96,7 +99,7 @@ jobs:
 
       - name: Test LocaleNames.Embed
         run: >
-          dotnet test src/LocaleNames.Embed.Test/LocaleNames.Embed.Test.csproj
+          dotnet test tests/LocaleNames.Embed.Test/LocaleNames.Embed.Test.csproj
           -c ${{ env.CONFIGURATION }}
           --no-build
           --logger "trx;LogFileName=embed-test-results.trx"
@@ -114,7 +117,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          dotnet pack src/LocaleNames.sln \
+          dotnet pack LocaleNames.sln \
             -c "$CONFIGURATION" \
             --no-build \
             -o artifacts/packages
