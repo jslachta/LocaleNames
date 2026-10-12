@@ -105,6 +105,14 @@ The reader checks every length against the data that is left (a count of entries
 
 Every reader accepts exactly the version in the header and rejects others. A change of the layout needs a new version number, and `LocaleResourceFormat` can then read both, since the resources of an older `LocaleNames.Embed` or `LocaleNames.Data` may meet a newer `LocaleNames.Core`.
 
+## Viewing a file
+
+`src/LocaleNames.Viewer` is a small cross-platform (Avalonia) desktop app that opens an `.lnb` file and lists its entries in their stored order, with a filter by code or translation. Open a file with the button, drop it on the window, or pass it on the command line:
+
+```bash
+dotnet run --project src/LocaleNames.Viewer -- src/LocaleNames.Data/Resources/language.cs.territories.lnb
+```
+
 ## Regenerating the data
 
 Run `PrepareLocaleData`. It downloads the CLDR release configured in `Program.cs`, flattens the currencies into the key scheme above, and rewrites `src/LocaleNames.Data/Resources/*.lnb`. The currency keys are the code (`CZK`) for the name, `CZK-count-few` and the other plural categories for the plural names, and `CZK-symbol`, `CZK-symbol-alt-narrow` and the like for the symbols.
