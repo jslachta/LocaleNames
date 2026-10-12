@@ -11,7 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
+		<ProjectReference Include="..\..\src\LocaleNames.Core\LocaleNames.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
