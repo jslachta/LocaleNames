@@ -21,7 +21,7 @@ dotnet add package LocaleNames
 | --- | --- |
 | `LocaleNames.Core` | The code. Contains no data. |
 | `LocaleNames.Data` | The CLDR data, embedded in an assembly. |
-| `LocaleNames.Embed` | Build-time alternative to `LocaleNames.Data`, see below. |
+| `LocaleNames.Embed` | Build-time alternative to `LocaleNames.Data` with its own copy of the data, see below. Does not need `LocaleNames.Data`. |
 
 ### Embedding the data into your own assembly
 

@@ -3,7 +3,7 @@
 		Properties:
 		  LocaleNamesEmbedLocales   Semicolon separated locales to embed, e.g. "cs;en;en_GB" (underscore, as in the file names).
 		                            Every locale has to be listed on its own, "en" does not include "en_GB". Empty = all.
-		  LocaleNamesDataDirectory  Directory with the language.*.lnb files. Set by the LocaleNames.Data
+		  LocaleNamesDataDirectory  Directory with the language.*.lnb files. Set by the LocaleNames.Embed
 		                            package, or resolved from a LocaleNames.Data project reference.
 	-->
 	<Target Name="LocaleNamesEmbedResources" BeforeTargets="AssignTargetPaths">

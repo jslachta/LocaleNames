@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
-		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" />
+		<!-- PrivateAssets none: the build props of the data package (it roots the assembly for trimming and native AOT) have to reach the consumer. -->
+		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" PrivateAssets="none" />
 	</ItemGroup>
 </Project>
