@@ -103,7 +103,7 @@ The reader checks every length against the data that is left (a count of entries
 
 ## Compatibility
 
-Every reader accepts exactly the version in the header and rejects others. A change of the layout needs a new version number, and `LocaleResourceFormat` can then read both, since the resources of an older `LocaleNames.Embed` or `LocaleNames.Data` may meet a newer `LocaleNames.Core`.
+Every reader accepts exactly the version in the header and rejects others. A change of the layout needs a new version number, and `LocaleResourceFormat` can then read both, since the resources of an older `LocaleNames.Data` may meet a newer `LocaleNames.Core`.
 
 ## Viewing a file
 

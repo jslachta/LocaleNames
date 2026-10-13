@@ -97,12 +97,12 @@ jobs:
           /p:CoverletOutputFormat=opencover
           /p:CoverletOutput=${{ github.workspace }}/out/coverage/
 
-      - name: Test LocaleNames.Embed
+      - name: Test LocaleNames.Data
         run: >
-          dotnet test tests/LocaleNames.Embed.Test/LocaleNames.Embed.Test.csproj
+          dotnet test tests/LocaleNames.Data.Test/LocaleNames.Data.Test.csproj
           -c ${{ env.CONFIGURATION }}
           --no-build
-          --logger "trx;LogFileName=embed-test-results.trx"
+          --logger "trx;LogFileName=data-test-results.trx"
           --results-directory artifacts/test-results
 
       - name: Sonar end
@@ -122,7 +122,7 @@ jobs:
             --no-build \
             -o artifacts/packages
 
-          # The meta package; LocaleNames.Core, .Data and .Embed are packed next to it.
+          # The meta package; LocaleNames.Core and .Data are packed next to it.
           PACKAGE=$(ls artifacts/packages/LocaleNames.[0-9]*.nupkg | head -1)
           VERSION=$(basename "$PACKAGE" .nupkg | sed 's/^LocaleNames\.//')
 

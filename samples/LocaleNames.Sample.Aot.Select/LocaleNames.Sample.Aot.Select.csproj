@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<!--
-		The same check as LocaleNames.Aot.Test, but the data is embedded into this assembly by LocaleNames.Embed
-		(a subset of locales), the LocaleNames.Data assembly is not used.
+		The same check as LocaleNames.Sample.Aot, but the data of selected locales is embedded into this assembly
+		(LocaleNamesLocales), the LocaleNames.Data assembly is not used.
 	-->
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -9,12 +9,12 @@
 		<PublishAot>true</PublishAot>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<IsPackable>false</IsPackable>
-		<LocaleNamesEmbedLocales>cs;en;en_GB;sr_Latn</LocaleNamesEmbedLocales>
+		<LocaleNamesLocales>cs;en;en_GB;sr_Latn</LocaleNamesLocales>
 	</PropertyGroup>
 
 	<!-- Inside the repository there is no package to import these automatically. -->
-	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.props" />
-	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.targets" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.props" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.targets" />
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\LocaleNames.Core\LocaleNames.Core.csproj" />

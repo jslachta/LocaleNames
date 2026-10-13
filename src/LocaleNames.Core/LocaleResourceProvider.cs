@@ -15,7 +15,7 @@ namespace LocaleNames
     /// <list type="number">
     /// <item>assemblies passed to <see cref="Register"/>,</item>
     /// <item>loaded assemblies marked with <c>[assembly: AssemblyMetadata("LocaleNames.Resources", "true")]</c>
-    /// (done automatically by the LocaleNames.Embed package),</item>
+    /// (done automatically by LocaleNames.Data when locales are selected),</item>
     /// <item>the <c>LocaleNames.Data</c> assembly, if it is available.</item>
     /// </list>
     /// </remarks>

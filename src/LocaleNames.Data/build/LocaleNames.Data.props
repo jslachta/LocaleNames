@@ -1,10 +1,10 @@
 <Project>
-
 	<!--
-		LocaleNames.Core finds the data assembly by its name, nothing references it from the code. Without this the
-		assembly is dropped by trimming and native AOT, and all the translations are empty.
+		Directory with the raw language.*.lnb files: "resources" in the package, "Resources" when this file is imported
+		from the repository sources.
 	-->
-	<ItemGroup>
-		<TrimmerRootAssembly Include="LocaleNames.Data" />
-	</ItemGroup>
+	<PropertyGroup>
+		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == '' And Exists('$(MSBuildThisFileDirectory)..\resources')">$(MSBuildThisFileDirectory)..\resources</LocaleNamesDataDirectory>
+		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == '' And Exists('$(MSBuildThisFileDirectory)..\Resources')">$(MSBuildThisFileDirectory)..\Resources</LocaleNamesDataDirectory>
+	</PropertyGroup>
 </Project>

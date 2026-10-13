@@ -1,0 +1,64 @@
+<Project>
+	<!--
+		Two ways to use the data:
+
+		  1. Everything (default): the data is in the LocaleNames.Data assembly, shared by all projects of the solution.
+
+		  2. A selection: set LocaleNamesLocales and the data of those locales is embedded into the assembly of the
+		     project instead, the LocaleNames.Data assembly is left out of its output.
+
+		Properties:
+		  LocaleNamesLocales        Semicolon separated locales to embed, e.g. "cs;en;en_GB" (underscore, as in the file names).
+		                            Every locale has to be listed on its own, "en" does not include "en_GB". Empty = not selecting.
+		  LocaleNamesDataDirectory  Directory with the language.*.lnb files, set by LocaleNames.Data.props.
+	-->
+	<PropertyGroup>
+		<_LocaleNamesSelect Condition="'$(LocaleNamesLocales)' != ''">true</_LocaleNamesSelect>
+	</PropertyGroup>
+
+	<!--
+		1. LocaleNames.Core finds the data assembly by its name, nothing references it from the code. Without this the
+		assembly is dropped by trimming and native AOT, and all the translations are empty.
+	-->
+	<ItemGroup Condition="'$(_LocaleNamesSelect)' != 'true'">
+		<TrimmerRootAssembly Include="LocaleNames.Data" />
+	</ItemGroup>
+
+	<!--
+		2. Marks the project assembly as a holder of locale resources, so LocaleNames.Core finds them.
+		Needs GenerateAssemblyInfo (default); otherwise call LocaleResourceProvider.Register(assembly).
+	-->
+	<ItemGroup Condition="'$(_LocaleNamesSelect)' == 'true'">
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>LocaleNames.Resources</_Parameter1>
+			<_Parameter2>true</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<Target Name="LocaleNamesEmbedResources" BeforeTargets="AssignTargetPaths" Condition="'$(_LocaleNamesSelect)' == 'true'">
+
+		<Error Condition="'$(LocaleNamesDataDirectory)' == '' Or !Exists('$(LocaleNamesDataDirectory)')"
+		       Text="LocaleNames.Data: the resources were not found (looked in '$(LocaleNamesDataDirectory)'). Set LocaleNamesDataDirectory." />
+
+		<ItemGroup>
+			<_LocaleNamesLocale Include="$(LocaleNamesLocales)" />
+			<_LocaleNamesFile Include="$(LocaleNamesDataDirectory)\language.%(_LocaleNamesLocale.Identity).*.lnb" />
+		</ItemGroup>
+
+		<Error Condition="'@(_LocaleNamesFile)' == ''"
+		       Text="LocaleNames.Data: no resources match LocaleNamesLocales='$(LocaleNamesLocales)' in '$(LocaleNamesDataDirectory)'." />
+
+		<ItemGroup>
+			<EmbeddedResource Include="@(_LocaleNamesFile)"
+			                  LogicalName="LocaleNames.Resources.%(Filename)%(Extension)"
+			                  Visible="false" />
+		</ItemGroup>
+	</Target>
+
+	<!-- 2. The selected data is in the project assembly, so the one with all of it must not be copied next to it. -->
+	<Target Name="LocaleNamesDropDataAssembly" AfterTargets="ResolvePackageAssets" Condition="'$(_LocaleNamesSelect)' == 'true'">
+		<ItemGroup>
+			<RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="'%(Filename)%(Extension)' == 'LocaleNames.Data.dll'" />
+		</ItemGroup>
+	</Target>
+</Project>

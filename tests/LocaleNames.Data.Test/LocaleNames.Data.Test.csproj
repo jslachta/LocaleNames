@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<!--
-		Verifies LocaleNames.Embed: this assembly references only LocaleNames.Core, the data comes from the
-		resources embedded into it at build time (a subset of locales, to verify the filter too).
-		LocaleNames.Data is referenced just to be built and located, its assembly must not be copied here.
+		Verifies the selection of locales (LocaleNamesLocales): this assembly references only LocaleNames.Core, the data
+		comes from the resources embedded into it at build time (a subset of locales, to verify the filter too).
+		LocaleNames.Data is referenced only to be built first, its assembly must not be used here.
 	-->
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
-		<LocaleNamesEmbedLocales>cs;en;en_GB</LocaleNamesEmbedLocales>
+		<LocaleNamesLocales>cs;en;en_GB</LocaleNamesLocales>
 		<!-- No marker attribute is generated, the test registers the assembly explicitly. -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
@@ -14,8 +14,8 @@
 	<Import Project="..\..\targets\Configuration.targets" />
 
 	<!-- Inside the repository there is no package to import these automatically. -->
-	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.props" />
-	<Import Project="..\..\src\LocaleNames.Embed\build\LocaleNames.Embed.targets" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.props" />
+	<Import Project="..\..\src\LocaleNames.Data\build\LocaleNames.Data.targets" />
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\LocaleNames.Core\LocaleNames.Core.csproj" />

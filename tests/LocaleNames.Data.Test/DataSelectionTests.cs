@@ -4,15 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace LocaleNames.Embed.Test
+namespace LocaleNames.Data.Test
 {
     /// <summary>
-    /// Tests of the resources embedded by LocaleNames.Embed.
+    /// Tests of the selection of locales (LocaleNamesLocales): only the requested resources are embedded.
     /// </summary>
     [TestClass]
-    public class EmbedTests
+    public class DataSelectionTests
     {
-        private static readonly Assembly ThisAssembly = typeof(EmbedTests).Assembly;
+        private static readonly Assembly ThisAssembly = typeof(DataSelectionTests).Assembly;
 
         /// <summary>
         /// GenerateAssemblyInfo is off in this project, so the assembly carries no marker attribute and
