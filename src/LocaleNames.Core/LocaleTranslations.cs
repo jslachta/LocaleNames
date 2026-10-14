@@ -1,6 +1,5 @@
 ﻿using LocaleNames.Enumerations;
 using LocaleNames.Extensions;
-using LocaleNames.Model;
 using LocaleNames.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace LocaleNames
 {
@@ -18,6 +16,13 @@ namespace LocaleNames
     public class LocaleTranslations
     {
         #region PROPERTIES
+
+        // listed explicitly: Enum.GetValues(Type) is not safe for native AOT
+        private static readonly PluralCategory[] PluralCategories =
+        {
+            PluralCategory.Zero, PluralCategory.One, PluralCategory.Two,
+            PluralCategory.Few, PluralCategory.Many, PluralCategory.Other,
+        };
 
         /// <summary>
         /// Gets a value indicating whether are language translations empty.
@@ -143,19 +148,13 @@ namespace LocaleNames
             key = key.Replace("-", "_");
             bool isFound = false;
 
-            using (Stream resourceStream = LocaleResourceProvider.Open($"language.{key}.{postfix}.json.gz"))
+            using (Stream resourceStream = LocaleResourceProvider.Open($"language.{key}.{postfix}.lnb"))
             {
                 if (resourceStream != null)
                 {
-                    using (StreamReader streamReader = new(resourceStream))
-                    {
-                        var compressedResourceValue = streamReader.ReadToEnd();
-                        var decompressedResourceValue = GzipUtils.Decompress(compressedResourceValue);
+                    dict = LocaleResourceFormat.Deserialize(resourceStream);
 
-                        dict = JsonSerializer.Deserialize<ResourceLocale>(decompressedResourceValue).Values;
-
-                        isFound = true;
-                    }
+                    isFound = true;
                 }
             }
 
@@ -313,7 +312,7 @@ namespace LocaleNames
             var code = NormalizeCurrencyCode(currencyCode);
             var names = new Dictionary<PluralCategory, string>();
 
-            foreach (PluralCategory category in Enum.GetValues(typeof(PluralCategory)).Cast<PluralCategory>())
+            foreach (var category in PluralCategories)
             {
                 if (CurrencyNames.Value.TryGetValue($"{code}-count-{category.ToString().ToLowerInvariant()}", out var name))
                 {

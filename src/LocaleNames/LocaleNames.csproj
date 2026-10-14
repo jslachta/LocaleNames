@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- Meta package: contains no code, only references LocaleNames.Core and LocaleNames.Data. -->
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
@@ -6,7 +6,7 @@
 		<Description>Localized names of languages, countries and currencies for .NET, with lookup in both directions. Powered by Unicode CLDR.</Description>
 	</PropertyGroup>
 
-	<Import Project="..\Configuration.targets" />
+	<Import Project="..\..\targets\Configuration.targets" />
 
 	<PropertyGroup>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\LocaleNames.Core\LocaleNames.Core.csproj" />
-		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" />
+		<!-- PrivateAssets none: the build props of the data package (it roots the assembly for trimming and native AOT) have to reach the consumer. -->
+		<ProjectReference Include="..\LocaleNames.Data\LocaleNames.Data.csproj" PrivateAssets="none" />
 	</ItemGroup>
 </Project>

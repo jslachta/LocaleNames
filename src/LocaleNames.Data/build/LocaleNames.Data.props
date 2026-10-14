@@ -1,6 +1,10 @@
 <Project>
-	<!-- Tells LocaleNames.Embed where the raw resource files of this package are. -->
+	<!--
+		Directory with the raw language.*.lnb files: "resources" in the package, "Resources" when this file is imported
+		from the repository sources.
+	-->
 	<PropertyGroup>
-		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == ''">$(MSBuildThisFileDirectory)..\resources</LocaleNamesDataDirectory>
+		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == '' And Exists('$(MSBuildThisFileDirectory)..\resources')">$(MSBuildThisFileDirectory)..\resources</LocaleNamesDataDirectory>
+		<LocaleNamesDataDirectory Condition="'$(LocaleNamesDataDirectory)' == '' And Exists('$(MSBuildThisFileDirectory)..\Resources')">$(MSBuildThisFileDirectory)..\Resources</LocaleNamesDataDirectory>
 	</PropertyGroup>
 </Project>

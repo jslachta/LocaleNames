@@ -1,0 +1,6 @@
+<Project>
+	<!-- ArgumentNullException.ThrowIfNull is not available on netstandard2.0, so CA1510 cannot be satisfied there. -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<NoWarn>$(NoWarn);CA1510</NoWarn>
+	</PropertyGroup>
+</Project>
