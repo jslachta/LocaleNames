@@ -26,10 +26,30 @@ namespace LocaleNames.Data.Test
                 .GetCustomAttributes<AssemblyMetadataAttribute>()
                 .Any(i => i.Key == LocaleResourceProvider.AssemblyMetadataKey));
 
-            Assert.IsTrue(LocaleTranslationsFactory.ForLanguageCode("cs").AreCountryNameTranslationsEmpty,
-                "resources must not be found before the assembly is registered");
+            // Without any data the lookup fails loudly and says how to fix it, it does not return empty translations.
+            var error = Assert.ThrowsExactly<InvalidOperationException>(
+                () => LocaleTranslationsFactory.ForLanguageCode("cs").AreCountryNameTranslationsEmpty);
+
+            StringAssert.Contains(error.Message, "LocaleNames found no locale data");
+            StringAssert.Contains(error.Message, "How to fix it");
+            StringAssert.Contains(error.Message, "GenerateAssemblyInfo=true");
+            StringAssert.Contains(error.Message, "LocaleResourceProvider.Register");
+            StringAssert.Contains(error.Message, "TrimmerRootAssembly");
 
             LocaleResourceProvider.Register(ThisAssembly);
+        }
+
+        /// <summary>
+        /// Registering an assembly without the resources is a mistake that is reported at once.
+        /// </summary>
+        [TestMethod]
+        public void Register_AssemblyWithoutResources_Throws()
+        {
+            var error = Assert.ThrowsExactly<ArgumentException>(
+                () => LocaleResourceProvider.Register(typeof(string).Assembly));
+
+            StringAssert.Contains(error.Message, "contains no LocaleNames resources");
+            StringAssert.Contains(error.Message, "LocaleNamesLocales");
         }
 
         /// <summary>
