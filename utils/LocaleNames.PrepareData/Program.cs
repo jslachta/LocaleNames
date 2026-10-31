@@ -19,7 +19,12 @@ class Program
 {
     const string ResourceExtension = ".lnb";
 
-    const string DownloadSite = "https://github.com/unicode-org/cldr-json/archive/refs/tags/48.2.0.zip";
+    // the release is a tag of cldr-json, kept in a file so that the cldr-update workflow can raise it
+    static string CldrVersion
+        => File.ReadAllText(Path.Combine(RepositoryRoot, "utils", "LocaleNames.PrepareData", "cldr-version.txt")).Trim();
+
+    static string DownloadSite
+        => $"https://github.com/unicode-org/cldr-json/archive/refs/tags/{CldrVersion}.zip";
 
     static string TempDirectory
         => Path.Combine(Path.GetTempPath(), "LocaleNames");

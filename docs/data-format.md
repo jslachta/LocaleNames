@@ -128,4 +128,4 @@ dotnet run --project utils/LocaleNames.Viewer -- src/LocaleNames.Data/Resources/
 dotnet run --project utils/LocaleNames.PrepareData
 ```
 
-The tool downloads the CLDR release set by `DownloadSite` in `Program.cs`, flattens the currencies into the key scheme above, and rewrites `src/LocaleNames.Data/Resources/*.lnb`. The currency keys are the code (`CZK`) for the name, `CZK-count-few` and the other plural categories for the plural names, and `CZK-symbol`, `CZK-symbol-alt-narrow` and the like for the symbols.
+The tool downloads the CLDR release set in `utils/LocaleNames.PrepareData/cldr-version.txt` (a tag of cldr-json; the `cldr-update` workflow opens a pull request when a new major version comes out), flattens the currencies into the key scheme above, and rewrites `src/LocaleNames.Data/Resources/*.lnb`. The currency keys are the code (`CZK`) for the name, `CZK-count-few` and the other plural categories for the plural names, and `CZK-symbol`, `CZK-symbol-alt-narrow` and the like for the symbols.
