@@ -9,7 +9,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,16 +34,9 @@ class Program
     static string ArchivePath
         => Path.Combine(TempDirectory, "cldr-localenames-full.zip");
 
+    // a plain path on every OS; a Uri can not be built from a Unix path like /home/runner/...
     public static string AssemblyDirectory
-    {
-        get
-        {
-            string codeBase = Assembly.GetExecutingAssembly().Location;
-            UriBuilder uri = new(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
-        }
-    }
+        => AppContext.BaseDirectory;
 
     // the build output lies at a depth that depends on the configuration, so the root is found by its solution file
     public static string RepositoryRoot
