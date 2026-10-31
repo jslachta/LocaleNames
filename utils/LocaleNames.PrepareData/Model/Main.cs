@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class Main
     {
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         public Data Data { get; set; }
     }
 }
