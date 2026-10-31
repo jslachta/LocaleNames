@@ -1,6 +1,7 @@
 name: CI
 
-# Builds, tests and analyzes (Sonar) every push and pull request. A v* tag additionally publishes.
+# Builds, tests and analyzes (Sonar) every push and pull request. A v* tag additionally publishes
+# to GitHub Packages and nuget.org, and creates a GitHub release.
 # Publishing a snapshot by hand is a separate workflow - see publish.yml.
 on:
   push:
@@ -24,10 +25,13 @@ jobs:
     needs: build
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
+    # Named in the nuget.org trusted publishing policy; a required reviewer on it gates the release.
+    environment: nuget
 
     permissions:
       contents: write
       packages: write
+      id-token: write
 
     steps:
       - name: Setup .NET
@@ -41,15 +45,29 @@ jobs:
           name: packages
           path: packages
 
-      # Goes to this repository's own GitHub Packages feed for now.
-      # To switch to nuget.org: source https://api.nuget.org/v3/index.json,
-      # api-key ${{ secrets.NUGET_API_KEY }}, and add "environment: nuget" with a required reviewer.
       # GitHub Packages has no symbol endpoint, so the .snupkg is attached to the release only.
       - name: Push to GitHub Packages
         run: >
           dotnet nuget push "packages/*.nupkg"
           --api-key "${{ secrets.GITHUB_TOKEN }}"
           --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          --skip-duplicate
+
+      # Trusted publishing: the OIDC token of this job is exchanged for an API key valid for 1 hour.
+      # The nuget.org policy matches this repository, workflow file ci.yml and environment nuget.
+      - name: Log in to nuget.org
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      # The .snupkg next to each .nupkg is pushed to the nuget.org symbol server along with it.
+      # --skip-duplicate lets a re-run of a partly failed release finish the remaining packages.
+      - name: Push to nuget.org
+        run: >
+          dotnet nuget push "packages/*.nupkg"
+          --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
+          --source "https://api.nuget.org/v3/index.json"
           --skip-duplicate
 
       - name: Create release with assets
