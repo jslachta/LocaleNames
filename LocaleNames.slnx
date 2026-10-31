@@ -26,6 +26,7 @@
     <File Path="Directory.Build.targets" />
     <File Path="docs/data-format.md" />
     <File Path="LICENSE" />
+    <File Path="LICENSE-CLDR" />
     <File Path="nuget.config" />
     <File Path="README.md" />
     <File Path="targets/CodeAnalysis.ruleset" />

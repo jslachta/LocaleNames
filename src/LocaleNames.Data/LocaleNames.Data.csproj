@@ -10,6 +10,9 @@
 	<PropertyGroup>
 		<!-- Resources only, there is no code to document. -->
 		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+		<!-- The data comes from Unicode CLDR and stays under its licence, the build files are under the licence of the repository. -->
+		<PackageLicenseExpression>MIT AND Unicode-3.0</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,6 +22,8 @@
 		<None Include="Resources\language.*.lnb" Pack="true" PackagePath="resources" Visible="false" />
 
 		<None Include="build\**" Pack="true" PackagePath="build" />
+
+		<None Include="..\..\LICENSE-CLDR" Pack="true" PackagePath="\" Visible="false" />
 	</ItemGroup>
 
 	<ItemGroup>

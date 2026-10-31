@@ -95,6 +95,12 @@ en.FindCurrencySymbol("CZK", AltVariant.Narrow);    // Kč
 en.GetAllCurrencyCodes();
 ```
 
+## License
+
+The code is licensed under the [MIT License](LICENSE).
+
+The locale data comes from [Unicode CLDR](https://cldr.unicode.org/) and is licensed under the [Unicode License v3](LICENSE-CLDR) (`Unicode-3.0`). Copyright © 2015-2024 Unicode, Inc. The `LocaleNames.Data` package and assemblies that embed selected locales (`LocaleNamesLocales`) contain this data.
+
 ## Contributing
 
 Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
