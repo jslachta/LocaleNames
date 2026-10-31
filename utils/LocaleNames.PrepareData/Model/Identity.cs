@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class Identity
     {
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public Version Version { get; set; }
 
-        [JsonProperty("language")]
+        [JsonPropertyName("language")]
         public string Language { get; set; }
     }
 }

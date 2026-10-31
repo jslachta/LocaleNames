@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class CldrContainer
     {
-        [JsonProperty("main")]
+        [JsonPropertyName("main")]
         public Main Main { get; set; }
     }
 }

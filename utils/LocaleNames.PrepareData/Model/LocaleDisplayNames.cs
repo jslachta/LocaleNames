@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class LocaleDisplayNames
     {
-        [JsonProperty("languages")]
+        [JsonPropertyName("languages")]
         public Dictionary<string, string> Languages { get; set; }
 
-        [JsonProperty("territories")]
+        [JsonPropertyName("territories")]
         public Dictionary<string, string> Territories { get; set; }
     }
 }

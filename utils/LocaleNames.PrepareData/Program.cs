@@ -1,5 +1,5 @@
 ﻿using LocaleNames.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 using LocaleNames.PrepareData.Model;
 using Spectre.Console;
 using System;
@@ -217,7 +217,7 @@ class Program
              * Load JSON data and deserialize.
              */
             var json = File.ReadAllText(filePath);
-            var cldrContainer = JsonConvert.DeserializeObject<CldrContainer>(json);
+            var cldrContainer = JsonSerializer.Deserialize<CldrContainer>(json);
 
             if (sourceFilename.Contains("territories"))
             {

@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class Version
     {
-        [JsonProperty("_cldrVersion")]
+        [JsonPropertyName("_cldrVersion")]
         public string CldrVersion { get; set; }
     }
 }

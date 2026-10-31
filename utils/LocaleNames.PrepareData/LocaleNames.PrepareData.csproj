@@ -6,7 +6,6 @@
 	</PropertyGroup>
 	<Import Project="..\..\targets\Configuration.targets" />
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Spectre.Console" Version="0.57.2" />
 	</ItemGroup>
 	<ItemGroup>

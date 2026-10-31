@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace LocaleNames.PrepareData.Model
 {
     public partial class Data
     {
-        [JsonProperty("identity")]
+        [JsonPropertyName("identity")]
         public Identity Identity { get; set; }
 
-        [JsonProperty("localeDisplayNames")]
+        [JsonPropertyName("localeDisplayNames")]
         public LocaleDisplayNames LocaleDisplayNames { get; set; }
 
-        [JsonProperty("numbers")]
+        [JsonPropertyName("numbers")]
         public Numbers Numbers { get; set; }
     }
 }
